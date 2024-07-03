@@ -117,3 +117,22 @@ class ValueDataset(SequenceDataset):
         value = np.array([value], dtype=np.float32)
         value_batch = ValueBatch(*batch, value)
         return value_batch
+
+
+class DownsampleDataset(SequenceDataset):
+    def __init__(self, *args, downsample=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.downsample = downsample
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+
+        # downsample the trajectories and conditions in batch
+        trajectories = batch.trajectories[::self.downsample]
+        conditions = batch.conditions # still the last point
+        batch = Batch(trajectories, conditions)
+        return batch
+
+class HLGoalDataset(DownsampleDataset, GoalDataset):
+    pass
+    
