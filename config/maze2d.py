@@ -91,6 +91,8 @@ base = {
         'suffix': '0',
 
         'conditional': False,
+        'init_pose': None,
+        'target': None,
 
         ## loading
         'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}',

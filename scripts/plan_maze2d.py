@@ -34,9 +34,15 @@ policy = Policy(diffusion, dataset.normalizer)
 
 observation = env.reset()
 
-if args.conditional:
-    print('Resetting target')
-    env.set_target()
+if args.conditional:    
+    if args.init_pose is not None:
+        observation = env.reset_to_location(args.init_pose)
+        print('Resetting agent init to: ', observation)
+
+    if args.target is not None:
+        env.set_target(args.target)
+        print('Resetting target to: ', env.get_target())
+    
 
 ## set conditioning xy position to be the goal
 target = env._target
