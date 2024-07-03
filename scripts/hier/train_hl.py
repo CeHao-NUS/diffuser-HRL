@@ -1,6 +1,6 @@
 import diffuser.utils as utils
 import pdb
-
+import numpy as np
 
 #-----------------------------------------------------------------------------#
 #----------------------------------- setup -----------------------------------#
@@ -49,7 +49,7 @@ action_dim = dataset.action_dim
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon= int(args.horizon / args.downsample), ### !!!
+    horizon= int(np.ceil(args.horizon / args.downsample)), ### !!!
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
@@ -59,7 +59,7 @@ model_config = utils.Config(
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=int(args.horizon / args.downsample), ### !!!
+    horizon=int(np.ceil(args.horizon / args.downsample)), ### !!!
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,

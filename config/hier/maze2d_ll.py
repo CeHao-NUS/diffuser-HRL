@@ -33,7 +33,7 @@ base = {
         ## model
         'model': 'models.TemporalUnet',
         'diffusion': 'models.GaussianDiffusion',
-        'horizon': 17,
+        'horizon': 16,
         'n_diffusion_steps': 256,
         'action_weight': 1,
         'loss_weights': None,
@@ -79,7 +79,7 @@ base = {
         'device': 'cuda',
 
         ## diffusion model
-        'horizon': 17,
+        'horizon': 16,
         'n_diffusion_steps': 256,
         'normalizer': 'LimitsNormalizer',
 
@@ -112,22 +112,22 @@ base = {
 
 maze2d_umaze_v1 = {
     'diffusion': {
-        'horizon': 17,
+        'horizon': 16,
         'n_diffusion_steps': 64,
     },
     'plan': {
-        'horizon': 17,
+        'horizon': 16,
         'n_diffusion_steps': 64,
     },
 }
 
 maze2d_large_v1 = {
     'diffusion': {
-        'horizon': 17,
+        'horizon': 16,
         'n_diffusion_steps': 256,
     },
     'plan': {
-        'horizon': 17,
+        'horizon': 16,
         'n_diffusion_steps': 256,
     },
 }

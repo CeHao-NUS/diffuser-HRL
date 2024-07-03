@@ -10,9 +10,12 @@ import diffuser.utils as utils
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
+    config: str = 'config.hier.maze2d_hl'
+
+
+class ll_Parser(utils.Parser):
+    dataset: str = 'maze2d-umaze-v1'
     config: str = 'config.hier.maze2d_ll'
-
-
 
 #---------------------------------- setup ----------------------------------#
 
@@ -34,8 +37,8 @@ policy = Policy(diffusion, dataset.normalizer)
 
 
 # ========================== set LL ==========================
-Parser().config = 'config.hier.maze2d_ll'
-ll_args = Parser().parse_args('plan')
+# Parser().config = 'config.hier.maze2d_ll'
+ll_args = ll_Parser().parse_args('plan')
 ll_diffusion_experiment = utils.load_diffusion(ll_args.logbase, ll_args.dataset, ll_args.diffusion_loadpath, epoch=ll_args.diffusion_epoch)
 
 ll_diffusion = ll_diffusion_experiment.ema
@@ -94,7 +97,11 @@ for t in range(env.max_episode_steps):
             }
             ll_action, ll_samples = ll_policy(ll_cond, batch_size=args.batch_size)
             ll_sequence = ll_samples.observations[0][:-1]
-            sequence = np.concatenate([sequence, ll_sequence], axis=0)
+
+            if sequence.size == 0:
+                sequence = ll_sequence 
+            else:
+                sequence = np.concatenate([sequence, ll_sequence], axis=0)
 
     # ####
     if t < len(sequence) - 1:
@@ -141,9 +148,14 @@ for t in range(env.max_episode_steps):
     # logger.log(score=score, step=t)
 
     if t % args.vis_freq == 0 or terminal:
-        fullpath = join(args.savepath, f'{t}.png')
 
-        if t == 0: renderer.composite(fullpath, samples.observations, ncol=1)
+
+        hl_fullpath = join(args.savepath, 'HL.png')
+
+        if t == 0: renderer.composite(hl_fullpath, samples.observations, ncol=1)
+
+        whole_path = join(args.savepath, 'FULL.png')
+        if t == 0: renderer.composite(whole_path, np.array([sequence]), ncol=1)
 
 
         # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
