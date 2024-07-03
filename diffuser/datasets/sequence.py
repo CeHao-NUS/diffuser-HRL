@@ -119,7 +119,7 @@ class ValueDataset(SequenceDataset):
         return value_batch
 
 
-class DownsampleDataset(SequenceDataset):
+class HLGoalDataset(GoalDataset):
     def __init__(self, *args, downsample=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.downsample = downsample
@@ -129,10 +129,12 @@ class DownsampleDataset(SequenceDataset):
 
         # downsample the trajectories and conditions in batch
         trajectories = batch.trajectories[::self.downsample]
+        len_ori = len(batch.trajectories)
+        len_new = len(trajectories)
         conditions = batch.conditions # still the last point
+        conditions[len_new-1] = conditions.pop(len_ori-1)
+
         batch = Batch(trajectories, conditions)
         return batch
 
-class HLGoalDataset(DownsampleDataset, GoalDataset):
-    pass
     

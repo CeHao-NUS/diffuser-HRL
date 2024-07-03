@@ -10,9 +10,7 @@ import diffuser.utils as utils
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.hier.maze2d_ll'
-
-
+    config: str = 'config.hier.maze2d_hl'
 
 #---------------------------------- setup ----------------------------------#
 
@@ -31,19 +29,6 @@ dataset = diffusion_experiment.dataset
 renderer = diffusion_experiment.renderer
 
 policy = Policy(diffusion, dataset.normalizer)
-
-
-# ========================== set LL ==========================
-Parser().config = 'config.hier.maze2d_ll'
-ll_args = Parser().parse_args('plan')
-ll_diffusion_experiment = utils.load_diffusion(ll_args.logbase, ll_args.dataset, ll_args.diffusion_loadpath, epoch=ll_args.diffusion_epoch)
-
-ll_diffusion = ll_diffusion_experiment.ema
-ll_dataset = ll_diffusion_experiment.dataset
-ll_renderer = ll_diffusion_experiment.renderer
-
-ll_policy = Policy(ll_diffusion, ll_dataset.normalizer)
-
 
 #---------------------------------- main loop ----------------------------------#
 
@@ -65,9 +50,6 @@ cond = {
     diffusion.horizon - 1: np.array([*target, 0, 0]),
 }
 
-
-# ============== running ==============
-
 ## observations for rendering
 rollout = [observation.copy()]
 
@@ -83,18 +65,8 @@ for t in range(env.max_episode_steps):
 
         action, samples = policy(cond, batch_size=args.batch_size)
         actions = samples.actions[0]
-        hl_sequence = samples.observations[0]
-
-        sequence = np.array([])
-        # ============== LL ==============
-        for idx in range(len(hl_sequence)-1):
-            ll_cond = {
-                0: hl_sequence[idx],
-                ll_diffusion.horizon - 1: hl_sequence[idx+1],
-            }
-            ll_action, ll_samples = ll_policy(ll_cond, batch_size=args.batch_size)
-            ll_sequence = ll_samples.observations[0][:-1]
-            sequence = np.concatenate([sequence, ll_sequence], axis=0)
+        sequence = samples.observations[0]
+    # pdb.set_trace()
 
     # ####
     if t < len(sequence) - 1:

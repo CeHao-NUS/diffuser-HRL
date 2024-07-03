@@ -11,6 +11,7 @@ diffusion_args_to_watch = [
     ('prefix', ''),
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
+    ('downsample', 'D'),
 ]
 
 
@@ -25,6 +26,7 @@ plan_args_to_watch = [
     ('batch_size', 'b'),
     ##
     ('conditional', 'cond'),
+    ('downsample', 'D'),
 ]
 
 base = {
@@ -50,6 +52,7 @@ base = {
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
+        'downsample': 16,
 
         ## serialization
         'logbase': 'logs',
@@ -79,7 +82,7 @@ base = {
         'device': 'cuda',
 
         ## diffusion model
-        'horizon': 256,
+        'horizon': 16,
         'n_diffusion_steps': 256,
         'normalizer': 'LimitsNormalizer',
 
@@ -89,13 +92,14 @@ base = {
         'prefix': 'plans/release',
         'exp_name': watch(plan_args_to_watch),
         'suffix': '0',
+        'downsample': 16,
 
         'conditional': False,
         'init_pose': None,
         'target': None,
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}',
+        'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}_D{downsample}',
         'diffusion_epoch': 'latest',
     },
 

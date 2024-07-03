@@ -7,7 +7,7 @@ import pdb
 #-----------------------------------------------------------------------------#
 
 class Parser(utils.Parser):
-    dataset: str = 'maze2d-large-v1'
+    dataset: str = 'maze2d-umaze-v1'
     config: str = 'config.hier.maze2d_hl'
 
 args = Parser().parse_args('diffusion')
@@ -26,6 +26,7 @@ dataset_config = utils.Config(
     preprocess_fns=args.preprocess_fns,
     use_padding=args.use_padding,
     max_path_length=args.max_path_length,
+    downsample = args.downsample,
 )
 
 render_config = utils.Config(
@@ -48,7 +49,7 @@ action_dim = dataset.action_dim
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon=args.horizon,
+    horizon= int(args.horizon / args.downsample), ### !!!
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
@@ -58,7 +59,7 @@ model_config = utils.Config(
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=args.horizon,
+    horizon=int(args.horizon / args.downsample), ### !!!
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,
