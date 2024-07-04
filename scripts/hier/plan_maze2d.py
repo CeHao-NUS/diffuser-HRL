@@ -64,8 +64,12 @@ if args.conditional:
 
 ## set conditioning xy position to be the goal
 target = env._target
+# cond = {
+#     diffusion.horizon - 1: np.array([*target, 0, 0]),
+# }
+
 cond = {
-    diffusion.horizon - 1: np.array([*target, 0, 0]),
+    args.goal_length - 1: np.array([*target, 0, 0]),
 }
 
 
@@ -90,7 +94,9 @@ for t in range(env.max_episode_steps):
 
         sequence = np.array([])
         # ============== LL ==============
-        for idx in range(len(hl_sequence)-1):
+        goal_length = args.goal_length
+
+        for idx in range(goal_length-1):
             ll_cond = {
                 0: hl_sequence[idx],
                 ll_diffusion.horizon - 1: hl_sequence[idx+1],
@@ -152,7 +158,8 @@ for t in range(env.max_episode_steps):
 
         hl_fullpath = join(args.savepath, 'HL.png')
 
-        if t == 0: renderer.composite(hl_fullpath, samples.observations, ncol=1)
+        # if t == 0: renderer.composite(hl_fullpath, samples.observations, ncol=1)
+        if t == 0: renderer.composite(hl_fullpath, samples.observations[:, : args.goal_length], ncol=1)
 
         whole_path = join(args.savepath, 'FULL.png')
         if t == 0: renderer.composite(whole_path, np.array([sequence]), ncol=1)

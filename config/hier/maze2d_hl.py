@@ -101,6 +101,9 @@ base = {
         ## loading
         'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}_D{downsample}',
         'diffusion_epoch': 'latest',
+
+        ## goal length
+        'goal_length': 8,
     },
 
 }
