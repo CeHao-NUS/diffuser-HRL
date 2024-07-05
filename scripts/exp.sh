@@ -16,3 +16,7 @@ python scripts/plan_maze2d.py --config config.maze2d --dataset maze2d-umaze-v1 \
 --conditional True --init_pose "(1, 1)" --target "(1,2)" --suffix "near"
 
 # 
+
+# =================================================================================================
+# 3 maze, single x multi
+# name: single/multi_idx
