@@ -90,6 +90,15 @@ def apply_conditioning(x, conditions, action_dim):
         x[:, t, action_dim:] = val.clone()
     return x
 
+def divide_condition(conditions):
+    cond0 = {}
+    cond1 = {}
+    for t, val in conditions.items():
+        if t == 0:
+            cond0[t] = val
+        else:
+            cond1[t] = val
+    return cond0, cond1
 
 #-----------------------------------------------------------------------------#
 #---------------------------------- losses -----------------------------------#

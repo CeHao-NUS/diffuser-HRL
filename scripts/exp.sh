@@ -18,5 +18,5 @@ python scripts/plan_maze2d.py --config config.maze2d --dataset maze2d-umaze-v1 \
 # 
 
 # =================================================================================================
-# 3 maze, single x multi
-# name: single/multi_idx
+python scripts/plan_maze2d.py --config config.maze2d --dataset maze2d-umaze-v1 \
+--diffusion 'models.SoftGaussianDiffusion'

@@ -9,6 +9,7 @@ from .helpers import (
     extract,
     apply_conditioning,
     Losses,
+    divide_condition,
 )
 
 class GaussianDiffusion(nn.Module):
@@ -212,3 +213,72 @@ class GaussianDiffusion(nn.Module):
     def forward(self, cond, *args, **kwargs):
         return self.conditional_sample(cond=cond, *args, **kwargs)
 
+
+
+class SoftGaussianDiffusion(GaussianDiffusion):
+    @torch.no_grad()
+    def p_sample_loop(self, shape, cond, verbose=True, return_diffusion=False):
+        device = self.betas.device
+
+        # adjust cond, 1: only 0, 2: only last
+        cond0, cond1 = divide_condition(cond)
+
+        batch_size = shape[0]
+        x = torch.randn(shape, device=device)
+        x = apply_conditioning(x, cond0, self.action_dim)
+
+        if return_diffusion: diffusion = [x]
+
+        progress = utils.Progress(self.n_timesteps) if verbose else utils.Silent()
+        for i in reversed(range(0, self.n_timesteps)):
+            timesteps = torch.full((batch_size,), i, device=device, dtype=torch.long)
+            # soft inpainting adjustment
+
+            x = self.p_sample_soft(x, cond1, timesteps)
+            x = self.p_sample(x, cond0, timesteps)
+            x = apply_conditioning(x, cond0, self.action_dim)
+
+            progress.update({'t': i})
+
+            if return_diffusion: diffusion.append(x)
+
+        progress.close()
+
+        if return_diffusion:
+            return x, torch.stack(diffusion, dim=1)
+        else:
+            return x
+
+    @torch.no_grad()
+    def p_sample_soft(self, x, cond1, t):
+        # b, *_, device = *x.shape, x.device
+        # model_mean, _, model_log_variance = self.p_mean_variance(x=x, cond=cond, t=t)
+        # noise = torch.randn_like(x)
+        # # no noise when t == 0
+        # nonzero_mask = (1 - (t == 0).float()).reshape(b, *((1,) * (len(x.shape) - 1)))
+        # return model_mean + nonzero_mask * (0.5 * model_log_variance).exp() * noise
+    
+        
+
+        model_log_variance = extract(self.posterior_log_variance_clipped, t, x.shape)
+        # model_std = torch.exp(0.5 * model_log_variance)
+        model_var = torch.exp(model_log_variance)
+
+        # with torch.enable_grad():
+        #     y, grad = guide.gradients(x, cond1, t)
+
+        n_guide_steps = 1
+        scale = 0.0001
+
+        for _ in range(n_guide_steps):
+            grad = torch.zero_like(x)
+            for t, val in cond1.items():
+                diff = - ( x[:, t, self.action_dim:] - val.clone() ) 
+                grad[:, t, self.action_dim:] = diff
+
+            grad = model_var * grad
+            x = x + scale * grad
+
+        return x
+
+        
