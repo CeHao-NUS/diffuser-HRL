@@ -296,12 +296,18 @@ class MazeRenderer:
         colors = plt.cm.jet(np.linspace(0,1,path_length))
         plt.plot(observations[:,1], observations[:,0], c='black', zorder=10)
         plt.scatter(observations[:,1], observations[:,0], c=colors, zorder=20)
+
+        for idx in conditions:
+            cond = conditions[idx][:2]
+            plt.scatter(cond[1], cond[0], c=colors[idx], marker='*', edgecolors='k', 
+                        s=100, zorder=30)
+
         plt.axis('off')
         plt.title(title)
         img = plot2img(fig, remove_margins=self._remove_margins)
         return img
 
-    def composite(self, savepath, paths, ncol=5, **kwargs):
+    def composite(self, savepath, paths, ncol=5, conditions={}, **kwargs):
         '''
             savepath : str
             observations : [ n_paths x horizon x 2 ]
@@ -310,7 +316,7 @@ class MazeRenderer:
 
         images = []
         for path, kw in zipkw(paths, **kwargs):
-            img = self.renders(*path, **kw)
+            img = self.renders(*path, conditions, **kw)
             images.append(img)
         images = np.stack(images, axis=0)
 
@@ -336,18 +342,28 @@ class Maze2dRenderer(MazeRenderer):
         bounds = MAZE_BOUNDS[self.env_name]
 
         observations = observations + .5
+        if conditions is not None:
+            for idx in conditions:
+                conditions[idx] = conditions[idx] + .5
+
         if len(bounds) == 2:
             _, scale = bounds
             observations /= scale
+            if conditions is not None:
+                for idx in conditions:
+                    conditions[idx] /= scale
+
         elif len(bounds) == 4:
             _, iscale, _, jscale = bounds
             observations[:, 0] /= iscale
             observations[:, 1] /= jscale
+            if conditions is not None:
+                for idx in conditions:
+                    conditions[idx][0] /= iscale
+                    conditions[idx][1] /= jscale
         else:
             raise RuntimeError(f'Unrecognized bounds for {self.env_name}: {bounds}')
 
-        if conditions is not None:
-            conditions /= scale
         return super().renders(observations, conditions, **kwargs)
 
 #-----------------------------------------------------------------------------#

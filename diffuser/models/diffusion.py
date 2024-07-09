@@ -135,6 +135,7 @@ class GaussianDiffusion(nn.Module):
         nonzero_mask = (1 - (t == 0).float()).reshape(b, *((1,) * (len(x.shape) - 1)))
         return model_mean + nonzero_mask * (0.5 * model_log_variance).exp() * noise
 
+    # '''
     @torch.no_grad()
     def p_sample_loop(self, shape, cond, verbose=True, return_diffusion=False):
         device = self.betas.device
@@ -161,6 +162,7 @@ class GaussianDiffusion(nn.Module):
             return x, torch.stack(diffusion, dim=1)
         else:
             return x
+    # '''
 
     @torch.no_grad()
     def conditional_sample(self, cond, *args, horizon=None, **kwargs):
@@ -215,7 +217,8 @@ class GaussianDiffusion(nn.Module):
 
 
 
-class SoftGaussianDiffusion(GaussianDiffusion):
+# class SoftGaussianDiffusion(GaussianDiffusion):
+'''
     @torch.no_grad()
     def p_sample_loop(self, shape, cond, verbose=True, return_diffusion=False):
         device = self.betas.device
@@ -271,7 +274,7 @@ class SoftGaussianDiffusion(GaussianDiffusion):
         scale = 0.0001
 
         for _ in range(n_guide_steps):
-            grad = torch.zero_like(x)
+            grad = torch.zeros_like(x)
             for t, val in cond1.items():
                 diff = - ( x[:, t, self.action_dim:] - val.clone() ) 
                 grad[:, t, self.action_dim:] = diff
@@ -281,4 +284,4 @@ class SoftGaussianDiffusion(GaussianDiffusion):
 
         return x
 
-        
+'''

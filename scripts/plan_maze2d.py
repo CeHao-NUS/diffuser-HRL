@@ -115,7 +115,8 @@ for t in range(env.max_episode_steps):
     if t % args.vis_freq == 0 or terminal:
         fullpath = join(args.savepath, f'{t}.png')
 
-        if t == 0: renderer.composite(fullpath, samples.observations, ncol=1)
+        if t == 0: renderer.composite(fullpath, samples.observations, ncol=1,
+                                      conditions=cond)
 
 
         # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
