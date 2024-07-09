@@ -237,8 +237,9 @@ class GaussianDiffusion(nn.Module):
             timesteps = torch.full((batch_size,), i, device=device, dtype=torch.long)
             # soft inpainting adjustment
 
-            x = self.p_sample_soft(x, cond1, timesteps)
+            # x = self.p_sample_soft(x, cond1, timesteps)
             x = self.p_sample(x, cond0, timesteps)
+            x = self.p_sample_soft(x, cond1, timesteps)
             x = apply_conditioning(x, cond0, self.action_dim)
 
             progress.update({'t': i})
@@ -271,17 +272,21 @@ class GaussianDiffusion(nn.Module):
         #     y, grad = guide.gradients(x, cond1, t)
 
         n_guide_steps = 1
-        scale = 0.0001
+        scale = 0.3
 
         for _ in range(n_guide_steps):
             grad = torch.zeros_like(x)
             for t, val in cond1.items():
-                diff = - ( x[:, t, self.action_dim:] - val.clone() ) 
+                # x[:, t, self.action_dim:] = val.clone()
+                diff = ( x[:, t, self.action_dim:] - val.clone() ) 
+                diff = - torch.clamp(torch.abs(diff), min=0.2) * torch.sign(diff)
                 grad[:, t, self.action_dim:] = diff
 
-            grad = model_var * grad
+            # grad = model_var * grad
+
             x = x + scale * grad
 
         return x
 
 '''
+
