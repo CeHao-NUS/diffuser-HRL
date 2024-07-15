@@ -25,6 +25,7 @@ plan_args_to_watch = [
     ('batch_size', 'b'),
     ##
     ('conditional', 'cond'),
+    ('plan_horizon', 'pH'),
 ]
 
 base = {
@@ -84,7 +85,7 @@ base = {
         'normalizer': 'LimitsNormalizer',
 
         ## serialization
-        'vis_freq': 10,
+        'vis_freq': 100, # can be 10
         'logbase': 'logs',
         'prefix': 'plans/release',
         'exp_name': watch(plan_args_to_watch),
@@ -97,6 +98,8 @@ base = {
         ## loading
         'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}',
         'diffusion_epoch': 'latest',
+
+        'plan_horizon': 256,
     },
 
 }

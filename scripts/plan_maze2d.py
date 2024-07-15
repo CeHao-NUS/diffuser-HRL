@@ -46,9 +46,13 @@ if args.conditional:
 
 ## set conditioning xy position to be the goal
 target = env._target
+
+diffusion.horizon = args.plan_horizon
+
 cond = {
     diffusion.horizon - 1: np.array([*target, 0, 0]),
 }
+
 
 ## observations for rendering
 rollout = [observation.copy()]
@@ -66,6 +70,8 @@ for t in range(env.max_episode_steps):
         action, samples = policy(cond, batch_size=args.batch_size)
         actions = samples.actions[0]
         sequence = samples.observations[0]
+        print('!!!! last state', sequence[-1][:2], 'target', target[:2],
+              'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
     # pdb.set_trace()
 
     # ####
@@ -95,17 +101,17 @@ for t in range(env.max_episode_steps):
     next_observation, reward, terminal, _ = env.step(action)
     total_reward += reward
     score = env.get_normalized_score(total_reward)
-    print(
-        f't: {t} | r: {reward:.2f} |  R: {total_reward:.2f} | score: {score:.4f} | '
-        f'{action}'
-    )
+    # print(
+    #     f't: {t} | r: {reward:.2f} |  R: {total_reward:.2f} | score: {score:.4f} | '
+    #     f'{action}'
+    # )
 
     if 'maze2d' in args.dataset:
         xy = next_observation[:2]
         goal = env.unwrapped._target
-        print(
-            f'maze | pos: {xy} | goal: {goal}'
-        )
+        # print(
+        #     f'maze | pos: {xy} | goal: {goal}'
+        # )
 
     ## update rollout observations
     rollout.append(next_observation.copy())
@@ -115,7 +121,7 @@ for t in range(env.max_episode_steps):
     if t % args.vis_freq == 0 or terminal:
         fullpath = join(args.savepath, f'{t}.png')
 
-        if t == 0: renderer.composite(fullpath, samples.observations, ncol=1,
+        if t == 0: renderer.composite(fullpath, samples.observations[:, :, :diffusion.horizon], ncol=1,
                                       conditions=cond)
 
 
