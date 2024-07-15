@@ -138,3 +138,37 @@ class HLGoalDataset(GoalDataset):
         return batch
 
     
+class VarHDataset(GoalDataset):
+    def __init__(self, *args, min_horizon=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.min_horizon = min_horizon
+
+    def __getitem__(self, idx):
+
+
+        # 1. get intermediate point
+        # 2. segment and fill with last point
+        # 3. change conditions
+
+        path_ind, start, end = self.indices[idx]
+        horizon = self.horizon
+
+        new_length = np.random.choice(range(self.min_horizon, horizon))
+        repeats = horizon - new_length
+        new_end = start + new_length
+
+        observations = self.fields.normed_observations[path_ind, start:new_end]
+        actions = self.fields.normed_actions[path_ind, start:new_end]
+
+        # repeat the last observation until end
+        observations = torch.cat([observations, observations[-1].repeat(repeats)])
+        actions = torch.cat([actions, torch.zeros_like(actions[-1]).repeat(repeats)])
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+        batch = Batch(trajectories, conditions)
+        return batch
+
+        
+
+
