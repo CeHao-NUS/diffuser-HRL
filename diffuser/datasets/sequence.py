@@ -161,8 +161,14 @@ class VarHDataset(GoalDataset):
         actions = self.fields.normed_actions[path_ind, start:new_end]
 
         # repeat the last observation until end
-        observations = torch.cat([observations, observations[-1].repeat(repeats)])
-        actions = torch.cat([actions, torch.zeros_like(actions[-1]).repeat(repeats)])
+
+        # observations = np.append(observations, np.full(repeats, observations[-1]))
+        observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
+        
+
+        # actions = np.append(actions, np.full(repeats, actions[-1]))
+        zero_actions = np.zeros_like(actions[-1])
+        actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
 
         conditions = self.get_conditions(observations)
         trajectories = np.concatenate([actions, observations], axis=-1)

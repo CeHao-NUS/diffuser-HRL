@@ -34,7 +34,7 @@ base = {
     'diffusion': {
         ## model
         'model': 'models.TemporalUnet',
-        'diffusion': 'models.VarHDataset',
+        'diffusion': 'models.GaussianDiffusion',
         'horizon': 256,
         'n_diffusion_steps': 256,
         'action_weight': 1,
@@ -45,13 +45,14 @@ base = {
         'renderer': 'utils.Maze2dRenderer',
 
         ## dataset
-        'loader': 'datasets.GoalDataset',
+        'loader': 'datasets.VarHDataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
+        'min_horizon': 16,
 
         ## serialization
         'logbase': 'logs',
@@ -75,7 +76,6 @@ base = {
         'bucket': None,
         'device': 'cuda',
 
-        'min_horizon': 1,
     },
 
     'plan': {
@@ -86,6 +86,7 @@ base = {
         'horizon': 256,
         'n_diffusion_steps': 256,
         'normalizer': 'LimitsNormalizer',
+        'min_horizon': 16,
 
         ## serialization
         'vis_freq': 100, # can be 10

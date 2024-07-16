@@ -8,7 +8,7 @@ import pdb
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.maze2d'
+    config: str = 'config.varh.maze2d'
 
 args = Parser().parse_args('diffusion')
 
@@ -26,6 +26,7 @@ dataset_config = utils.Config(
     preprocess_fns=args.preprocess_fns,
     use_padding=args.use_padding,
     max_path_length=args.max_path_length,
+    min_horizon=args.min_horizon,
 )
 
 render_config = utils.Config(
