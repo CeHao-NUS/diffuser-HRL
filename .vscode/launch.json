@@ -11,14 +11,11 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "--conditional",
-                "True",
-                "--init_pose",
-                "(1, 1)",
-                "--target",
-                "(1,2)",
-                "--suffix",
-                "near"
+                "--dataset", "maze2d-umaze-v1",
+                "--conditional", "True",
+                "--init_pose", "(3,1)",
+                "--target", "(3, 1.2)",
+                "--suffix", "test2"
             ],
             
         }

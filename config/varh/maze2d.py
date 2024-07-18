@@ -26,7 +26,7 @@ plan_args_to_watch = [
     ('batch_size', 'b'),
     ##
     ('conditional', 'cond'),
-    ('plan_horizon', 'pH'),
+    ('min_horizon', 'mH'),
 ]
 
 base = {
@@ -52,7 +52,7 @@ base = {
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
-        'min_horizon': 16,
+        'min_horizon': 32,
 
         ## serialization
         'logbase': 'logs',
@@ -68,7 +68,7 @@ base = {
         'gradient_accumulate_every': 2,
         'ema_decay': 0.995,
         'save_freq': 1000,
-        'sample_freq': 1000,
+        'sample_freq': 5000,
         'n_saves': 50,
         'save_parallel': False,
         'n_reference': 50,
@@ -86,7 +86,7 @@ base = {
         'horizon': 256,
         'n_diffusion_steps': 256,
         'normalizer': 'LimitsNormalizer',
-        'min_horizon': 16,
+        'min_horizon': 32,
 
         ## serialization
         'vis_freq': 100, # can be 10
@@ -121,10 +121,12 @@ maze2d_umaze_v1 = {
     'diffusion': {
         'horizon': 128,
         'n_diffusion_steps': 64,
+        'min_horizon': 16,
     },
     'plan': {
         'horizon': 128,
         'n_diffusion_steps': 64,
+        'min_horizon': 16,
     },
 }
 
@@ -132,9 +134,11 @@ maze2d_large_v1 = {
     'diffusion': {
         'horizon': 384,
         'n_diffusion_steps': 256,
+        'min_horizon': 48,
     },
     'plan': {
         'horizon': 384,
         'n_diffusion_steps': 256,
+        'min_horizon': 48,
     },
 }
