@@ -3,28 +3,29 @@
 # suffix: 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(3,1)" --suffix "far1" 
+--conditional True --init_pose "(3,1)" --target "(1, 1)" --suffix "far1" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(3,2)" --suffix "far2" 
+--conditional True --init_pose "(3,2)" --target "(1, 1)" --suffix "far2" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(3,1.5)" --suffix "far1.5" 
+--conditional True --init_pose "(3,1.5)" --target "(1, 1)" --suffix "far1.5" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(3,3)" --suffix "turn1" 
+--conditional True --init_pose "(3,3)" --target "(1, 1)" --suffix "turn1" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(1,3)" --suffix "line" 
+--conditional True --init_pose "(1,3)" --target "(1, 1)" --suffix "line" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(1,2)" --suffix "near2" 
+--conditional True --init_pose "(1,2)" --target "(1, 1)" --suffix "near2" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(1,1.5)" --suffix "near1.5" 
+--conditional True --init_pose "(1,1.5)" --target "(1, 1)" --suffix "near1.5" 
 
 python scripts/plan_maze2d.py --dataset maze2d-umaze-v1 \
---conditional True --init_pose "(1, 1)" --target "(1,1.1)" --suffix "near1.1" 
+--conditional True --init_pose "(1,1.1)" --target "(1, 1)" --suffix "near1.1" 
+
 
 
 # python scripts/varh/plan_maze2d.py --dataset maze2d-umaze-v1 \
