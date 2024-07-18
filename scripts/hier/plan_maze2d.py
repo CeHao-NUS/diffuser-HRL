@@ -153,22 +153,23 @@ for t in range(env.max_episode_steps):
 
     # logger.log(score=score, step=t)
 
-    if t % args.vis_freq == 0 or terminal:
+    hl_fullpath = join(args.savepath, 'HL.png')
+    # if t == 0: renderer.composite(hl_fullpath, samples.observations, ncol=1)
+    if t == 0: renderer.composite(hl_fullpath, samples.observations[:, : args.goal_length], ncol=1,
+                                  conditions=cond)
 
-
-        hl_fullpath = join(args.savepath, 'HL.png')
-
-        # if t == 0: renderer.composite(hl_fullpath, samples.observations, ncol=1)
-        if t == 0: renderer.composite(hl_fullpath, samples.observations[:, : args.goal_length], ncol=1)
-
-        whole_path = join(args.savepath, 'FULL.png')
-        if t == 0: renderer.composite(whole_path, np.array([sequence]), ncol=1)
-
+    whole_path = join(args.savepath, 'FULL.png')
+    if t == 0: renderer.composite(whole_path, np.array([sequence]), ncol=1,
+                                  conditions=cond)
+    
+    # if t % args.vis_freq == 0 or terminal:
+    if terminal or t == env.max_episode_steps-1:
 
         # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
 
         ## save rollout thus far
-        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1)
+        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,
+                           conditions=cond)
 
         # renderer.render_rollout(join(args.savepath, f'rollout.mp4'), rollout, fps=80)
 

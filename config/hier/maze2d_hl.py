@@ -82,7 +82,7 @@ base = {
         'device': 'cuda',
 
         ## diffusion model
-        'horizon': 16,
+        'horizon': 256,
         'n_diffusion_steps': 256,
         'normalizer': 'LimitsNormalizer',
 
