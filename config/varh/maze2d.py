@@ -103,7 +103,6 @@ base = {
         'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}_mH{min_horizon}',
         'diffusion_epoch': 'latest',
 
-        'plan_horizon': 256,
     },
 
 }
@@ -122,6 +121,7 @@ maze2d_umaze_v1 = {
         'horizon': 128,
         'n_diffusion_steps': 64,
         'min_horizon': 16,
+        
     },
     'plan': {
         'horizon': 128,

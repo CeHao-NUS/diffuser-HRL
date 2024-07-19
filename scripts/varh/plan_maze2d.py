@@ -47,7 +47,6 @@ if args.conditional:
 ## set conditioning xy position to be the goal
 target = env._target
 
-diffusion.horizon = args.plan_horizon
 
 cond = {
     diffusion.horizon - 1: np.array([*target, 0, 0]),
