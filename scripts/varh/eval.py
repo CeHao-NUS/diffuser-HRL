@@ -12,7 +12,7 @@ if __name__ == "__main__":
     env = env_list[0]
     task = task_list[0]
     
-    base_dir = f'/home/zihao/cehao/github_space/diffuser-HRL/logs/{env}/plans/release_H128_T64_LimitsNormalizer_b1_condFalse_mH16'
+    base_dir = f'./logs/{env}/plans/release_H128_T64_LimitsNormalizer_b1_condFalse_mH16(0)'
     
     file_suffix = task+'_'
     rollout_name = 'rollout.json'
@@ -30,12 +30,12 @@ if __name__ == "__main__":
             score = data['score']   
             score_list.append(score)
 
-    print('mean:', np.mean(score_list))
-    print('std:', np.std(score_list))
 
     mean = np.round(np.mean(score_list) * 100, 2)
     std = np.round(np.std(score_list) * 100, 2)
-    
+
+    print(f'{env} {task} ' + str(mean) + '±' + str(std))
+
     plt.figure()
     sns.kdeplot(score_list, fill=True)
     plt.title(f'KDE Plot: {env} {task} ' + str(mean) + '±' + str(std))
@@ -43,5 +43,5 @@ if __name__ == "__main__":
     plt.ylabel('Density')
 
     # Display the plot
-    plt.savefig(f'./{env}_{task}.png', dpi=300)
+    plt.savefig(f'./images/{env}_{task}.png', dpi=300)
     plt.show()

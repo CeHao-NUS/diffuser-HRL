@@ -12,7 +12,7 @@ if __name__ == "__main__":
     env = env_list[0]
     task = task_list[0]
     
-    base_dir = f'/home/zihao/cehao/github_space/diffuser-HRL/logs/{env}/plans/release_H128_T64_LimitsNormalizer_b1_condFalse_D16'
+    base_dir = f'./logs/{env}/plans/release_H128_T64_LimitsNormalizer_b1_condFalse_D16'
     
     file_suffix = task+'_'
     rollout_name = 'rollout.json'
@@ -43,5 +43,5 @@ if __name__ == "__main__":
     plt.ylabel('Density')
 
     # Display the plot
-    plt.savefig(f'./{env}_{task}.png', dpi=300)
+    plt.savefig(f'./images/{env}_{task}.png', dpi=300)
     plt.show()
