@@ -42,7 +42,8 @@ if args.conditional:
     if args.target is not None:
         env.set_target(args.target)
         print('Resetting target to: ', env.get_target())
-    
+    else:
+        env.set_target()
 
 ## set conditioning xy position to be the goal
 target = env._target
@@ -82,7 +83,8 @@ for t in range(env.max_episode_steps):
         # pdb.set_trace()
 
     ## can use actions or define a simple controller based on state predictions
-    action = next_waypoint[:2] - state[:2] + (next_waypoint[2:] - state[2:])
+    # action = next_waypoint[:2] - state[:2] + (next_waypoint[2:] - state[2:])
+    action = next_waypoint[:2] - state[:2] + 0.5 * (next_waypoint[2:] - state[2:])
     # pdb.set_trace()
     ####
 

@@ -12,7 +12,7 @@ if __name__ == "__main__":
     env = env_list[0]
     task = task_list[0]
     
-    base_dir = f'./logs/{env}/old/plans/release_H128_T64_LimitsNormalizer_b1_condFalse'
+    base_dir = f'./logs/{env}/plans/release_H128_T64_LimitsNormalizer_b1_condFalse_pH128'
     
     file_suffix = task+'_'
     rollout_name = 'rollout.json'

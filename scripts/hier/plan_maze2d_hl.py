@@ -42,7 +42,8 @@ if args.conditional:
     if args.target is not None:
         env.set_target(args.target)
         print('Resetting target to: ', env.get_target())
-    
+    else:
+        env.set_target()
 
 ## set conditioning xy position to be the goal
 target = env._target
