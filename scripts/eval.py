@@ -9,10 +9,10 @@ if __name__ == "__main__":
     
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1']
     task_list = ['single', 'multi']
-    env = env_list[0]
+    env = env_list[2]
     task = task_list[0]
     
-    base_dir = f'./logs/{env}/plans/release_H128_T64_LimitsNormalizer_b1_condFalse_pH128'
+    base_dir = f'./logs/{env}/plans/release_H384_T256_LimitsNormalizer_b1_condFalse'
     
     file_suffix = task+'_'
     rollout_name = 'rollout.json'
