@@ -8,6 +8,7 @@ import gym
 import mujoco_py as mjc
 import warnings
 import pdb
+import copy
 
 from .arrays import to_np
 from .video import save_video, save_videos
@@ -341,19 +342,31 @@ class Maze2dRenderer(MazeRenderer):
         bounds = MAZE_BOUNDS[self.env_name]
 
         observations = observations + .5
+        cond_plot = copy.deepcopy(conditions)
+
+        if conditions is not None:
+            for idx in cond_plot:
+                cond_plot[idx] = cond_plot[idx] + .5
+
         if len(bounds) == 2:
             _, scale = bounds
             observations /= scale
+            if cond_plot is not None:
+                for idx in cond_plot:
+                    cond_plot[idx] /= scale
+
         elif len(bounds) == 4:
             _, iscale, _, jscale = bounds
             observations[:, 0] /= iscale
             observations[:, 1] /= jscale
+            if cond_plot is not None:
+                for idx in cond_plot:
+                    cond_plot[idx][0] /= iscale
+                    cond_plot[idx][1] /= jscale
         else:
             raise RuntimeError(f'Unrecognized bounds for {self.env_name}: {bounds}')
 
-        if conditions is not None:
-            conditions /= scale
-        return super().renders(observations, conditions, **kwargs)
+        return super().renders(observations, cond_plot, **kwargs)
 
 #-----------------------------------------------------------------------------#
 #---------------------------------- rollouts ---------------------------------#

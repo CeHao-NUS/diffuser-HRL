@@ -53,7 +53,7 @@ base = {
         ## dataset
         'loader': 'datasets.GoalDataset',
         'termination_penalty': None,
-        'normalizer': 'LimitsNormalizer',
+        'normalizer': 'GaussianNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
@@ -61,7 +61,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/',
+        'prefix': 'diffusion/defaults',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
@@ -125,29 +125,6 @@ base = {
         'seed': None,
     },
 
-    # 'plan': {
-    #     'batch_size': 1,
-    #     'device': 'cuda',
-
-    #     ## diffusion model
-    #     'horizon': 256,
-    #     'n_diffusion_steps': 256,
-    #     'normalizer': 'LimitsNormalizer',
-
-    #     ## serialization
-    #     'vis_freq': 10,
-    #     'logbase': 'logs',
-    #     'prefix': 'plans/release',
-    #     'exp_name': watch(plan_args_to_watch),
-    #     'suffix': '0',
-
-    #     'conditional': False,
-
-    #     ## loading
-    #     'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}',
-    #     'diffusion_epoch': 'latest',
-    # },
-
     'plan': {
         'guide': 'sampling.ValueGuide',
         'policy': 'sampling.GuidedPolicy',
@@ -179,7 +156,7 @@ base = {
         'discount': 0.99,
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}',
+        'diffusion_loadpath': 'f:diffusion/defaults_H{horizon}_T{n_diffusion_steps}',
         'value_loadpath': 'f:values/defaults_H{horizon}_T{n_diffusion_steps}_d{discount}',
 
         'diffusion_epoch': 'latest',
@@ -187,6 +164,11 @@ base = {
 
         'verbose': True,
         'suffix': '0',
+
+        # setting
+        'conditional': False,
+        'init_pose': None,
+        'target': None,
     },
 
 }
