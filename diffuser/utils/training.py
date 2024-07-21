@@ -51,6 +51,7 @@ class Trainer(object):
         save_parallel=False,
         results_folder='./results',
         n_reference=8,
+        n_samples=2,
         bucket=None,
     ):
         super().__init__()
@@ -82,6 +83,7 @@ class Trainer(object):
         self.logdir = results_folder
         self.bucket = bucket
         self.n_reference = n_reference
+        self.n_samples = n_samples
 
         self.reset_parameters()
         self.step = 0
@@ -123,13 +125,13 @@ class Trainer(object):
 
             if self.step % self.log_freq == 0:
                 infos_str = ' | '.join([f'{key}: {val:8.4f}' for key, val in infos.items()])
-                print(f'{self.step}: {loss:8.4f} | {infos_str} | t: {timer():8.4f}', flush=True)
+                print(f'{self.step}: {loss:8.4f} | {infos_str} | t: {timer():8.4f}')
 
             if self.step == 0 and self.sample_freq:
                 self.render_reference(self.n_reference)
 
             if self.sample_freq and self.step % self.sample_freq == 0:
-                self.render_samples()
+                self.render_samples(n_samples=self.n_samples)
 
             self.step += 1
 
