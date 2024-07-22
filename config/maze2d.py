@@ -104,7 +104,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'values/defaults',
+        'prefix': 'values/LimitNorm',
         'exp_name': watch(value_args_to_watch),
 
         ## training
@@ -157,7 +157,7 @@ base = {
 
         ## loading
         'diffusion_loadpath': 'f:diffusion/defaults_H{horizon}_T{n_diffusion_steps}',
-        'value_loadpath': 'f:values/defaults_H{horizon}_T{n_diffusion_steps}_d{discount}',
+        'value_loadpath': 'f:values/LimitNorm_H{horizon}_T{n_diffusion_steps}_d{discount}',
 
         'diffusion_epoch': 'latest',
         'value_epoch': 'latest',
