@@ -42,7 +42,7 @@ base = {
         'model': 'models.TemporalUnet',
         'diffusion': 'models.GaussianDiffusion',
         'horizon': 64,
-        'n_diffusion_steps': 256,
+        'n_diffusion_steps': 32,
         'action_weight': 1,
         'loss_weights': None,
         'loss_discount': 1,
@@ -85,8 +85,8 @@ base = {
     'values': {
         'model': 'models.ValueFunction',
         'diffusion': 'models.ValueDiffusion',
-        'horizon': 256,
-        'n_diffusion_steps': 256,
+        'horizon': 64,
+        'n_diffusion_steps': 32,
         'dim_mults': (1, 2, 2, 2, 4, 4, 8),
         'renderer': 'utils.Maze2dRenderer',
 
@@ -150,7 +150,7 @@ base = {
 
         ## diffusion model
         'horizon': 64,
-        'n_diffusion_steps': 256,
+        'n_diffusion_steps': 32,
 
         ## value function
         'discount': 0.99,
@@ -185,7 +185,7 @@ base = {
 maze2d_umaze_v1 = {
     'diffusion': {
         'horizon': 32,
-        'n_diffusion_steps': 64,
+        'n_diffusion_steps': 32,
     },
     'values': {
         'horizon': 32,
@@ -194,22 +194,22 @@ maze2d_umaze_v1 = {
     },
     'plan': {
         'horizon': 32,
-        'n_diffusion_steps': 64,
+        'n_diffusion_steps': 32,
     },
 }
 
 maze2d_large_v1 = {
     'diffusion': {
         'horizon': 64,
-        'n_diffusion_steps': 256,
+        'n_diffusion_steps': 32,
     },
     'values': {
         'horizon': 64,
-        'n_diffusion_steps': 256,
+        'n_diffusion_steps': 32,
         'dim_mults': (1, 2, 2, 2, 4, 4, 8),
     },
     'plan': {
         'horizon': 64,
-        'n_diffusion_steps': 256,
+        'n_diffusion_steps': 32,
     },
 }
