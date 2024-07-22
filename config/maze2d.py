@@ -61,7 +61,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/defaults',
+        'prefix': 'diffusion/LimitNorm',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
@@ -143,7 +143,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/guided',
+        'prefix': 'plans/guided_limitnorm',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
@@ -156,7 +156,7 @@ base = {
         'discount': 0.99,
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/defaults_H{horizon}_T{n_diffusion_steps}',
+        'diffusion_loadpath': 'f:diffusion/LimitNorm_H{horizon}_T{n_diffusion_steps}',
         'value_loadpath': 'f:values/LimitNorm_H{horizon}_T{n_diffusion_steps}_d{discount}',
 
         'diffusion_epoch': 'latest',
