@@ -146,3 +146,46 @@ class ValueDataset(SequenceDataset):
         value = np.array([value], dtype=np.float32)
         value_batch = ValueBatch(*batch, value)
         return value_batch
+
+
+class GoalValueDataset(SequenceDataset):
+    def __init__(self, *args, discount=0.99, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.discount = discount
+        self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
+        self.min_horizon = 32
+    
+    def __getitem__(self, idx):
+        # batch = super().__getitem__(idx)
+        # path_ind, start, end = self.indices[idx]
+
+        path_ind, start, end = self.indices[idx]
+        horizon = self.horizon
+
+        new_length = np.random.choice(range(self.min_horizon, horizon))
+        repeats = horizon - new_length
+        new_end = start + new_length
+
+        observations = self.fields.normed_observations[path_ind, start:new_end]
+        actions = self.fields.normed_actions[path_ind, start:new_end]
+
+        # repeat the last observation until end
+        # observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
+        observations = np.concatenate([observations[:1], observations[-1:]], axis=0)
+        
+        # zero_actions = np.zeros_like(actions[-1])
+        # actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
+        actions = np.concatenate([actions[:1], actions[-1:]], axis=0)
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+
+
+        rewards = self.fields['rewards'][path_ind, start:new_end]
+        rewards = np.ones_like(rewards) * -1 # make the steps to be negative
+
+        discounts = self.discounts[:len(rewards)]
+        value = (discounts * rewards).sum()
+        value = np.array([value], dtype=np.float32)
+        value_batch = ValueBatch(trajectories, conditions, value)
+        return value_batch

@@ -85,9 +85,9 @@ base = {
     'values': {
         'model': 'models.ValueFunction',
         'diffusion': 'models.ValueDiffusion',
-        'horizon': 64,
-        'n_diffusion_steps': 32,
-        'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+        'horizon': 256,
+        'n_diffusion_steps': 256,
+        'dim_mults': (1, 2),
         'renderer': 'utils.Maze2dRenderer',
 
         ## value-specific kwargs
@@ -96,7 +96,7 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.ValueDataset',
+        'loader': 'datasets.GoalValueDataset',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
@@ -104,7 +104,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'values/LimitNorm',
+        'prefix': 'values/goal',
         'exp_name': watch(value_args_to_watch),
 
         ## training
@@ -126,7 +126,7 @@ base = {
     },
 
     'plan': {
-        'guide': 'sampling.ValueGuide',
+        'guide': 'sampling.GoalValueGuide',
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
@@ -149,15 +149,17 @@ base = {
         'max_render': 8,
 
         ## diffusion model
-        'horizon': 64,
-        'n_diffusion_steps': 32,
+        'diffusion_horizon': 64,
+        'diffusion_n_diffusion_steps': 32,
 
         ## value function
+        'value_horizon': 256,
+        'value_n_diffusion_steps': 256,
         'discount': 0.99,
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/new_H{horizon}_T{n_diffusion_steps}',
-        'value_loadpath': 'f:values/LimitNorm_H{horizon}_T{n_diffusion_steps}_d{discount}',
+        'diffusion_loadpath': 'f:diffusion/new_H{diffusion_horizon}_T{diffusion_n_diffusion_steps}',
+        'value_loadpath': 'f:values/goal_H{value_horizon}_T{value_n_diffusion_steps}_d{discount}',
 
         'diffusion_epoch': 'latest',
         'value_epoch': 'latest',
@@ -188,28 +190,30 @@ maze2d_umaze_v1 = {
         'n_diffusion_steps': 32,
     },
     'values': {
-        'horizon': 32,
-        'n_diffusion_steps': 64,
-        'dim_mults': (1, 2, 2, 2, 4, 8),
+        'horizon': 128,
+        'n_diffusion_steps': 32,
+        'dim_mults': (1,2),
     },
     'plan': {
-        'horizon': 32,
-        'n_diffusion_steps': 32,
+        'diffusion_horizon': 32,
+        'diffusion_n_diffusion_steps': 32,
+        'value_horizon': 128,
+        'value_n_diffusion_steps': 32,
     },
 }
 
-maze2d_large_v1 = {
-    'diffusion': {
-        'horizon': 64,
-        'n_diffusion_steps': 32,
-    },
-    'values': {
-        'horizon': 64,
-        'n_diffusion_steps': 32,
-        'dim_mults': (1, 2, 2, 2, 4, 4, 8),
-    },
-    'plan': {
-        'horizon': 64,
-        'n_diffusion_steps': 32,
-    },
-}
+# maze2d_large_v1 = {
+#     'diffusion': {
+#         'horizon': 64,
+#         'n_diffusion_steps': 32,
+#     },
+#     'values': {
+#         'horizon': 64,
+#         'n_diffusion_steps': 32,
+#         'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+#     },
+#     'plan': {
+#         'horizon': 64,
+#         'n_diffusion_steps': 32,
+#     },
+# }

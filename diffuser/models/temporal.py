@@ -233,3 +233,4 @@ class ValueFunction(nn.Module):
         x = x.view(len(x), -1)
         out = self.final_block(torch.cat([x, t], dim=-1))
         return out
+

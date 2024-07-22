@@ -248,3 +248,6 @@ class ValueDiffusion(GaussianDiffusion):
     def forward(self, x, cond, t):
         return self.model(x, cond, t)
 
+
+# class GoalValueDiffusion(GaussianDiffusion):
+#     def p_losses(self, x_start, cond, target, t):

@@ -11,10 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args":[
-                "--config", "config.maze2d",
-                "--dataset", "maze2d-umaze-v1",
-                "--suffix", "single_$idx",
-                "--prefix", "plans/diff"
+                "--prefix", "value_test"
             ]
         }
     ]
