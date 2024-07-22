@@ -47,9 +47,16 @@ class GoalValueGuide(nn.Module):
 
             y = self(x_q, *args)
 
-            grad = torch.autograd.grad([y.sum()], [s])[0]
+            # grad = torch.autograd.grad([y.sum()], [s])[0]
+            y.backward()
+            grad = s.grad
             s.detach()
-            return y, grad
+
+            # change it back to the shape of x
+            grad_output = torch.zeros_like(x, device=x.device)
+            grad_output[:, -1:, :] = grad
+
+            return y, grad_output
 
             # x.requires_grad_()
             # y = self(x, *args)

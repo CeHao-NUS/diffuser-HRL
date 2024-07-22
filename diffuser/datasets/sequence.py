@@ -176,6 +176,7 @@ class GoalValueDataset(SequenceDataset):
         # zero_actions = np.zeros_like(actions[-1])
         # actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
         actions = np.concatenate([actions[:1], actions[-1:]], axis=0)
+        actions = np.zeros_like(actions)
 
         conditions = self.get_conditions(observations)
         trajectories = np.concatenate([actions, observations], axis=-1)
