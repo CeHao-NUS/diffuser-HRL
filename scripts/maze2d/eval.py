@@ -12,7 +12,7 @@ if __name__ == "__main__":
     env = env_list[0]
     task = task_list[1]
     
-    subfolder = 'guided_H128_T64_d0.99_b1_condTrue'
+    subfolder = 'diff_H128_T64_d0.99_b1_condTrue'
 
     base_dir = f'./logs/{env}/plans/{subfolder}'
     

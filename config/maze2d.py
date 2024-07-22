@@ -53,7 +53,7 @@ base = {
         ## dataset
         'loader': 'datasets.GoalDataset',
         'termination_penalty': None,
-        'normalizer': 'GaussianNormalizer',
+        'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
@@ -97,7 +97,7 @@ base = {
 
         ## dataset
         'loader': 'datasets.ValueDataset',
-        'normalizer': 'GaussianNormalizer',
+        'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
         'max_path_length': 40000,
