@@ -148,11 +148,9 @@ class ValueDataset(SequenceDataset):
         return value_batch
 
 
-class GoalValueDataset(SequenceDataset):
-    def __init__(self, *args, discount=0.99, **kwargs):
+class GoalValueDataset(ValueDataset):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.discount = discount
-        self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
         self.min_horizon = 2
     
     def __getitem__(self, idx):
@@ -187,6 +185,10 @@ class GoalValueDataset(SequenceDataset):
 
         discounts = self.discounts[:len(rewards)]
         value = (discounts * rewards).sum()
+        
+        if self.normed:
+            value = self.normalize_value(value)
+
         value = np.array([value], dtype=np.float32)
         value_batch = ValueBatch(trajectories, conditions, value)
         return value_batch

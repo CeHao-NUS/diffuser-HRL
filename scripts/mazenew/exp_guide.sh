@@ -21,3 +21,4 @@ python scripts/mazenew/plan_guided.py --dataset maze2d-umaze-v1 \
 
 python scripts/mazenew/plan_guided.py --dataset maze2d-umaze-v1 \
 --conditional True --init_pose "(1,2)" --target "(1, 1)" --suffix "near2" --prefix plans/test2
+

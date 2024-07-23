@@ -93,7 +93,7 @@ base = {
         ## value-specific kwargs
         'discount': 0.995,
         'termination_penalty': None,
-        'normed': False,
+        'normed': True,
 
         ## dataset
         'loader': 'datasets.GoalValueDataset',

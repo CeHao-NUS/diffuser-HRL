@@ -44,7 +44,7 @@ guide = guide_config()
 
 # tests
 
-target = [1.0, 1.0]
+target = [2.0, 3.0]
 goal = [*target, 0, 0]
 action = [0.0, 0.0]
 
@@ -61,7 +61,7 @@ guide.set_goal(goal)
 
 # for t0 in reversed(range(32)):
 t0 = 0
-point_list = [[1.0, 2.0], [1.0, 3.0], [2.0, 3.0], [3.0, 3.0], [-1.0, -1.0], [10.0, 10.0]]
+point_list = [[2.0, 3.0], [2.5, 3.0], [2.0, 3.5], [1.5, 3.0], [2.0, 2.5], [2.5, 3.5], [1.5, 2.5], [1.5, 3.5], [2.5, 2.5]]
 
 for pt in point_list:
     # x = torch.tensor([[0.0, 0.0, *(pt),  0.0, 0.0]], device=args.device)

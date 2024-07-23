@@ -59,6 +59,9 @@ class GoalValueGuide(nn.Module):
 
             # change it back to the shape of x
             grad_output = torch.zeros_like(x, device=x.device)
+
+            # manually set action grad to zero
+
             grad_output[:, -1:, :] = grad
 
             return y, grad_output
