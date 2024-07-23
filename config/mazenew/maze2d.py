@@ -91,7 +91,7 @@ base = {
         'renderer': 'utils.Maze2dRenderer',
 
         ## value-specific kwargs
-        'discount': 0.99,
+        'discount': 0.995,
         'termination_penalty': None,
         'normed': False,
 
@@ -155,7 +155,7 @@ base = {
         ## value function
         'value_horizon': 256,
         'value_n_diffusion_steps': 256,
-        'discount': 0.99,
+        'discount': 0.995,
 
         ## loading
         'diffusion_loadpath': 'f:diffusion/new_H{diffusion_horizon}_T{diffusion_n_diffusion_steps}',

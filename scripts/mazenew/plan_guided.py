@@ -90,9 +90,18 @@ if args.conditional:
 
 ## set conditioning xy position to be the goal
 target = env._target
+goal = [*target, 0, 0]
+action = [0.0, 0.0]
+
+goal_norm = dataset.normalizer.normalize(goal, 'observations')
+action_norm = dataset.normalizer.normalize(action, 'actions')
+goal_norm = np.array(goal_norm, dtype=np.float32)
+action_norm = np.array(action_norm, dtype=np.float32)
+
 import torch
-goal = [*target, 0, 0, 0, 0]
-goal = torch.tensor(goal, device=args.device)
+x_goal = np.concatenate([action_norm, goal_norm], axis=0)
+goal = torch.tensor(x_goal, device=args.device)
+
 guide.set_goal(goal)
 
 # diffusion.horizon = args.plan_horizon

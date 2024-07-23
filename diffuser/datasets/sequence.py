@@ -153,7 +153,7 @@ class GoalValueDataset(SequenceDataset):
         super().__init__(*args, **kwargs)
         self.discount = discount
         self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
-        self.min_horizon = 32
+        self.min_horizon = 2
     
     def __getitem__(self, idx):
         # batch = super().__getitem__(idx)
