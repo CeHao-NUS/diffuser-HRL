@@ -29,7 +29,7 @@ dataset_config = utils.Config(
     ## value-specific kwargs
     discount=args.discount,
     termination_penalty=args.termination_penalty,
-    # normed=args.normed,
+    normed=args.normed,
 )
 
 render_config = utils.Config(
