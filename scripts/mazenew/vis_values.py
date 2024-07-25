@@ -5,6 +5,9 @@ import diffuser.utils as utils
 import numpy as np
 from os.path import join
 import json
+
+import matplotlib.pyplot as plt
+import seaborn as sns
 #-----------------------------------------------------------------------------#
 #----------------------------------- setup -----------------------------------#
 #-----------------------------------------------------------------------------#
@@ -41,50 +44,113 @@ guide_config = utils.Config(args.guide, model=value_function, verbose=False)
 guide = guide_config()
 
 
+# ==================================================
+def get_value_function(guide, target, x_range=[0, 4], y_range=[0, 4], t0=0, n_points=25):
 
-# tests
+    # target = [2.0, 3.0]
+    goal = [*target, 0, 0]
+    action = [0.0, 0.0]
 
-target = [2.0, 3.0]
-goal = [*target, 0, 0]
-action = [0.0, 0.0]
+    goal_norm = dataset.normalizer.normalize(goal, 'observations')
+    action_norm = dataset.normalizer.normalize(action, 'actions')
+    goal_norm = np.array(goal_norm, dtype=np.float32)
+    action_norm = np.array(action_norm, dtype=np.float32)
+    import torch
+    x_goal = np.concatenate([action_norm, goal_norm], axis=0)
+    goal = torch.tensor(x_goal, device=args.device)
 
-goal_norm = dataset.normalizer.normalize(goal, 'observations')
-action_norm = dataset.normalizer.normalize(action, 'actions')
-goal_norm = np.array(goal_norm, dtype=np.float32)
-action_norm = np.array(action_norm, dtype=np.float32)
-import torch
-x_goal = np.concatenate([action_norm, goal_norm], axis=0)
-goal = torch.tensor(x_goal, device=args.device)
+    guide.set_goal(goal)
 
-guide.set_goal(goal)
+    x = np.linspace(x_range[0], x_range[1], n_points)
+    y = np.linspace(y_range[0], y_range[1], n_points)
+    xx, yy = np.meshgrid(x, y)
+
+    xy_list = np.c_[xx.ravel(), yy.ravel()]
+
+    values = []
+    grads = []
+    for pt in xy_list:
+
+        observation = np.array([*pt, 0.0, 0.0], dtype=np.float32)
+        action = np.array([0.0, 0.0], dtype=np.float32)
+        obs_norm = dataset.normalizer.normalize(observation, 'observations')
+        act_norm = dataset.normalizer.normalize(action, 'actions')
+
+        obs_norm = torch.tensor(obs_norm, device=args.device)
+        act_norm = torch.tensor(act_norm, device=args.device)
+
+        x_input = torch.cat([act_norm, obs_norm], dim=0)
+
+        x_input = x_input.repeat(1, 32, 1)
+
+        cond = {}
+
+        t = torch.tensor([t0], device=args.device)
+        value, grad = guide.gradients(x_input, cond, t)
+        # print('+=============== pt', pt)
+        # print('y', y.detach().cpu().numpy())
+        # print('grad', grad[0, -1,:].detach().cpu().numpy())
+
+        value = value.detach().cpu().numpy()
+        values.append(value)
+        grad = grad[0, -1, 2:4].detach().cpu().numpy()
+        grads.append(grad)
+
+    values = np.array(values)
+    values = values.reshape(n_points, n_points)
+    grads = np.array(grads)
+    grads = grads.reshape(n_points, n_points, 2)
+    return values, grads, x, y
 
 
-# for t0 in reversed(range(32)):
-t0 = 0
-point_list = [[2.0, 3.0], [2.5, 3.0], [2.0, 3.5], [1.5, 3.0], [2.0, 2.5], [2.5, 3.5], [1.5, 2.5], [1.5, 3.5], [2.5, 2.5]]
+def plot_image(target = [2.0, 3.0], t0_list=[], image_prefix=''):
+    values, grads, x, y = get_value_function(guide, target, x_range=[0, 4], y_range=[0, 4], n_points=25)
 
-for pt in point_list:
-    # x = torch.tensor([[0.0, 0.0, *(pt),  0.0, 0.0]], device=args.device)
-    # observation = torch.tensor([*pt, 0.0, 0.0], device=args.device)
-    # action = torch.tensor([0.0, 0.0], device=args.device)
 
-    observation = np.array([*pt, 0.0, 0.0], dtype=np.float32)
-    action = np.array([0.0, 0.0], dtype=np.float32)
-    obs_norm = dataset.normalizer.normalize(observation, 'observations')
-    act_norm = dataset.normalizer.normalize(action, 'actions')
+    # plot value
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(values, xticklabels=np.round(x, 2), yticklabels=np.round(y, 2), cmap='viridis')
 
-    obs_norm = torch.tensor(obs_norm, device=args.device)
-    act_norm = torch.tensor(act_norm, device=args.device)
+    # Find the indices for the target point
+    target_index_x = np.argmin(np.abs(x - target[0]))
+    target_index_y = np.argmin(np.abs(y - target[1]))
+    # Plot the target point
+    plt.scatter(
+        target_index_x, 
+        target_index_y, 
+        color='red', 
+        marker='*', 
+        s=100
+    )
 
-    x = torch.cat([act_norm, obs_norm], dim=0)
+    import os
+    if not os.path.exists('images/viz'):
+        os.makedirs('images/viz')
 
-    x = x.repeat(1, 32, 1)
+    plt.gca().invert_yaxis()
+    plt.title('value map, target: {}'.format(target))
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.savefig(f'images/viz/{target}_value_map.png', dpi=300)
+    # plt.show()
+    plt.close()
 
-    cond = {}
-    t = torch.tensor([t0], device=args.device)
-    y, grad = guide.gradients(x, cond, t)
 
-    # print("====================== t0", t0)
-    print('+=============== pt', pt)
-    print('y', y.detach().cpu().numpy())
-    print('grad', grad[0, -1,:].detach().cpu().numpy())
+    # plot gradient
+    plt.figure(figsize=(10, 10))
+    plt.quiver(x, y, grads[:, :, 0], grads[:, :, 1], cmap='viridis')
+    plt.scatter(target[0], target[1], color='red', marker='*', s=100)
+    plt.title('gradient map, target: {}'.format(target))
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.savefig(f'images/viz/{target}_gradient_map.png', dpi=300)
+    # plt.show()
+    plt.close()
+
+
+target_list = [[1.0, 1.0], [1.0, 2.0], [1.0, 3.0], [2.0, 3.0], [3.0, 3.0], [3.0, 2.0], [3.0, 1.0]]
+
+for target in target_list:
+    # make them have t0 to iterate
+    # name: target, t, 
+    plot_image(target)

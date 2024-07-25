@@ -17,7 +17,7 @@ def n_step_guided_p_sample(
     for _ in range(n_guide_steps):
         with torch.enable_grad():
             x_no_action = x.clone()
-            x_no_action[:, :, model.action_dim:] = 0
+            x_no_action[:, :, :model.action_dim] = 0
             y, grad = guide.gradients(x_no_action, cond, t)
 
         if scale_grad_by_std:

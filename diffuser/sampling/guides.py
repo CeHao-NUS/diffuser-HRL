@@ -48,6 +48,9 @@ class GoalValueGuide(nn.Module):
             # make goals have same first dimension with s
             goals = self.goal.repeat(s.shape[0], s.shape[1],  1)
             x_q = torch.cat([s, goals], dim=1)
+
+            # x_q = torch.cat([goals, s], dim=1)
+
             # x_q = torch.tensor(x_q, dtype=torch.float32)
 
             y = self(x_q, *args)
