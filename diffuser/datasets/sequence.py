@@ -101,7 +101,16 @@ class GoalDataset(SequenceDataset):
             0: observations[0],
             self.horizon - 1: observations[-1],
         }
-
+    
+class BatchGaolDataset(SequenceDataset):
+    def get_conditions(self, observations):
+        '''
+            condition on both the current observation and the last observation in the plan
+        '''
+        return {
+            (0,0): observations[0],
+            (0, self.horizon - 1): observations[-1],
+        }
 
 class ValueDataset(SequenceDataset):
     '''
@@ -192,3 +201,4 @@ class GoalValueDataset(ValueDataset):
         value = np.array([value], dtype=np.float32)
         value_batch = ValueBatch(trajectories, conditions, value)
         return value_batch
+

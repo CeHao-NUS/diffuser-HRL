@@ -59,3 +59,19 @@ class GuidedPolicy:
             'd -> repeat d', repeat=batch_size,
         )
         return conditions
+
+class RopePolicy(GuidedPolicy):
+
+    def _format_conditions(self, conditions, batch_size):
+        conditions = utils.apply_dict(
+            self.normalizer.normalize,
+            conditions,
+            'observations',
+        )
+        conditions = utils.to_torch(conditions, dtype=torch.float32, device='cuda:0')
+        # conditions = utils.apply_dict(
+        #     einops.repeat,
+        #     conditions,
+        #     'd -> repeat d', repeat=batch_size,
+        # )
+        return conditions

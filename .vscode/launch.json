@@ -11,12 +11,6 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args":[
-                "--dataset", "maze2d-umaze-v1",
-                "--conditional", "True",
-                "--init_pose", "(1,1.5)",
-                "--target", "(1, 1)",
-                "--suffix", "near1.5",
-                "--prefix", "plans/new_test"
             ]
         }
     ]

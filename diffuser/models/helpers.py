@@ -144,6 +144,17 @@ def apply_conditioning(x, conditions, action_dim):
         x[:, t, action_dim:] = val.clone()
     return x
 
+def apply_batch_conditioning(x, conditions, action_dim):
+    for t, val in conditions.items(): # t is in (x, x)
+        # x[t[0], t[1], action_dim:] = val.clone()
+
+        # if t is int
+        if isinstance(t, tuple):
+            x[t[0], t[1], action_dim:] = val.clone()
+        elif isinstance(t, int):
+            x[:, t, action_dim:] = val.clone()
+    return x
+
 
 #-----------------------------------------------------------------------------#
 #---------------------------------- losses -----------------------------------#

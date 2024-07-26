@@ -3,6 +3,7 @@ import torch
 from diffuser.models.helpers import (
     extract,
     apply_conditioning,
+    apply_batch_conditioning
 )
 
 
@@ -36,3 +37,42 @@ def n_step_guided_p_sample(
 
     return model_mean + model_std * noise, y
 
+@torch.no_grad()
+def n_step_guided_p_sample_rope(model, x, cond, t, guide, scale=0.001, t_stopgrad=0, n_guide_steps=1, scale_grad_by_std=True,
+):
+    model_log_variance = extract(model.posterior_log_variance_clipped, t, x.shape)
+    model_std = torch.exp(0.5 * model_log_variance)
+    model_var = torch.exp(model_log_variance)
+
+    batch_size = x.shape[0]
+
+    for _ in range(n_guide_steps):
+        with torch.enable_grad():
+            
+            grad = torch.zeros_like(x)
+            y = torch.zeros(batch_size-1, device=x.device)
+
+            for idx in range(batch_size-1):
+                x_prev = x[idx, -1, 2:4] # two dim for pose
+                x_next = x[idx+1, 0, 2:4] # two dim for pose
+                y_i, grad_i = guide.gradients(x_prev, x_next)
+
+                grad[idx, -1, 2:4] = grad_i
+                grad[idx+1, 0, 2:4] = - grad_i
+                y[idx] = y_i
+
+        if scale_grad_by_std:
+            grad = model_var * grad
+
+        # grad[t < t_stopgrad] = 0
+
+        x = x + scale * grad
+        x = apply_batch_conditioning(x, cond, model.action_dim)
+
+    model_mean, _, model_log_variance = model.p_mean_variance(x=x, cond=cond, t=t)
+
+    # no noise when t == 0
+    noise = torch.randn_like(x)
+    noise[t == 0] = 0
+
+    return model_mean + model_std * noise, y
