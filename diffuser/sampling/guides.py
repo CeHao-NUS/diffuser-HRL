@@ -77,23 +77,17 @@ class GoalValueGuide(nn.Module):
 
             
 class SoftInpaintingGuide:
-    def __init__(self, scale):
+    def __init__(self, scale=1):
         self.scale = scale
         # convex function: scale*(goal - s)
 
-    def graidents(self, x_prev, x_next):
+    def gradients(self, x_prev, x_next):
 
         diff = x_next - x_prev
         grad = self.scale * diff
-        # s = x[:, -1:, :].clone()
-        
-        # grad = torch.zeros_like(x)
-        
-        # for t, goal in cond.items():
-        #     state_dim = s.shape[-1]
-        #     action_dim = s.shape[-1] - state_dim
-        #     diff = - (x[:, t, action_dim:] - goal.clone())  
 
-        #     grad[:, t, action_dim:] = self.scale * diff
 
-        return diff, grad
+        # norm of diff
+        norm = torch.norm(diff, dim=-1)
+
+        return norm, grad

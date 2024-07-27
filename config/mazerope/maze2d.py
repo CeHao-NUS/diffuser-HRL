@@ -115,7 +115,7 @@ base = {
         'discount': 0.995,
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/rope{diffusion_horizon}_T{diffusion_n_diffusion_steps}',
+        'diffusion_loadpath': 'f:diffusion/rope_H{diffusion_horizon}_T{diffusion_n_diffusion_steps}',
 
         'diffusion_epoch': 'latest',
 

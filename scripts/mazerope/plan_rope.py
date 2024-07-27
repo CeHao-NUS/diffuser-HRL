@@ -42,7 +42,8 @@ renderer = diffusion_experiment.renderer
 # guide_config = utils.Config(args.guide, model=value_function, verbose=False)
 # guide = guide_config()
 
-guide = None
+from diffuser.sampling.guides import SoftInpaintingGuide
+guide = SoftInpaintingGuide()
 
 # logger_config = utils.Config(
 #     utils.Logger,
@@ -61,7 +62,7 @@ policy_config = utils.Config(
     normalizer=dataset.normalizer,
     preprocess_fns=args.preprocess_fns,
     ## sampling kwargs
-    sample_fn=sampling.n_step_guided_p_sample,
+    sample_fn=sampling.n_step_guided_p_sample_rope,
     n_guide_steps=args.n_guide_steps,
     t_stopgrad=args.t_stopgrad,
     scale_grad_by_std=args.scale_grad_by_std,

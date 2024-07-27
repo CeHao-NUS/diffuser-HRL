@@ -18,7 +18,7 @@ class RopeDiffusion(GaussianDiffusion):
         if training:
             batch_size = len(cond[0])
         else:
-            batches = [cond[k].shape[0] for k in cond.keys()]
+            batches = [k[0] for k in cond.keys()]
             batch_size = np.max(batches) + 1
 
         horizon = horizon or self.horizon

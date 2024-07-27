@@ -25,7 +25,7 @@ class GuidedPolicy:
         conditions = self._format_conditions(conditions, batch_size)
 
         ## run reverse diffusion process
-        samples = self.diffusion_model(conditions, guide=self.guide, verbose=verbose, **self.sample_kwargs)
+        samples = self.diffusion_model(conditions, guide=self.guide, training=False, verbose=verbose, **self.sample_kwargs)
         trajectories = utils.to_np(samples.trajectories)
 
         ## extract action [ batch_size x horizon x transition_dim ]
