@@ -237,6 +237,32 @@ class VarHDataset(GoalDataset):
         conditions = self.get_conditions(observations)
         trajectories = np.concatenate([actions, observations], axis=-1)
 
+        batch = Batch(trajectories, conditions)
+        return batch
+
+class VarHValueDataset(VarHDataset):
+
+
+    def __getitem__(self, idx):
+        path_ind, start, end = self.indices[idx]
+        horizon = self.horizon
+
+        new_length = np.random.choice(range(self.min_horizon, horizon))
+        repeats = horizon - new_length
+        new_end = start + new_length
+
+        observations = self.fields.normed_observations[path_ind, start:new_end]
+        actions = self.fields.normed_actions[path_ind, start:new_end]
+
+        # repeat the last observation until end
+        observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
+        
+        zero_actions = np.zeros_like(actions[-1])
+        actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+
         # reward
         rewards = self.fields['rewards'][path_ind, start:new_end]
         rewards = np.zeros_like(rewards)  # make the steps to be negative

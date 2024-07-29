@@ -101,7 +101,7 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.VarHDataset',
+        'loader': 'datasets.VarHValueDataset',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
@@ -109,7 +109,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'values/LimitNorm',
+        'prefix': 'values/varh',
         'exp_name': watch(value_args_to_watch),
 
         ## training
@@ -132,30 +132,50 @@ base = {
 
 
     'plan': {
+        'guide': 'sampling.ValueGuide',
+        'policy': 'sampling.GuidedPolicy',
+        'max_episode_length': 1000,
         'batch_size': 1,
+        'preprocess_fns': [],
         'device': 'cuda',
+        'seed': None,
+
+        ## sample_kwargs
+        'n_guide_steps': 2,
+        'scale': 1.0,
+        't_stopgrad': 2,
+        'scale_grad_by_std': True,
+
+        ## serialization
+        'loadbase': None,
+        'logbase': 'logs',
+        'prefix': 'plans/guided_varh',
+        'exp_name': watch(plan_args_to_watch),
+        'vis_freq': 10,
+        'max_render': 8,
 
         ## diffusion model
         'horizon': 256,
         'n_diffusion_steps': 256,
-        'normalizer': 'LimitsNormalizer',
         'min_horizon': 32,
 
-        ## serialization
-        'vis_freq': 100, # can be 10
-        'logbase': 'logs',
-        'prefix': 'plans/release',
-        'exp_name': watch(plan_args_to_watch),
-        'suffix': '0',
-
-        'conditional': False,
-        'init_pose': None,
-        'target': None,
+        ## value function
+        'discount': 0.99,
 
         ## loading
         'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}_mH{min_horizon}',
-        'diffusion_epoch': 'latest',
+        'value_loadpath': 'f:values/varh_H{horizon}_T{n_diffusion_steps}_d{discount}_mH{min_horizon}',
 
+        'diffusion_epoch': 'latest',
+        'value_epoch': 'latest',
+
+        'verbose': True,
+        'suffix': '0',
+
+        # setting
+        'conditional': False,
+        'init_pose': None,
+        'target': None,
     },
 
 }

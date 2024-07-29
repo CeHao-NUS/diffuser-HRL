@@ -25,7 +25,7 @@ class GuidedPolicy:
         conditions = self._format_conditions(conditions, batch_size)
 
         ## run reverse diffusion process
-        samples = self.diffusion_model(conditions, guide=self.guide, training=False, verbose=verbose, **self.sample_kwargs)
+        samples = self.diffusion_model(conditions, guide=self.guide, verbose=verbose, **self.sample_kwargs)
         trajectories = utils.to_np(samples.trajectories)
 
         ## extract action [ batch_size x horizon x transition_dim ]
@@ -61,6 +61,27 @@ class GuidedPolicy:
         return conditions
 
 class RopePolicy(GuidedPolicy):
+
+    def __call__(self, conditions, batch_size=1, verbose=True):
+        conditions = {k: self.preprocess_fn(v) for k, v in conditions.items()}
+        conditions = self._format_conditions(conditions, batch_size)
+
+        ## run reverse diffusion process
+        samples = self.diffusion_model(conditions, guide=self.guide, training=False, verbose=verbose, **self.sample_kwargs)
+        trajectories = utils.to_np(samples.trajectories)
+
+        ## extract action [ batch_size x horizon x transition_dim ]
+        actions = trajectories[:, :, :self.action_dim]
+        actions = self.normalizer.unnormalize(actions, 'actions')
+
+        ## extract first action
+        action = actions[0, 0]
+
+        normed_observations = trajectories[:, :, self.action_dim:]
+        observations = self.normalizer.unnormalize(normed_observations, 'observations')
+
+        trajectories = Trajectories(actions, observations, samples.values)
+        return action, trajectories
 
     def _format_conditions(self, conditions, batch_size):
         conditions = utils.apply_dict(
