@@ -62,9 +62,12 @@ def n_step_guided_p_sample_rope(model, x, cond, t, guide, scale=0.001, t_stopgra
                 y[idx] = y_i
 
         if scale_grad_by_std:
+            model_var = torch.clamp(model_var, min=1e-3)
             grad = model_var * grad
 
+        
         # grad[t < t_stopgrad] = 0
+        scale = 1
 
         x = x + scale * grad
         x = apply_batch_conditioning(x, cond, model.action_dim)

@@ -115,8 +115,13 @@ for t in range(env.max_episode_steps):
         cond[(0, 0)] = observation
 
         action, samples = policy(cond, batch_size=args.batch_size)
-        actions = samples.actions[0]
-        sequence = samples.observations[0]
+        actions = samples.actions
+        sequence = samples.observations
+
+        # flatten the first dimension. [2, x, y] -> [2*x, y]
+        actions = actions.reshape(-1, actions.shape[-1])
+        sequence = sequence.reshape(-1, sequence.shape[-1])
+
         print('!!!! last state', sequence[-1][:2], 'target', target[:2],
               'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
     # pdb.set_trace()
@@ -152,19 +157,16 @@ for t in range(env.max_episode_steps):
 
     # if t % args.vis_freq == 0 or terminal:
     fullpath = join(args.savepath, f'{t}.png')
-    if t == 0: renderer.composite(fullpath, samples.observations[:, :, :diffusion.horizon], ncol=1,
-                                      conditions=cond)
-    # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
+    if t == 0: 
+        renderer.composite(fullpath, samples.observations, ncol=1, conditions=cond)
+
 
     if terminal or t == env.max_episode_steps-1:
-        ## save rollout thus far
-        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1)
-        
-                        #    conditions=cond)
+        cond_plot = {k: v[0] * diffusion.horizon + v[1] for k, v in cond.items()}
+        # save rollout thus far
+        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,        
+                           conditions=cond)
 
-        # renderer.render_rollout(join(args.savepath, f'rollout.mp4'), rollout, fps=80)
-
-        # logger.video(rollout=join(args.savepath, f'rollout.mp4'), plan=join(args.savepath, f'{t}_plan.mp4'), step=t)
 
     if terminal:
         break

@@ -27,7 +27,7 @@ plan_args_to_watch = [
     ##
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
-    ('value_horizon', 'V'),
+    ('scale', 'Vs'),
     ('discount', 'd'),
     ('normalizer', ''),
     ('batch_size', 'b'),
@@ -144,16 +144,11 @@ maze2d_umaze_v1 = {
         'horizon': 32,
         'n_diffusion_steps': 32,
     },
-    'values': {
-        'horizon': 128,
-        'n_diffusion_steps': 32,
-        'dim_mults': (1,2),
-    },
+
     'plan': {
         'diffusion_horizon': 32,
         'diffusion_n_diffusion_steps': 32,
-        'value_horizon': 128,
-        'value_n_diffusion_steps': 32,
+
     },
 }
 

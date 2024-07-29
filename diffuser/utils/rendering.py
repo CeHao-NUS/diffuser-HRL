@@ -305,6 +305,8 @@ class MazeRenderer:
 
         for idx in conditions:
             cond = conditions[idx][:2]
+            if not isinstance(cond, int) and len(cond)>1:
+                idx = idx[1]
             plt.scatter(cond[1], cond[0], c=colors[idx], marker='*', edgecolors='k', 
                         s=100, zorder=30)
 
@@ -331,6 +333,8 @@ class MazeRenderer:
             '(nrow ncol) H W C -> (nrow H) (ncol W) C', nrow=nrow, ncol=ncol)
         imageio.imsave(savepath, images)
         print(f'Saved {len(paths)} samples to: {savepath}')
+
+    # def composite_batch(self, save_path, paths, ncol=5, **kwargs):
 
 class Maze2dRenderer(MazeRenderer):
 
