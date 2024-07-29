@@ -11,7 +11,7 @@ import json
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.mazeguided.maze2d'
+    config: str = 'config.varh.maze2d'
 
 args = Parser().parse_args('plan')
 
@@ -90,27 +90,13 @@ if args.conditional:
 
 ## set conditioning xy position to be the goal
 target = env._target
-goal = [*target, 0, 0]
-action = [0.0, 0.0]
-
-goal_norm = dataset.normalizer.normalize(goal, 'observations')
-action_norm = dataset.normalizer.normalize(action, 'actions')
-goal_norm = np.array(goal_norm, dtype=np.float32)
-action_norm = np.array(action_norm, dtype=np.float32)
-
-import torch
-x_goal = np.concatenate([action_norm, goal_norm], axis=0)
-goal = torch.tensor(x_goal, device=args.device)
-
-guide.set_goal(goal)
 
 # diffusion.horizon = args.plan_horizon
 
-# cond = {
-#     diffusion.horizon - 1: np.array([*target, 0, 0]),
-# }
+cond = {
+    diffusion.horizon - 1: np.array([*target, 0, 0]),
+}
 
-cond = {}
 
 ## observations for rendering
 rollout = [observation.copy()]
@@ -190,3 +176,53 @@ json_data = {'score': score, 'step': t, 'return': total_reward, 'term': terminal
     'epoch_diffusion': diffusion_experiment.epoch}
 json.dump(json_data, open(json_path, 'w'), indent=2, sort_keys=True)
 
+
+'''
+#-----------------------------------------------------------------------------#
+#--------------------------------- main loop ---------------------------------#
+#-----------------------------------------------------------------------------#
+
+env = dataset.env
+observation = env.reset()
+
+## observations for rendering
+rollout = [observation.copy()]
+
+total_reward = 0
+for t in range(args.max_episode_length):
+
+    if t % 10 == 0: print(args.savepath, flush=True)
+
+    ## save state for rendering only
+    state = env.state_vector().copy()
+
+    ## format current observation for conditioning
+    conditions = {0: observation}
+    action, samples = policy(conditions, batch_size=args.batch_size, verbose=args.verbose)
+
+    ## execute action in environment
+    next_observation, reward, terminal, _ = env.step(action)
+
+    ## print reward and score
+    total_reward += reward
+    score = env.get_normalized_score(total_reward)
+    print(
+        f't: {t} | r: {reward:.2f} |  R: {total_reward:.2f} | score: {score:.4f} | '
+        f'values: {samples.values} | scale: {args.scale}',
+        flush=True,
+    )
+
+    ## update rollout observations
+    rollout.append(next_observation.copy())
+
+    ## render every `args.vis_freq` steps
+    logger.log(t, samples, state, rollout)
+
+    if terminal:
+        break
+
+    observation = next_observation
+
+## write results to json file at `args.savepath`
+logger.finish(t, score, total_reward, terminal, diffusion_experiment, value_experiment)
+'''

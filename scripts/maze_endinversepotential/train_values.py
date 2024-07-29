@@ -8,7 +8,7 @@ import pdb
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.mazeguided.maze2d'
+    config: str = 'config.maze_endinversepotential.maze2d'
 
 args = Parser().parse_args('values')
 

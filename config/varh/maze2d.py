@@ -11,14 +11,7 @@ diffusion_args_to_watch = [
     ('prefix', ''),
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
-]
-
-value_args_to_watch = [
-    ('prefix', ''),
-    ('horizon', 'H'),
-    ('n_diffusion_steps', 'T'),
-    ## value kwargs
-    ('discount', 'd'),
+    ('min_horizon', 'mH'),
 ]
 
 
@@ -33,6 +26,16 @@ plan_args_to_watch = [
     ('batch_size', 'b'),
     ##
     ('conditional', 'cond'),
+    ('min_horizon', 'mH'),
+]
+
+value_args_to_watch = [
+    ('prefix', ''),
+    ('horizon', 'H'),
+    ('n_diffusion_steps', 'T'),
+    ## value kwargs
+    ('discount', 'd'),
+    ('min_horizon', 'mH'),
 ]
 
 base = {
@@ -51,17 +54,18 @@ base = {
         'renderer': 'utils.Maze2dRenderer',
 
         ## dataset
-        'loader': 'datasets.GoalDataset',
+        'loader': 'datasets.VarHDataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
+        'min_horizon': 32,
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/LimitNorm',
+        'prefix': 'diffusion/',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
@@ -73,13 +77,14 @@ base = {
         'gradient_accumulate_every': 2,
         'ema_decay': 0.995,
         'save_freq': 1000,
-        'sample_freq': 1000,
+        'sample_freq': 5000,
         'n_saves': 50,
         'save_parallel': False,
         'n_reference': 50,
         'n_samples': 10,
         'bucket': None,
         'device': 'cuda',
+
     },
 
     'values': {
@@ -101,7 +106,6 @@ base = {
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
         'max_path_length': 40000,
-        'min_horizon': 32,
 
         ## serialization
         'logbase': 'logs',
@@ -126,50 +130,32 @@ base = {
         'seed': None,
     },
 
+
     'plan': {
-        'guide': 'sampling.ValueGuide',
-        'policy': 'sampling.GuidedPolicy',
-        'max_episode_length': 1000,
         'batch_size': 1,
-        'preprocess_fns': [],
         'device': 'cuda',
-        'seed': None,
-
-        ## sample_kwargs
-        'n_guide_steps': 2,
-        'scale': 1.0,
-        't_stopgrad': 2,
-        'scale_grad_by_std': True,
-
-        ## serialization
-        'loadbase': None,
-        'logbase': 'logs',
-        'prefix': 'plans/guided_limitnorm',
-        'exp_name': watch(plan_args_to_watch),
-        'vis_freq': 10,
-        'max_render': 8,
 
         ## diffusion model
         'horizon': 256,
         'n_diffusion_steps': 256,
+        'normalizer': 'LimitsNormalizer',
+        'min_horizon': 32,
 
-        ## value function
-        'discount': 0.99,
-
-        ## loading
-        'diffusion_loadpath': 'f:diffusion/LimitNorm_H{horizon}_T{n_diffusion_steps}',
-        'value_loadpath': 'f:values/LimitNorm_H{horizon}_T{n_diffusion_steps}_d{discount}',
-
-        'diffusion_epoch': 'latest',
-        'value_epoch': 'latest',
-
-        'verbose': True,
+        ## serialization
+        'vis_freq': 100, # can be 10
+        'logbase': 'logs',
+        'prefix': 'plans/release',
+        'exp_name': watch(plan_args_to_watch),
         'suffix': '0',
 
-        # setting
         'conditional': False,
         'init_pose': None,
         'target': None,
+
+        ## loading
+        'diffusion_loadpath': 'f:diffusion/H{horizon}_T{n_diffusion_steps}_mH{min_horizon}',
+        'diffusion_epoch': 'latest',
+
     },
 
 }
@@ -187,15 +173,20 @@ maze2d_umaze_v1 = {
     'diffusion': {
         'horizon': 128,
         'n_diffusion_steps': 64,
+        'min_horizon': 16,
+        
     },
+
     'values': {
         'horizon': 128,
         'n_diffusion_steps': 64,
-        'dim_mults': (1, 2, 2, 2, 4, 8),
+        'min_horizon': 16,
     },
+
     'plan': {
         'horizon': 128,
         'n_diffusion_steps': 64,
+        'min_horizon': 16,
     },
 }
 
@@ -203,14 +194,18 @@ maze2d_large_v1 = {
     'diffusion': {
         'horizon': 384,
         'n_diffusion_steps': 256,
+        'min_horizon': 48,
     },
+
     'values': {
         'horizon': 384,
         'n_diffusion_steps': 256,
-        'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+        'min_horizon': 48,
     },
+
     'plan': {
         'horizon': 384,
         'n_diffusion_steps': 256,
+        'min_horizon': 48,
     },
 }
