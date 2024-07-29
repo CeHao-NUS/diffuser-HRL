@@ -155,9 +155,8 @@ for t in range(env.max_episode_steps):
 
     if terminal or t == env.max_episode_steps-1:
         ## save rollout thus far
-        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1)
-        
-                        #    conditions=cond)
+        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,        
+                           conditions=cond)
 
         # renderer.render_rollout(join(args.savepath, f'rollout.mp4'), rollout, fps=80)
 
