@@ -61,7 +61,7 @@ base = {
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
-        'min_horizon': 32,
+        'min_horizon': 16,
 
         ## serialization
         'logbase': 'logs',
@@ -106,6 +106,7 @@ base = {
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
         'max_path_length': 40000,
+        'min_horizon': 16,
 
         ## serialization
         'logbase': 'logs',
@@ -142,7 +143,7 @@ base = {
 
         ## sample_kwargs
         'n_guide_steps': 2,
-        'scale': 1.0,
+        'scale': 0.5,
         't_stopgrad': 2,
         'scale_grad_by_std': True,
 
@@ -157,7 +158,7 @@ base = {
         ## diffusion model
         'horizon': 256,
         'n_diffusion_steps': 256,
-        'min_horizon': 32,
+        'min_horizon': 16,
 
         ## value function
         'discount': 0.99,
@@ -214,18 +215,18 @@ maze2d_large_v1 = {
     'diffusion': {
         'horizon': 384,
         'n_diffusion_steps': 256,
-        'min_horizon': 48,
+        'min_horizon': 16,
     },
 
     'values': {
         'horizon': 384,
         'n_diffusion_steps': 256,
-        'min_horizon': 48,
+        'min_horizon': 16,
     },
 
     'plan': {
         'horizon': 384,
         'n_diffusion_steps': 256,
-        'min_horizon': 48,
+        'min_horizon': 16,
     },
 }
