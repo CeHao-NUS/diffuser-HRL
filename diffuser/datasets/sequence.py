@@ -274,3 +274,44 @@ class VarHValueDataset(VarHDataset):
         value_batch = ValueBatch(trajectories, conditions, value)
 
         return value_batch
+    
+
+class JointValueDataset(GoalDataset):
+    def __init__(self, *args, discount=0.99, normed=False, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.discount = discount
+    
+    def __getitem__(self, idx):
+        path_ind, start, end = self.indices[idx]
+
+        observations = self.fields.normed_observations[path_ind, start:end]
+        actions = self.fields.normed_actions[path_ind, start:end]
+
+        # conditions = self.get_conditions(observations)
+        conditions = {} # should not use hard conditions
+        
+
+        # create s0' = s0+noise, sT' = sT+noise
+        # add noise to the first and last observations
+        s0 = observations[0, :]
+        sT = observations[-1, :] # (4,)
+        noise0 = np.random.normal(0, 0.2, s0.shape).astype(np.float32)
+        noiseT = np.random.normal(0, 0.2, sT.shape).astype(np.float32)
+        s0_prime = s0 + noise0
+        sT_prime = sT + noiseT
+        observations = np.concatenate([s0_prime[np.newaxis, :], observations, sT_prime[np.newaxis, :]], axis=0)
+
+        zero_actions = np.zeros_like(actions[0, :])
+        actions = np.concatenate([zero_actions[np.newaxis, :], actions, zero_actions[np.newaxis, :]], axis=0)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+
+        norm_noise0 = np.linalg.norm(noise0)
+        norm_noiseT = np.linalg.norm(noiseT)
+
+        value = norm_noise0 + norm_noiseT
+
+        value = np.array([value], dtype=np.float32)
+        value_batch = ValueBatch(trajectories, conditions, value)
+
+        return value_batch
+    
