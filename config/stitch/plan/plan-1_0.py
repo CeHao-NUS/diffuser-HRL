@@ -12,6 +12,7 @@ plan_args_to_watch = [
     ('discount', 'd'),
     ('normalizer', ''),
     ('batch_size', 'b'),
+    ('seg_length', 'L'),
     ##
     ('conditional', 'cond'),
 ]
@@ -30,7 +31,7 @@ base = {
         # 'sample_fun': sampling.stitch_functions.default_sample_fn,
         'sample_fun': sampling.stitch_functions.LL_LL_joint_sample_fn,
 
-        'seg_length': 2,
+        'seg_length': 3,
 
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,

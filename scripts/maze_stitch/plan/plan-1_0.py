@@ -80,6 +80,7 @@ cond = {
     (args.seg_length-1, diffusion.horizon - 1): np.array([*target, 0, 0]),
 }
 
+cond_plot = {diffusion.horizon * args.seg_length - 1: np.array([*target, 0, 0])}
 
 ## observations for rendering
 rollout = [observation.copy()]
@@ -93,6 +94,7 @@ for t in range(env.max_episode_steps):
     ## that we really only need to plan once
     if t == 0:
         cond[(0,0)] = observation
+        cond_plot[0] = observation
 
         action, samples = policy(cond, batch_size=args.batch_size)
         actions = samples.actions[0]
@@ -146,13 +148,13 @@ for t in range(env.max_episode_steps):
     # if t % args.vis_freq == 0 or terminal:
     fullpath = join(args.savepath, f'{t}.png')
     if t == 0: renderer.composite(fullpath, samples.observations[:, :, :diffusion.horizon], ncol=1,
-                                      conditions=cond)
+                                      conditions=cond_plot)
     # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
 
     if terminal or t == env.max_episode_steps-1:
         ## save rollout thus far
         renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,
-                           conditions=cond)
+                           conditions=cond_plot)
 
         # renderer.render_rollout(join(args.savepath, f'rollout.mp4'), rollout, fps=80)
 
