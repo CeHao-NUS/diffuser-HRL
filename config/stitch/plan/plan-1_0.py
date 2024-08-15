@@ -25,15 +25,12 @@ base = {
         'diffusion_epoch': 'latest',
 
 
-        # 'classifier': [
-        #     {'guide': None, 
-        #     'value_loadpath': '',
-        #     'sample_fun': ''}
-        # ],
-
         'guide_LL': None,
         'value_LL': None,
-        'sample_fun': sampling.stitch_functions.default_sample_fn,
+        # 'sample_fun': sampling.stitch_functions.default_sample_fn,
+        'sample_fun': sampling.stitch_functions.LL_LL_joint_sample_fn,
+
+        'seg_length': 2,
 
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,

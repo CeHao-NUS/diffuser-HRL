@@ -50,7 +50,7 @@ policy_config = utils.Config(
     scale_grad_by_std=args.scale_grad_by_std,
     verbose=False,
 
-    batch_size=1,
+    batch_size=args.seg_length,
 )
 
 policy = policy_config()
@@ -77,7 +77,7 @@ target = env._target
 # diffusion.horizon = args.plan_horizon
 
 cond = {
-    (0, diffusion.horizon - 1): np.array([*target, 0, 0]),
+    (args.seg_length-1, diffusion.horizon - 1): np.array([*target, 0, 0]),
 }
 
 

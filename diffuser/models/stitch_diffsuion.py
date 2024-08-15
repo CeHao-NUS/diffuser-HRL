@@ -37,8 +37,9 @@ def sort_by_values(x, values):
     return x, values
 
 def stitch_batches(x):
-    # flatten, but merge x[i, -1] with x[i+1, 0]
-    x = x.view(-1, x.shape[-1])
+    # flatten, x.shape = (batch, time, dim)
+    x = x.reshape(-1, x.shape[-1])
+
     # create a dim at 0
     x = x.unsqueeze(0)
     return x
