@@ -1,6 +1,7 @@
 import socket
 
 from diffuser.utils import watch
+import diffuser.sampling as sampling
 
 plan_args_to_watch = [
     ('prefix', ''),
@@ -18,7 +19,22 @@ plan_args_to_watch = [
 
 base = {
     'plan': {
-        'guide': 'sampling.ValueGuide',
+
+
+        'diffusion_loadpath': 'f:diffusion/LL_diffuser_H{horizon}_T{n_diffusion_steps}',
+        'diffusion_epoch': 'latest',
+
+
+        # 'classifier': [
+        #     {'guide': None, 
+        #     'value_loadpath': '',
+        #     'sample_fun': ''}
+        # ],
+
+        'guide_LL': None,
+        'value_LL': None,
+        'sample_fun': sampling.stitch_functions.default_sample_fn,
+
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
@@ -48,9 +64,7 @@ base = {
         'discount': 0.99,
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/LL_diffuser_H{horizon}_T{n_diffusion_steps}',
-
-        'diffusion_epoch': 'latest',
+        
 
         'verbose': True,
         'suffix': '0',

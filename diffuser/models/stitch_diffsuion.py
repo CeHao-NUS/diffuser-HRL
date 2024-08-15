@@ -36,6 +36,13 @@ def sort_by_values(x, values):
     values = values[inds]
     return x, values
 
+def stitch_batches(x):
+    # flatten, but merge x[i, -1] with x[i+1, 0]
+    x = x.view(-1, x.shape[-1])
+    # create a dim at 0
+    x = x.unsqueeze(0)
+    return x
+
 
 def make_timesteps(batch_size, i, device):
     t = torch.full((batch_size,), i, device=device, dtype=torch.long)
@@ -177,17 +184,20 @@ class BatchGaussianDiffusion(nn.Module):
 
         progress.stamp()
 
-        x, values = sort_by_values(x, values)
+        # x, values = sort_by_values(x, values)
+
+        x = stitch_batches(x)
+        
         if return_chain: chain = torch.stack(chain, dim=1)
         return Sample(x, values, chain)
 
     @torch.no_grad()
-    def conditional_sample(self, cond, horizon=None, **sample_kwargs):
+    def conditional_sample(self, cond, batch_size=1, horizon=None, **sample_kwargs):
         '''
             conditions : [ (time, state), ... ]
         '''
         device = self.betas.device
-        batch_size = len(cond[0])
+        # batch_size = len(cond[0])
         horizon = horizon or self.horizon
         shape = (batch_size, horizon, self.transition_dim)
 

@@ -8,6 +8,7 @@ import diffuser.datasets as datasets
 import diffuser.utils as utils
 
 
+
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
     config: str = 'config.stitch.plan.plan-1_0'
@@ -22,13 +23,37 @@ env = datasets.load_environment(args.dataset)
 
 #---------------------------------- loading ----------------------------------#
 
-diffusion_experiment = utils.load_diffusion(args.logbase, args.dataset, args.diffusion_loadpath, epoch=args.diffusion_epoch)
+
+
+diffusion_experiment = utils.load_diffusion(
+    args.loadbase, args.dataset, args.diffusion_loadpath,
+    epoch=args.diffusion_epoch, seed=args.seed,
+)
 
 diffusion = diffusion_experiment.ema
 dataset = diffusion_experiment.dataset
 renderer = diffusion_experiment.renderer
 
-policy = Policy(diffusion, dataset.normalizer)
+# policy = Policy(diffusion, dataset.normalizer)
+
+policy_config = utils.Config(
+    args.policy,
+    guide=None,
+    scale=args.scale,
+    diffusion_model=diffusion,
+    normalizer=dataset.normalizer,
+    preprocess_fns=args.preprocess_fns,
+    ## sampling kwargs
+    sample_fn=args.sample_fun,
+    n_guide_steps=args.n_guide_steps,
+    t_stopgrad=args.t_stopgrad,
+    scale_grad_by_std=args.scale_grad_by_std,
+    verbose=False,
+
+    batch_size=1,
+)
+
+policy = policy_config()
 
 #---------------------------------- main loop ----------------------------------#
 
@@ -52,7 +77,7 @@ target = env._target
 # diffusion.horizon = args.plan_horizon
 
 cond = {
-    diffusion.horizon - 1: np.array([*target, 0, 0]),
+    (0, diffusion.horizon - 1): np.array([*target, 0, 0]),
 }
 
 
@@ -67,7 +92,7 @@ for t in range(env.max_episode_steps):
     ## can replan if desired, but the open-loop plans are good enough for maze2d
     ## that we really only need to plan once
     if t == 0:
-        cond[0] = observation
+        cond[(0,0)] = observation
 
         action, samples = policy(cond, batch_size=args.batch_size)
         actions = samples.actions[0]
