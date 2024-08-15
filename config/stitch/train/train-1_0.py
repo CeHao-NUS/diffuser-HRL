@@ -35,7 +35,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/joint',
+        'prefix': 'diffusion/LL_diffuser',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training

@@ -142,8 +142,13 @@ class LL_goal_dataset(SequenceDataset):
         '''
             condition on both the current observation and the last observation in the plan
         '''
+
         return {
-            (0,0): observations[0],
-            (0, self.horizon - 1): observations[-1],
+            0: observations[0],
+            self.horizon - 1: observations[-1],
         }
+        # return {
+        #     (0,0): observations[0],
+        #     (0, self.horizon - 1): observations[-1],
+        # }
 
