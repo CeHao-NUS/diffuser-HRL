@@ -12,10 +12,11 @@ Trajectories = namedtuple('Trajectories', 'actions observations')
 
 class Policy:
 
-    def __init__(self, diffusion_model, normalizer):
+    def __init__(self, diffusion_model, normalizer, **sample_kwargs):
         self.diffusion_model = diffusion_model
         self.normalizer = normalizer
         self.action_dim = normalizer.action_dim
+        self.sample_kwargs = sample_kwargs
 
     @property
     def device(self):
@@ -39,14 +40,14 @@ class Policy:
     def __call__(self, conditions, debug=False, batch_size=1):
 
 
-        conditions = self._format_conditions(conditions, batch_size)
+        # conditions = self._format_conditions(conditions, batch_size)
 
         ## batchify and move to tensor [ batch_size x observation_dim ]
         # observation_np = observation_np[None].repeat(batch_size, axis=0)
         # observation = utils.to_torch(observation_np, device=self.device)
 
         ## run reverse diffusion process
-        sample = self.diffusion_model(conditions)
+        sample = self.diffusion_model(conditions, batch_size=batch_size, **self.sample_kwargs)
         sample = utils.to_np(sample.trajectories)
 
         ## extract action [ batch_size x horizon x transition_dim ]
