@@ -288,7 +288,7 @@ class MazeRenderer:
         if type(env) is str: env = load_environment(env)
         self._config = env._config
         self._background = self._config != ' '
-        self._remove_margins = False
+        self._remove_margins = True
         self._extent = (0, 1, 1, 0)
 
     def renders(self, observations, conditions=None, title=None):

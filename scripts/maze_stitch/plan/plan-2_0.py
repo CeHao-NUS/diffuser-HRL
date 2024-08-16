@@ -95,10 +95,10 @@ seg_length = args.seg_length
 assert seg_length <= args.HL_horizon
 
 HL_cond = {
-    (0, seg_length - 1): np.array([*target, 0, 0]),
+    (0, seg_length): np.array([*target, 0, 0]),
 }
 
-cond_plot = HL_cond
+cond_plot = {LL_diffusion.horizon * args.seg_length - 1: np.array([*target, 0, 0])}
 
 ## observations for rendering
 rollout = [observation.copy()]
@@ -116,6 +116,9 @@ for t in range(env.max_episode_steps):
         HL_action, HL_samples = HL_policy(HL_cond, batch_size=args.batch_size)
 
         hl_obs = HL_samples.observations[0]
+
+        for idx in range(args.seg_length):
+            cond_plot[LL_diffusion.horizon * idx] = hl_obs[idx]
 
         # +++++++++++++ LL +++++++++++++ #
         LL_cond = {}
@@ -172,17 +175,20 @@ for t in range(env.max_episode_steps):
     
     if t == 0: 
         hl_fullpath = join(args.savepath, 'HL.png')
-        renderer.composite(hl_fullpath, HL_samples.observations[:,:, seg_length], ncol=1,  conditions=HL_cond)
+        renderer.composite(hl_fullpath, HL_samples.observations[:, :seg_length+1, :], ncol=1,  conditions=HL_cond)
         
         ll_fullpath = join(args.savepath, 'LL.png')
         renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)
+
+        whole_fullpath = join(args.savepath, 'whole.png')
+        renderer.composite(whole_fullpath, observation_plan, ncol=1,  conditions=cond_plot)
     
     # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
 
     if terminal or t == env.max_episode_steps-1:
         ## save rollout thus far
         renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,
-                           conditions=cond_plot)
+                           conditions=HL_cond)
 
         # renderer.render_rollout(join(args.savepath, f'rollout.mp4'), rollout, fps=80)
 

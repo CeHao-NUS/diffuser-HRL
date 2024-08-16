@@ -165,9 +165,13 @@ for t in range(env.max_episode_steps):
     rollout.append(next_observation.copy())
 
     # if t % args.vis_freq == 0 or terminal:
-    fullpath = join(args.savepath, f'{t}.png')
-    if t == 0: renderer.composite(fullpath, observation_plan, ncol=1,
-                                      conditions=cond_plot)
+    
+    if t == 0: 
+        ll_fullpath = join(args.savepath, 'LL.png')
+        renderer.composite(ll_fullpath, samples.observations, ncol=1,  conditions=cond)
+
+        fullpath = join(args.savepath, 'whole.png')
+        renderer.composite(fullpath, observation_plan, ncol=1, conditions=cond_plot)
     # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
 
     if terminal or t == env.max_episode_steps-1:

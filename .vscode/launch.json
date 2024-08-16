@@ -12,7 +12,8 @@
             "console": "integratedTerminal",
             "args":[
 
-                "--prefix", "test_stitch"
+                "--prefix", "test_stitch",
+                // "--seg_length", "1"
             ]
         }
     ]
