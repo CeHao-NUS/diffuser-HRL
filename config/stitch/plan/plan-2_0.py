@@ -10,12 +10,12 @@ import diffuser.sampling as sampling
 plan_args_to_watch = [
     ('prefix', ''),
     ##
-    ('horizon', 'H'),
+    ('HL_horizon', 'H'),
     ('n_diffusion_steps', 'T'),
-    ('value_horizon', 'V'),
-    ('discount', 'd'),
+    # ('value_horizon', 'V'),
+    # ('discount', 'd'),
     ('normalizer', ''),
-    ('batch_size', 'b'),
+    # ('batch_size', 'b'),
     ('seg_length', 'L'),
     ##
     ('conditional', 'cond'),

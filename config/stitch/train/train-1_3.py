@@ -67,3 +67,17 @@ maze2d_umaze_v1 = {
         'n_diffusion_steps': 32,
     },
 }
+
+maze2d_medium_v1 = {
+    'diffusion': {
+        'horizon': 256,
+        'n_diffusion_steps': 32,
+    },
+}
+
+maze2d_large_v1 = {
+    'diffusion': {
+        'horizon': 384,
+        'n_diffusion_steps': 32,
+    },
+}

@@ -178,8 +178,6 @@ class BatchGaussianDiffusion(nn.Module):
         progress.stamp()
 
         # x, values = sort_by_values(x, values)
-
-        # x = stitch_batches(x)
         
         if return_chain: chain = torch.stack(chain, dim=1)
         return Sample(x, values, chain)
