@@ -33,7 +33,7 @@ base = {
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
-        'downsample': 16,
+        'downsample': 32,
 
         ## serialization
         'logbase': 'logs',
