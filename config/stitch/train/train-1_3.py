@@ -7,10 +7,11 @@ diffusion_args_to_watch = [
     ('prefix', ''),
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
+    ('downsample', 'D'),
 ]
 
 base = {
-    # d-1: LL
+    # d-3
     'diffusion': {
         ## model
         'model': 'models.TemporalUnet',
@@ -32,7 +33,7 @@ base = {
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
-        'downsample': 32,
+        'downsample': 16,
 
         ## serialization
         'logbase': 'logs',
@@ -63,6 +64,6 @@ base = {
 maze2d_umaze_v1 = {
     'diffusion': {
         'horizon': 128,
-        'n_diffusion_steps': 64,
+        'n_diffusion_steps': 32,
     },
 }

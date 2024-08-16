@@ -162,6 +162,10 @@ class HL_goal_dataset(LL_goal_dataset):
 
         # downsample the trajectories and conditions in batch
         trajectories = batch.trajectories[::self.downsample]
+        # Check if the last index is not included, then add it manually
+        # if len(batch.trajectories) % self.downsample != self.downsample - 1:
+        #     trajectories = np.concatenate((trajectories, batch.trajectories[-1:]), axis=0)
+
         len_ori = len(batch.trajectories)
         len_new = len(trajectories)
         conditions = batch.conditions # still the last point

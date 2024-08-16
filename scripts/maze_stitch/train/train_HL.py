@@ -47,20 +47,25 @@ action_dim = dataset.action_dim
 #------------------------------ model & trainer ------------------------------#
 #-----------------------------------------------------------------------------#
 
+# horizon_HL =  args.horizon // args.downsample + (args.horizon % args.downsample != args.downsample - 1)
+horizon_HL =  args.horizon // args.downsample 
+
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon= int(np.ceil(args.horizon / args.downsample)), ### !!!
+    horizon=horizon_HL, ### !!!
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
     device=args.device,
 )
 
+ 
+
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=int(np.ceil(args.horizon / args.downsample)), ### !!!
+    horizon=horizon_HL, ### !!!
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,
