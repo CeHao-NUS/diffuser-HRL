@@ -315,3 +315,32 @@ class JointValueDataset(GoalDataset):
 
         return value_batch
     
+# =================== debug ===================================
+class GoalDataset(SequenceDataset):
+
+    def get_conditions(self, observations):
+        '''
+            condition on both the current observation and the last observation in the plan
+        '''
+        return {
+            0: observations[0],
+            self.horizon - 1: observations[-1],
+        }
+    
+class HLGoalDataset(GoalDataset):
+    def __init__(self, *args, downsample=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.downsample = downsample
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+
+        # downsample the trajectories and conditions in batch
+        trajectories = batch.trajectories[::self.downsample]
+        len_ori = len(batch.trajectories)
+        len_new = len(trajectories)
+        conditions = batch.conditions # still the last point
+        conditions[len_new-1] = conditions.pop(len_ori-1)
+
+        batch = Batch(trajectories, conditions)
+        return batch

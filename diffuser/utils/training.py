@@ -207,7 +207,7 @@ class Trainer(object):
             )
 
             ## [ n_samples x horizon x (action_dim + observation_dim) ]
-            samples = self.ema_model(conditions)
+            samples = self.ema_model(conditions, batch_size=len(conditions[0]))
             trajectories = to_np(samples.trajectories)
 
             ## [ n_samples x horizon x observation_dim ]

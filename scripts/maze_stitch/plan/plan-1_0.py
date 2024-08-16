@@ -13,6 +13,14 @@ class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
     config: str = 'config.stitch.plan.plan-1_0'
 
+def stitch_batches(x):
+    # flatten, x.shape = (batch, time, dim)
+    x = x.reshape(-1, x.shape[-1])
+
+    # create a dim at 0
+    x = x.unsqueeze(0)
+    return x
+
 #---------------------------------- setup ----------------------------------#
 
 args = Parser().parse_args('plan')
@@ -97,8 +105,12 @@ for t in range(env.max_episode_steps):
         cond_plot[0] = observation
 
         action, samples = policy(cond, batch_size=args.batch_size)
-        actions = samples.actions[0]
-        sequence = samples.observations[0]
+
+        actions = stitch_batches(samples.actions)[0]
+        sequence = stitch_batches(samples.observations)[0]
+
+        # actions = samples.actions[0]
+        # sequence = samples.observations[0]
         print('!!!! last state', sequence[-1][:2], 'target', target[:2],
               'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
     # pdb.set_trace()

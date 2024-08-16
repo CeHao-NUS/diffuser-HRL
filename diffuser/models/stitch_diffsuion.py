@@ -36,14 +36,6 @@ def sort_by_values(x, values):
     values = values[inds]
     return x, values
 
-def stitch_batches(x):
-    # flatten, x.shape = (batch, time, dim)
-    x = x.reshape(-1, x.shape[-1])
-
-    # create a dim at 0
-    x = x.unsqueeze(0)
-    return x
-
 
 def make_timesteps(batch_size, i, device):
     t = torch.full((batch_size,), i, device=device, dtype=torch.long)
@@ -187,7 +179,7 @@ class BatchGaussianDiffusion(nn.Module):
 
         # x, values = sort_by_values(x, values)
 
-        x = stitch_batches(x)
+        # x = stitch_batches(x)
         
         if return_chain: chain = torch.stack(chain, dim=1)
         return Sample(x, values, chain)

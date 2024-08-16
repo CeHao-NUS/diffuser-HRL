@@ -137,6 +137,8 @@ class ValueDataset(SequenceDataset):
 
 # ======================= diffusion datasets ==========================================
 
+
+
 class LL_goal_dataset(SequenceDataset):
     def get_conditions(self, observations):
         '''
@@ -147,8 +149,24 @@ class LL_goal_dataset(SequenceDataset):
             0: observations[0],
             self.horizon - 1: observations[-1],
         }
-        # return {
-        #     (0,0): observations[0],
-        #     (0, self.horizon - 1): observations[-1],
-        # }
+    
+
+class HL_goal_dataset(LL_goal_dataset):
+
+    def __init__(self, *args, downsample=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.downsample = downsample
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+
+        # downsample the trajectories and conditions in batch
+        trajectories = batch.trajectories[::self.downsample]
+        len_ori = len(batch.trajectories)
+        len_new = len(trajectories)
+        conditions = batch.conditions # still the last point
+        conditions[len_new-1] = conditions.pop(len_ori-1)
+
+        batch = Batch(trajectories, conditions)
+        return batch
 
