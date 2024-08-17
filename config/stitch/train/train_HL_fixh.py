@@ -62,7 +62,7 @@ base = {
     },
 }
 
-
+'''
 maze2d_umaze_v1 = {
     'diffusion': {
         'horizon': 128,
@@ -84,5 +84,14 @@ maze2d_large_v1 = {
         'horizon': 384,
         'n_diffusion_steps': 32,
         'downsample': 32,
+    },
+}
+'''
+
+maze2d_umaze_v1 = {
+    'diffusion': {
+        'horizon': 196,
+        'n_diffusion_steps': 32,
+        'downsample': 16,
     },
 }

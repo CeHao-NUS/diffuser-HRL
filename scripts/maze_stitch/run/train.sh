@@ -35,9 +35,20 @@ python scripts/maze_stitch/train/train_LL_value_varh.py  --dataset maze2d-large-
  
 # train new method
 
-1. LL fix 16
-2. HL fix 192//16
-3. LL varh 16
-4. LL value varh 16
-5. HL varh 192//16
-6. HL value varh 192//16
+1. LL fix 16 (siyuan)
+python scripts/maze_stitch/train/train_LL.py 
+
+2. HL fix 192//16 (siyuan)
+python scripts/maze_stitch/train/train_HL.py 
+
+3. LL varh 16 (yg)
+python scripts/maze_stitch/train/train_LL_varh.py 
+
+4. LL value varh 16 (zihao)
+python scripts/maze_stitch/train/train_LL_value_varh.py 
+
+5. HL varh 192//16 (yg)
+python scripts/maze_stitch/train/train_HL_varh.py 
+
+6. HL value varh 192//16 (zihao)
+python scripts/maze_stitch/train/train_HL_value_varh.py 

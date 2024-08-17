@@ -37,7 +37,7 @@ base = {
         'renderer': 'utils.Maze2dRenderer',
 
         ## dataset
-        'loader': 'datasets.LL_varh_dataset',
+        'loader': 'datasets.HL_varh_dataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
@@ -48,7 +48,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/LL_varh_diffuser',
+        'prefix': 'diffusion/HL_varh_diffuser',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
@@ -84,16 +84,17 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.LL_varh_value_dataset',
+        'loader': 'datasets.HL_varh_value_dataset',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
         'max_path_length': 40000,
         'min_horizon': 16,
+        'downsample': 32,
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'values/LL_varh_value',
+        'prefix': 'values/HL_varh_value',
         'exp_name': watch(value_args_to_watch),
 
         ## training
@@ -116,63 +117,18 @@ base = {
 
 }
 
-'''
-# original diffuser
-
-
 maze2d_umaze_v1 = {
     'diffusion':{
-        'horizon': 128,
-        'n_diffusion_steps': 64,
-        'min_horizon': 16,
-    },
-
-    'values':{
-        'horizon': 128,
-        'n_diffusion_steps': 64,
-        'min_horizon': 16,
-    }
-}
-
-maze2d_medium_v1 = {
-    'diffusion':{
-        'horizon': 256,
-        'n_diffusion_steps': 256,
-        'min_horizon': 16,
-    },
-
-    'values':{
-        'horizon': 256,
-        'n_diffusion_steps': 256,
-        'min_horizon': 16,
-    }
-}
-
-maze2d_large_v1 = {
-    'diffusion':{
-        'horizon': 384,
-        'n_diffusion_steps': 256,
-        'min_horizon': 48,
-    },
-
-    'values':{
-        'horizon': 384,
-        'n_diffusion_steps': 256,
-        'min_horizon': 48,
-    }
-}
-'''
-
-maze2d_umaze_v1 = {
-    'diffusion':{
-        'horizon': 16,
+        'horizon': 192,
         'n_diffusion_steps': 32,
+        'downsample': 16,
         'min_horizon': 1,
     },
 
     'values':{
-        'horizon': 1,
+        'horizon': 192,
         'n_diffusion_steps': 32,
+        'downsample': 16,
         'min_horizon': 1,
     }
 }

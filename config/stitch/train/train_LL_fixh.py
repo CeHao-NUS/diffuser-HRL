@@ -86,7 +86,7 @@ maze2d_large_v1 = {
 # '''
 maze2d_umaze_v1 = {
     'diffusion': {
-        'horizon': 32,
+        'horizon': 16,
         'n_diffusion_steps': 32,
     },
 }
