@@ -15,6 +15,21 @@ python scripts/maze_stitch/train/train_HL.py --dataset maze2d-medium-v1
 python scripts/maze_stitch/train/train_HL.py --dataset maze2d-large-v1
 
 
+
+
+
 maze2d-umaze-v1
 maze2d-medium-v1
 maze2d-large-v1
+
+python scripts/maze_stitch/train/train_LL_varh.py --dataset maze2d-umaze-v1
+python scripts/maze_stitch/train/train_LL_value_varh.py  --dataset maze2d-umaze-v1
+
+python scripts/maze_stitch/train/train_LL_varh.py --dataset maze2d-medium-v1
+python scripts/maze_stitch/train/train_LL_value_varh.py  --dataset maze2d-medium-v1
+
+python scripts/maze_stitch/train/train_LL_varh.py --dataset maze2d-large-v1
+python scripts/maze_stitch/train/train_LL_value_varh.py  --dataset maze2d-large-v1
+
+
+ 

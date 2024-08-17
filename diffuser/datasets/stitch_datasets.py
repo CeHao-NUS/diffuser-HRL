@@ -175,3 +175,76 @@ class HL_goal_dataset(LL_goal_dataset):
         batch = Batch(trajectories, conditions)
         return batch
 
+
+class LL_varh_dataset(LL_goal_dataset):
+    def __init__(self, *args, discount=0.99, normed=False, min_horizon=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.min_horizon = min_horizon
+        self.discount = discount
+        self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
+        self.normed = normed
+
+    def __getitem__(self, idx):
+        # 1. get intermediate point
+        # 2. segment and fill with last point
+        # 3. change conditions
+
+        path_ind, start, end = self.indices[idx]
+        horizon = self.horizon
+
+        new_length = np.random.choice(range(self.min_horizon, horizon))
+        repeats = horizon - new_length
+        new_end = start + new_length
+
+        observations = self.fields.normed_observations[path_ind, start:new_end]
+        actions = self.fields.normed_actions[path_ind, start:new_end]
+
+        # repeat the last observation until end
+
+        # observations = np.append(observations, np.full(repeats, observations[-1]))
+        observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
+        
+
+        # actions = np.append(actions, np.full(repeats, actions[-1]))
+        zero_actions = np.zeros_like(actions[-1])
+        actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+        batch = Batch(trajectories, conditions)
+        return batch
+    
+class LL_varh_value_dataset(LL_varh_dataset):
+
+
+    def __getitem__(self, idx):
+        path_ind, start, end = self.indices[idx]
+        horizon = self.horizon
+
+        new_length = np.random.choice(range(self.min_horizon, horizon))
+        repeats = horizon - new_length
+        new_end = start + new_length
+
+        observations = self.fields.normed_observations[path_ind, start:new_end]
+        actions = self.fields.normed_actions[path_ind, start:new_end]
+
+        # repeat the last observation until end
+        observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
+        
+        zero_actions = np.zeros_like(actions[-1])
+        actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+
+        # reward
+        rewards = self.fields['rewards'][path_ind, start:new_end]
+        rewards = np.zeros_like(rewards)  # make the steps to be negative
+        rewards[:, :new_length] = -1
+
+        discounts = self.discounts[:len(rewards)]
+        value = (discounts * rewards).sum()
+        value = np.array([value], dtype=np.float32)
+        value_batch = ValueBatch(trajectories, conditions, value)
+
+        return value_batch

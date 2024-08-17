@@ -1,3 +1,5 @@
+# LL fixed length
+
 import socket
 
 from diffuser.utils import watch
