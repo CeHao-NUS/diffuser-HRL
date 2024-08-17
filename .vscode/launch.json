@@ -13,7 +13,8 @@
             "args":[
 
                 "--prefix", "test_stitch",
-                // "--seg_length", "1"
+                // "--dataset", "maze2d-medium-v1"
+                "--dataset", "maze2d-large-v1",
             ]
         }
     ]

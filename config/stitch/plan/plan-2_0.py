@@ -25,8 +25,6 @@ plan_args_to_watch = [
 
 base = {
     'plan': {
-
-
         'LL_diffusion_loadpath': 'f:diffusion/LL_diffuser_H{LL_horizon}_T{n_diffusion_steps}',
         'LL_diffusion_epoch': 'latest',
 
@@ -82,5 +80,24 @@ maze2d_umaze_v1 = {
         'LL_horizon': 32,
         'HL_horizon': 128,
         'n_diffusion_steps': 32,
+        'seg_length': 3,
+    },
+}
+
+maze2d_medium_v1 = {
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 256,
+        'n_diffusion_steps': 32,
+        'seg_length': 7,
+    },
+}
+
+maze2d_large_v1 = {
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 384,
+        'n_diffusion_steps': 32,
+        'seg_length': 11,
     },
 }
