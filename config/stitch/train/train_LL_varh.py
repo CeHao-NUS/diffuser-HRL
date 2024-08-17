@@ -171,7 +171,7 @@ maze2d_umaze_v1 = {
     },
 
     'values':{
-        'horizon': 1,
+        'horizon': 16,
         'n_diffusion_steps': 32,
         'min_horizon': 1,
     }
