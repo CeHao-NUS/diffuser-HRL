@@ -33,3 +33,11 @@ python scripts/maze_stitch/train/train_LL_value_varh.py  --dataset maze2d-large-
 
 
  
+# train new method
+
+1. LL fix 16
+2. HL fix 192//16
+3. LL varh 16
+4. LL value varh 16
+5. HL varh 192//16
+6. HL value varh 192//16

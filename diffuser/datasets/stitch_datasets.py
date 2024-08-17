@@ -248,3 +248,45 @@ class LL_varh_value_dataset(LL_varh_dataset):
         value_batch = ValueBatch(trajectories, conditions, value)
 
         return value_batch
+    
+class HL_varh_dataset(LL_varh_dataset):
+    def __init__(self, *args, downsample=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.downsample = downsample
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+
+        # downsample the trajectories and conditions in batch
+        trajectories = batch.trajectories[::self.downsample]
+
+        len_ori = len(batch.trajectories)
+        len_new = len(trajectories)
+        conditions = batch.conditions # still the last point
+        conditions.pop(len_ori-1)
+        conditions[len_new-1] = trajectories[-1, self.action_dim:]
+
+        batch = Batch(trajectories, conditions)
+        return batch
+    
+class HL_varh_value_dataset(LL_varh_value_dataset):
+    def __init__(self, *args, downsample=1, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.downsample = downsample
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+
+        # downsample the trajectories and conditions in batch
+        trajectories = batch.trajectories[::self.downsample]
+
+        len_ori = len(batch.trajectories)
+        len_new = len(trajectories)
+        conditions = batch.conditions # still the last point
+        conditions.pop(len_ori-1)
+        conditions[len_new-1] = trajectories[-1, self.action_dim:]
+
+        value_batch = ValueBatch(trajectories, conditions, batch.values)
+        return value_batch
+    
+    

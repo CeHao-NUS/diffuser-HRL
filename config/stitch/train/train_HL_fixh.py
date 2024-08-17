@@ -1,4 +1,4 @@
-# LL fixed length
+# HL
 
 import socket
 
@@ -9,10 +9,11 @@ diffusion_args_to_watch = [
     ('prefix', ''),
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
+    ('downsample', 'D'),
 ]
 
 base = {
-    # d-1: LL
+    # d-3
     'diffusion': {
         ## model
         'model': 'models.TemporalUnet',
@@ -27,17 +28,18 @@ base = {
         'renderer': 'utils.Maze2dRenderer',
 
         ## dataset
-        'loader': 'datasets.LL_goal_dataset',
+        'loader': 'datasets.HL_goal_dataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,
+        'downsample': 32,
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/LL_diffuser',
+        'prefix': 'diffusion/HL_diffuser',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
@@ -60,50 +62,27 @@ base = {
     },
 }
 
-'''
-# original diffuser
+
 maze2d_umaze_v1 = {
-    'diffusion':{
+    'diffusion': {
         'horizon': 128,
-        'n_diffusion_steps': 64,
-        'min_horizon': 16,
+        'n_diffusion_steps': 32,
+        'downsample': 32,
     },
 }
 
 maze2d_medium_v1 = {
-    'diffusion':{
+    'diffusion': {
         'horizon': 256,
-        'n_diffusion_steps': 256,
-        'min_horizon': 16,
+        'n_diffusion_steps': 32,
+        'downsample': 32,
     },
 }
 
 maze2d_large_v1 = {
-    'diffusion':{
+    'diffusion': {
         'horizon': 384,
-        'n_diffusion_steps': 256,
-        'min_horizon': 48,
-    },
-}
-'''
-
-maze2d_umaze_v1 = {
-    'diffusion': {
-        'horizon': 32,
         'n_diffusion_steps': 32,
-    },
-}
-
-maze2d_medium_v1 = {
-    'diffusion': {
-        'horizon': 32,
-        'n_diffusion_steps': 32,
-    },
-}
-
-maze2d_large_v1 = {
-    'diffusion': {
-        'horizon': 32,
-        'n_diffusion_steps': 32,
+        'downsample': 32,
     },
 }

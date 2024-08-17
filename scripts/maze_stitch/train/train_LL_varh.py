@@ -8,7 +8,7 @@ import pdb
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.train.train-1_2'
+    config: str = 'config.stitch.train.train_LL_varh'
 
 args = Parser().parse_args('diffusion')
 

@@ -77,7 +77,6 @@ maze2d_umaze_v1 = {
     'plan':{
         'horizon': 128,
         'n_diffusion_steps': 64,
-        'min_horizon': 16,
     },
 }
 
@@ -85,7 +84,6 @@ maze2d_medium_v1 = {
     'plan':{
         'horizon': 256,
         'n_diffusion_steps': 256,
-        'min_horizon': 16,
     },
 }
 
@@ -93,7 +91,6 @@ maze2d_large_v1 = {
     'plan':{
         'horizon': 384,
         'n_diffusion_steps': 256,
-        'min_horizon': 48,
     },
 }
 

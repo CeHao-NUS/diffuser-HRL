@@ -8,7 +8,7 @@ import numpy as np
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.train.train-1_3'
+    config: str = 'config.stitch.train.train_HL_fixh'
 
 args = Parser().parse_args('diffusion')
 

@@ -1,5 +1,5 @@
-# plan for varh + NO guidance
-from diffuser.guides.policies import Policy
+# plan for varh + value guidance
+
 
 
 import pdb
@@ -29,15 +29,49 @@ diffusion_experiment = utils.load_diffusion(
     args.loadbase, args.dataset, args.diffusion_loadpath,
     epoch=args.diffusion_epoch, seed=args.seed,
 )
+value_experiment = utils.load_diffusion(
+    args.loadbase, args.dataset, args.value_loadpath,
+    epoch=args.value_epoch, seed=args.seed,
+)
 
-
+## ensure that the diffusion model and value function are compatible with each other
+utils.check_compatibility(diffusion_experiment, value_experiment)
 
 diffusion = diffusion_experiment.ema
 dataset = diffusion_experiment.dataset
 renderer = diffusion_experiment.renderer
 
+## initialize value guide
+value_function = value_experiment.ema
+guide_config = utils.Config(args.guide, model=value_function, verbose=False)
+guide = guide_config()
 
-policy = Policy(diffusion, dataset.normalizer)
+# logger_config = utils.Config(
+#     utils.Logger,
+#     renderer=renderer,
+#     logpath=args.savepath,
+#     vis_freq=args.vis_freq,
+#     max_render=args.max_render,
+# )
+
+## policies are wrappers around an unconditional diffusion model and a value guide
+policy_config = utils.Config(
+    args.policy,
+    guide=guide,
+    scale=args.scale,
+    diffusion_model=diffusion,
+    normalizer=dataset.normalizer,
+    preprocess_fns=args.preprocess_fns,
+    ## sampling kwargs
+    sample_fn=sampling.n_step_guided_p_sample,
+    n_guide_steps=args.n_guide_steps,
+    t_stopgrad=args.t_stopgrad,
+    scale_grad_by_std=args.scale_grad_by_std,
+    verbose=False,
+)
+
+# logger = logger_config()
+policy = policy_config()
 
 
 #---------------------------------- main loop ----------------------------------#
