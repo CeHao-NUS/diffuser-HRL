@@ -1,73 +1,82 @@
+# plan for varh + value guidance
 
-# plan for LL joint stitch
 
-import json
-import numpy as np
-from os.path import join
+
 import pdb
 
-from diffuser.guides.policies import Policy
-import diffuser.datasets as datasets
+import diffuser.sampling as sampling
 import diffuser.utils as utils
-
-
+import numpy as np
+from os.path import join
+import json
+#-----------------------------------------------------------------------------#
+#----------------------------------- setup -----------------------------------#
+#-----------------------------------------------------------------------------#
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.plan.plan-1_0'
-
-def stitch_batches(x):
-    # flatten, x.shape = (batch, time, dim)
-    x = x.reshape(-1, x.shape[-1])
-
-    # create a dim at 0
-    # x = x.unsqueeze(0)
-    x = x[np.newaxis, :]
-    return x
-
-#---------------------------------- setup ----------------------------------#
+    config: str = 'config.stitch.plan.plan-3_0'
 
 args = Parser().parse_args('plan')
 
-# logger = utils.Logger(args)
 
-env = datasets.load_environment(args.dataset)
-
+#-----------------------------------------------------------------------------#
 #---------------------------------- loading ----------------------------------#
+#-----------------------------------------------------------------------------#
 
-
-
+## load diffusion model and value function from disk
 diffusion_experiment = utils.load_diffusion(
     args.loadbase, args.dataset, args.diffusion_loadpath,
     epoch=args.diffusion_epoch, seed=args.seed,
 )
+value_experiment = utils.load_diffusion(
+    args.loadbase, args.dataset, args.value_loadpath,
+    epoch=args.value_epoch, seed=args.seed,
+)
+
+## ensure that the diffusion model and value function are compatible with each other
+utils.check_compatibility(diffusion_experiment, value_experiment)
 
 diffusion = diffusion_experiment.ema
 dataset = diffusion_experiment.dataset
 renderer = diffusion_experiment.renderer
 
-# policy = Policy(diffusion, dataset.normalizer)
+## initialize value guide
+value_function = value_experiment.ema
+guide_config = utils.Config(args.guide, model=value_function, verbose=False)
+guide = guide_config()
 
+# logger_config = utils.Config(
+#     utils.Logger,
+#     renderer=renderer,
+#     logpath=args.savepath,
+#     vis_freq=args.vis_freq,
+#     max_render=args.max_render,
+# )
+
+## policies are wrappers around an unconditional diffusion model and a value guide
 policy_config = utils.Config(
     args.policy,
-    guide=None,
+    guide=guide,
     scale=args.scale,
     diffusion_model=diffusion,
     normalizer=dataset.normalizer,
     preprocess_fns=args.preprocess_fns,
     ## sampling kwargs
-    sample_fn=args.sample_fun,
+    sample_fn=sampling.n_step_guided_p_sample,
     n_guide_steps=args.n_guide_steps,
     t_stopgrad=args.t_stopgrad,
     scale_grad_by_std=args.scale_grad_by_std,
     verbose=False,
-
-    batch_size=args.seg_length,
 )
 
+# logger = logger_config()
 policy = policy_config()
 
+
+
 #---------------------------------- main loop ----------------------------------#
+env = dataset.env
 
 observation = env.reset()
 
@@ -89,10 +98,9 @@ target = env._target
 # diffusion.horizon = args.plan_horizon
 
 cond = {
-    (args.seg_length-1, diffusion.horizon - 1): np.array([*target, 0, 0]),
+    diffusion.horizon - 1: np.array([*target, 0, 0]),
 }
 
-cond_plot = {diffusion.horizon * args.seg_length - 1: np.array([*target, 0, 0])}
 
 ## observations for rendering
 rollout = [observation.copy()]
@@ -105,22 +113,11 @@ for t in range(env.max_episode_steps):
     ## can replan if desired, but the open-loop plans are good enough for maze2d
     ## that we really only need to plan once
     if t == 0:
-        cond[(0,0)] = observation
-        # cond_plot[0] = observation
+        cond[0] = observation
 
         action, samples = policy(cond, batch_size=args.batch_size)
-
-        for idx in range(args.seg_length):
-            cond_plot[diffusion.horizon * idx] = samples.observations[idx][0]
-
-        actions_plan = stitch_batches(samples.actions)
-        observation_plan = stitch_batches(samples.observations)
-
-        actions = actions_plan[0]
-        sequence = observation_plan[0]
-
-        # actions = samples.actions[0]
-        # sequence = samples.observations[0]
+        actions = samples.actions[0]
+        sequence = samples.observations[0]
         print('!!!! last state', sequence[-1][:2], 'target', target[:2],
               'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
     # pdb.set_trace()
@@ -135,19 +132,6 @@ for t in range(env.max_episode_steps):
 
     ## can use actions or define a simple controller based on state predictions
     action = next_waypoint[:2] - state[:2] + (next_waypoint[2:] - state[2:])
-    # pdb.set_trace()
-    ####
-
-    # else:
-    #     actions = actions[1:]
-    #     if len(actions) > 1:
-    #         action = actions[0]
-    #     else:
-    #         # action = np.zeros(2)
-    #         action = -state[2:]
-    #         pdb.set_trace()
-
-
 
     next_observation, reward, terminal, _ = env.step(action)
     total_reward += reward
@@ -169,18 +153,16 @@ for t in range(env.max_episode_steps):
 
     # if t % args.vis_freq == 0 or terminal:
     
-    if t == 0: 
-        ll_fullpath = join(args.savepath, 'LL.png')
-        renderer.composite(ll_fullpath, samples.observations, ncol=1,  conditions=cond)
-
-        fullpath = join(args.savepath, 'whole.png')
-        renderer.composite(fullpath, observation_plan, ncol=1, conditions=cond_plot)
+    if t == 0:
+        fullpath = join(args.savepath, 'LL.png')
+        renderer.composite(fullpath, samples.observations[:, :, :diffusion.horizon], ncol=1,
+                                      conditions=cond)
     # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
 
     if terminal or t == env.max_episode_steps-1:
         ## save rollout thus far
-        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,
-                           conditions=cond_plot)
+        renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,        
+                           conditions=cond)
 
         # renderer.render_rollout(join(args.savepath, f'rollout.mp4'), rollout, fps=80)
 
@@ -198,3 +180,4 @@ json_path = join(args.savepath, 'rollout.json')
 json_data = {'score': score, 'step': t, 'return': total_reward, 'term': terminal,
     'epoch_diffusion': diffusion_experiment.epoch}
 json.dump(json_data, open(json_path, 'w'), indent=2, sort_keys=True)
+

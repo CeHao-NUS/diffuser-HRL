@@ -45,7 +45,7 @@ class Trainer(object):
         step_start_ema=2000,
         update_ema_every=10,
         log_freq=100,
-        sample_freq=1000,
+        sample_freq=5000,
         save_freq=1000,
         label_freq=100000,
         save_parallel=False,
