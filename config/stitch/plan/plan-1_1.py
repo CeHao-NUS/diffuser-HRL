@@ -25,6 +25,7 @@ base = {
         'diffusion_loadpath': 'f:diffusion/LL_diffuser_H{horizon}_T{n_diffusion_steps}',
         'diffusion_epoch': 'latest',
 
+
         'guide_LL': None,
         'value_LL': None,
         # 'sample_fun': sampling.stitch_functions.default_sample_fn,
@@ -48,7 +49,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/plan-1_0/',
+        'prefix': 'plans/plan-1_1/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
@@ -70,6 +71,7 @@ base = {
     },
 }
 
+'''
 # original diffuser
 maze2d_umaze_v1 = {
     'plan':{
@@ -92,5 +94,29 @@ maze2d_large_v1 = {
         'horizon': 384,
         'n_diffusion_steps': 256,
         'min_horizon': 48,
+    },
+}
+
+'''
+
+
+maze2d_umaze_v1 = {
+    'plan': {
+        'horizon': 32,
+        'n_diffusion_steps': 32,
+    },
+}
+
+maze2d_medium_v1 = {
+    'plan': {
+        'horizon': 32,
+        'n_diffusion_steps': 32,
+    },
+}
+
+maze2d_large_v1 = {
+    'plan': {
+        'horizon': 32,
+        'n_diffusion_steps': 32,
     },
 }
