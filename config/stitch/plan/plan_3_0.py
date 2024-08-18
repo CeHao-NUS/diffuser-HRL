@@ -32,12 +32,14 @@ base = {
         'HL_value_loadpath': None,
         'HL_value_epoch': None,
 
-        'downsample': 32,
+        'downsample': 16,
+        'seg_length': 11,
 
-        'seg_length': 3,
+        'HL_guide': 'sampling.ValueGuide',
+        'HL_policy': 'sampling.GuidedPolicy',
+        'LL_guide': 'sampling.ValueGuide',
+        'LL_policy': 'sampling.GuidedPolicy',
 
-        'guide': 'sampling.ValueGuide',
-        'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
         'preprocess_fns': [],
@@ -80,10 +82,10 @@ base = {
 
 maze2d_umaze_v1 = {
     'plan': {
-        'LL_horizon': 32,
-        'HL_horizon': 128,
+        'LL_horizon': 16,
+        'HL_horizon': 192,
         'n_diffusion_steps': 32,
-        'seg_length': 3,
+        'seg_length': 11,
     },
 }
 

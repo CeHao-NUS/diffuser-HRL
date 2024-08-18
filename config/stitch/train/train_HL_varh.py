@@ -8,6 +8,7 @@ diffusion_args_to_watch = [
     ('prefix', ''),
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
+    ('downsample', 'D'),
     ('min_horizon', 'mH'),
 ]
 
@@ -17,6 +18,7 @@ value_args_to_watch = [
     ('n_diffusion_steps', 'T'),
     ## value kwargs
     ('discount', 'd'),
+    ('downsample', 'D'),
     ('min_horizon', 'mH'),
 ]
 

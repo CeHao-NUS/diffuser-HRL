@@ -11,11 +11,11 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args":[
-
-                "--prefix", "test_stitch",
-                // "--dataset", "maze2d-medium-v1"
-                // "--dataset", "maze2d-large-v1",
-                "--config", "config.stitch.plan.plan_1_2"
+                "--config", "config.stitch.train.train_HL_varh",
+                "--horizon", "192",
+                "--n_diffusion_steps", "32",
+                "--downsample", "16",
+                "--min_horizon", "1"
             ]
         }
     ]

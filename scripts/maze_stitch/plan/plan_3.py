@@ -75,15 +75,15 @@ if args.LL_value_loadpath is not None:
     LL_policy_config = utils.Config(
         args.LL_policy,
         guide=LL_guide,
-        scale=args.LL_scale,
+        scale=args.scale,
         diffusion_model=LL_diffusion,
         normalizer=LL_dataset.normalizer,
-        preprocess_fns=args.LL_preprocess_fns,
+        preprocess_fns=args.preprocess_fns,
         ## sampling kwargs
         sample_fn=sampling.n_step_guided_p_sample,
-        n_guide_steps=args.LL_n_guide_steps,
-        t_stopgrad=args.LL_t_stopgrad,
-        scale_grad_by_std=args.LL_scale_grad_by_std,
+        n_guide_steps=args.n_guide_steps,
+        t_stopgrad=args.t_stopgrad,
+        scale_grad_by_std=args.scale_grad_by_std,
         verbose=False,
     )
 
@@ -127,15 +127,15 @@ if args.HL_value_loadpath is not None:
     HL_policy_config = utils.Config(
         args.HL_policy,
         guide=HL_guide,
-        scale=args.HL_scale,
+        scale=args.scale,
         diffusion_model=HL_diffusion,
         normalizer=HL_dataset.normalizer,
-        preprocess_fns=args.HL_preprocess_fns,
+        preprocess_fns=args.preprocess_fns,
         ## sampling kwargs
         sample_fn=sampling.n_step_guided_p_sample,
-        n_guide_steps=args.HL_n_guide_steps,
-        t_stopgrad=args.HL_t_stopgrad,
-        scale_grad_by_std=args.HL_scale_grad_by_std,
+        n_guide_steps=args.n_guide_steps,
+        t_stopgrad=args.t_stopgrad,
+        scale_grad_by_std=args.scale_grad_by_std,
         verbose=False,
     )
 

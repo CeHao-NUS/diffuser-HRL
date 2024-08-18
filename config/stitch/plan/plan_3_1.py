@@ -2,8 +2,15 @@
 
 from config.stitch.plan.plan_3_0 import *
 
-base['plan']['HL_value_loadpath'] = 'f:values/HL_varh_value_H{HL_horizon}_T{n_diffusion_steps}_D{downsample}'
-base['plan']['HL_value_epoch'] = 'latest'
+base['plan'].update({
+    'HL_diffusion_loadpath': 'f:diffusion/HL_varh_diffuser_H{HL_horizon}_T{n_diffusion_steps}_D{downsample}_mH{HL_min_horizon}',
+    'HL_diffusion_epoch': 'latest',
+    'HL_value_loadpath': 'f:values/HL_varh_value_H{HL_horizon}_T{n_diffusion_steps}_d{discount}_D{downsample}_mH{HL_min_horizon}',
+    'HL_value_epoch': 'latest',
+    'HL_min_horizon': 1,
+})
+
+
 
 # from diffuser.utils import watch
 # import diffuser.sampling as sampling
