@@ -15,6 +15,7 @@
                 "--prefix", "test_stitch",
                 // "--dataset", "maze2d-medium-v1"
                 // "--dataset", "maze2d-large-v1",
+                "--config", "config.stitch.plan.plan_1_2"
             ]
         }
     ]

@@ -60,7 +60,7 @@ base = {
     },
 }
 
-'''
+# '''
 # original diffuser
 maze2d_umaze_v1 = {
     'diffusion':{
@@ -82,8 +82,8 @@ maze2d_large_v1 = {
         'n_diffusion_steps': 256,
     },
 }
-'''
 # '''
+'''
 maze2d_umaze_v1 = {
     'diffusion': {
         'horizon': 16,
@@ -104,7 +104,7 @@ maze2d_large_v1 = {
         'n_diffusion_steps': 32,
     },
 }
-# '''
+'''
 
 # maze2d_umaze_v1 = {
 #     'diffusion':{

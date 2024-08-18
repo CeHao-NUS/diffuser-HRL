@@ -50,7 +50,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/plan-2_0/',
+        'prefix': 'plans/plan_2_0/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,

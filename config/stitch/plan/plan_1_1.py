@@ -1,4 +1,5 @@
-# p-1_2: LL_varh + guide
+# p-1_1: LL_varh
+
 import socket
 
 from diffuser.utils import watch
@@ -22,14 +23,15 @@ base = {
     'plan': {
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/LL_varh_diffuser_H{horizon}_T{n_diffusion_steps}',
+        'diffusion_loadpath': 'f:diffusion/LL_varh_diffuser_H{horizon}_T{n_diffusion_steps}_mH{min_horizon}',
         'diffusion_epoch': 'latest',
 
-        'value_loadpath': 'f:diffusion/LL_varh_value_H{value_horizon}_T{n_diffusion_steps}_d{discount}',
-        'value_epoch': 'latest',
+        'value_loadpath': None,
+        'value_epoch': None,
 
         'sample_fun': sampling.stitch_functions.default_sample_fn,
 
+        'guide': 'sampling.ValueGuide',
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
@@ -46,7 +48,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/plan-1_1/',
+        'prefix': 'plans/plan_1_1/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
@@ -73,6 +75,7 @@ maze2d_umaze_v1 = {
     'plan':{
         'horizon': 128,
         'n_diffusion_steps': 64,
+        'min_horizon': 16,
     },
 }
 
@@ -80,6 +83,7 @@ maze2d_medium_v1 = {
     'plan':{
         'horizon': 256,
         'n_diffusion_steps': 256,
+        'min_horizon': 16,
     },
 }
 
@@ -87,5 +91,6 @@ maze2d_large_v1 = {
     'plan':{
         'horizon': 384,
         'n_diffusion_steps': 256,
+        'min_horizon': 16,
     },
 }

@@ -14,7 +14,7 @@ import diffuser.utils as utils
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.plan.plan-1_1'
+    config: str = 'config.stitch.plan.plan_1_1'
 
 def stitch_batches(x):
     # flatten, x.shape = (batch, time, dim)

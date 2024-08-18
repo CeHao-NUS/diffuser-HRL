@@ -15,7 +15,7 @@ import json
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.plan.plan-3_0'
+    config: str = 'config.stitch.plan.plan_3_0'
 
 args = Parser().parse_args('plan')
 

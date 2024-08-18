@@ -1,5 +1,4 @@
-# p-2_0: LL diffuer stitch
-
+# p-1_0: LL diffuser
 
 import socket
 
@@ -15,7 +14,6 @@ plan_args_to_watch = [
     ('discount', 'd'),
     ('normalizer', ''),
     ('batch_size', 'b'),
-    ('seg_length', 'L'),
     ##
     ('conditional', 'cond'),
 ]
@@ -31,9 +29,7 @@ base = {
         'value_loadpath': None,
         'value_epoch': None,
 
-        'sample_fun': sampling.stitch_functions.LL_LL_joint_sample_fn,
-
-        'seg_length': 3,
+        'sample_fun': sampling.stitch_functions.default_sample_fn,
 
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
@@ -51,7 +47,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/plan-2_0/',
+        'prefix': 'plans/plan_1_0/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
@@ -73,23 +69,24 @@ base = {
     },
 }
 
+# original diffuser
 maze2d_umaze_v1 = {
-    'plan': {
-        'horizon': 32,
-        'n_diffusion_steps': 32,
+    'plan':{
+        'horizon': 128,
+        'n_diffusion_steps': 64,
     },
 }
 
 maze2d_medium_v1 = {
-    'plan': {
-        'horizon': 32,
-        'n_diffusion_steps': 32,
+    'plan':{
+        'horizon': 256,
+        'n_diffusion_steps': 256,
     },
 }
 
 maze2d_large_v1 = {
-    'plan': {
-        'horizon': 32,
-        'n_diffusion_steps': 32,
+    'plan':{
+        'horizon': 384,
+        'n_diffusion_steps': 256,
     },
 }

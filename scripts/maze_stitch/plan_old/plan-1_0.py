@@ -12,7 +12,7 @@ import diffuser.utils as utils
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.plan.plan-1_0'
+    config: str = 'config.stitch.plan.plan_1_0'
 
 #---------------------------------- setup ----------------------------------#
 

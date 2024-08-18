@@ -7,7 +7,7 @@ current_jobs=0
 # dataset="maze2d-medium-v1"
 dataset="maze2d-large-v1"
 
-plan_task="plan-2_0"
+plan_task="plan_2_0"
 
 for idx in {0..150}
 do
