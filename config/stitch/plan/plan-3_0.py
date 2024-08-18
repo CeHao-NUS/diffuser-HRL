@@ -1,32 +1,41 @@
-import socket
+# p-3_0: HL_fix + LL_fix
+
 
 from diffuser.utils import watch
+import diffuser.sampling as sampling
 
 plan_args_to_watch = [
     ('prefix', ''),
     ##
-    ('horizon', 'H'),
+    ('HL_horizon', 'H'),
     ('n_diffusion_steps', 'T'),
-    ('value_horizon', 'V'),
-    ('discount', 'd'),
+    # ('value_horizon', 'V'),
+    # ('discount', 'd'),
     ('normalizer', ''),
-    ('batch_size', 'b'),
+    # ('batch_size', 'b'),
+    ('seg_length', 'L'),
     ##
     ('conditional', 'cond'),
-    ('min_horizon', 'mH'),
 ]
+
+
 
 base = {
     'plan': {
-        ## loading
-        'diffusion_loadpath': 'f:diffusion/LL_varh_diffuser_H{horizon}_T{n_diffusion_steps}_mH{min_horizon}',
-        'value_loadpath': 'f:values/LL_varh_value_H{horizon}_T{n_diffusion_steps}_d{discount}_mH{min_horizon}',
+        'LL_diffusion_loadpath': 'f:diffusion/LL_diffuser_H{LL_horizon}_T{n_diffusion_steps}',
+        'LL_diffusion_epoch': 'latest',
+        'LL_value_loadpath': None,
+        'LL_value_epoch': None,
 
-        'diffusion_epoch': 'latest',
-        'value_epoch': 'latest',
+        'HL_diffusion_loadpath': 'f:diffusion/HL_diffuser_H{HL_horizon}_T{n_diffusion_steps}_D{downsample}',
+        'HL_diffusion_epoch': 'latest',
+        'HL_value_loadpath': None,
+        'HL_value_epoch': None,
 
+        'downsample': 32,
 
-        'guide': 'sampling.ValueGuide',
+        'seg_length': 3,
+
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
@@ -36,14 +45,14 @@ base = {
 
         ## sample_kwargs
         'n_guide_steps': 2,
-        'scale': 0.5,
+        'scale': 1.0,
         't_stopgrad': 2,
         'scale_grad_by_std': True,
 
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/guided_varh',
+        'prefix': 'plans/plan-3_0/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
@@ -51,10 +60,12 @@ base = {
         ## diffusion model
         'horizon': 256,
         'n_diffusion_steps': 256,
-        'min_horizon': 16,
 
         ## value function
         'discount': 0.99,
+
+        ## loading
+        
 
         'verbose': True,
         'suffix': '0',
@@ -67,28 +78,28 @@ base = {
 }
 
 maze2d_umaze_v1 = {
-    'plan':{
-        'horizon': 128,
-        'n_diffusion_steps': 64,
-        'min_horizon': 16,
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 128,
+        'n_diffusion_steps': 32,
+        'seg_length': 3,
     },
-
 }
 
 maze2d_medium_v1 = {
-    'plan':{
-        'horizon': 256,
-        'n_diffusion_steps': 256,
-        'min_horizon': 16,
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 256,
+        'n_diffusion_steps': 32,
+        'seg_length': 7,
     },
-
 }
 
 maze2d_large_v1 = {
-    'plan':{
-        'horizon': 384,
-        'n_diffusion_steps': 256,
-        'min_horizon': 48,
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 384,
+        'n_diffusion_steps': 32,
+        'seg_length': 11,
     },
-
 }

@@ -1,6 +1,8 @@
-# p-1_0: LL diffuser
 
-import socket
+'''
+1. load two diffusers
+
+'''
 
 from diffuser.utils import watch
 import diffuser.sampling as sampling
@@ -8,30 +10,31 @@ import diffuser.sampling as sampling
 plan_args_to_watch = [
     ('prefix', ''),
     ##
-    ('horizon', 'H'),
+    ('HL_horizon', 'H'),
     ('n_diffusion_steps', 'T'),
-    ('value_horizon', 'V'),
-    ('discount', 'd'),
+    # ('value_horizon', 'V'),
+    # ('discount', 'd'),
     ('normalizer', ''),
-    ('batch_size', 'b'),
+    # ('batch_size', 'b'),
+    ('seg_length', 'L'),
     ##
     ('conditional', 'cond'),
 ]
 
 
+
 base = {
     'plan': {
+        'LL_diffusion_loadpath': 'f:diffusion/LL_diffuser_H{LL_horizon}_T{n_diffusion_steps}',
+        'LL_diffusion_epoch': 'latest',
 
-        ## loading
-        'diffusion_loadpath': 'f:diffusion/LL_diffuser_H{horizon}_T{n_diffusion_steps}',
-        'diffusion_epoch': 'latest',
+        'HL_diffusion_loadpath': 'f:diffusion/HL_diffuser_H{HL_horizon}_T{n_diffusion_steps}_D{downsample}',
+        'HL_diffusion_epoch': 'latest',
+        'downsample': 32,
 
-        'value_loadpath': None,
-        'value_epoch': None,
+        'seg_length': 3,
 
-        'sample_fun': sampling.stitch_functions.default_sample_fn,
-
-        'policy': 'sampling.GuidedPolicy',
+        # 'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
         'preprocess_fns': [],
@@ -47,7 +50,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/plan-1_0/',
+        'prefix': 'plans/plan-2_0/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
@@ -59,6 +62,9 @@ base = {
         ## value function
         'discount': 0.99,
 
+        ## loading
+        
+
         'verbose': True,
         'suffix': '0',
 
@@ -69,24 +75,29 @@ base = {
     },
 }
 
-# original diffuser
 maze2d_umaze_v1 = {
-    'plan':{
-        'horizon': 128,
-        'n_diffusion_steps': 64,
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 128,
+        'n_diffusion_steps': 32,
+        'seg_length': 3,
     },
 }
 
 maze2d_medium_v1 = {
-    'plan':{
-        'horizon': 256,
-        'n_diffusion_steps': 256,
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 256,
+        'n_diffusion_steps': 32,
+        'seg_length': 7,
     },
 }
 
 maze2d_large_v1 = {
-    'plan':{
-        'horizon': 384,
-        'n_diffusion_steps': 256,
+    'plan': {
+        'LL_horizon': 32,
+        'HL_horizon': 384,
+        'n_diffusion_steps': 32,
+        'seg_length': 11,
     },
 }

@@ -1,5 +1,4 @@
-# p-1_0: LL diffuser
-
+# p-1_2: LL_varh + guide
 import socket
 
 from diffuser.utils import watch
@@ -23,11 +22,11 @@ base = {
     'plan': {
 
         ## loading
-        'diffusion_loadpath': 'f:diffusion/LL_diffuser_H{horizon}_T{n_diffusion_steps}',
+        'diffusion_loadpath': 'f:diffusion/LL_varh_diffuser_H{horizon}_T{n_diffusion_steps}',
         'diffusion_epoch': 'latest',
 
-        'value_loadpath': None,
-        'value_epoch': None,
+        'value_loadpath': 'f:diffusion/LL_varh_value_H{value_horizon}_T{n_diffusion_steps}_d{discount}',
+        'value_epoch': 'latest',
 
         'sample_fun': sampling.stitch_functions.default_sample_fn,
 
@@ -47,7 +46,7 @@ base = {
         ## serialization
         'loadbase': None,
         'logbase': 'logs',
-        'prefix': 'plans/plan-1_0/',
+        'prefix': 'plans/plan-1_1/',
         'exp_name': watch(plan_args_to_watch),
         'vis_freq': 10,
         'max_render': 8,
