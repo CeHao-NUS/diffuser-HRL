@@ -15,6 +15,8 @@ base['plan'].update({
     'LL_value_loadpath': 'f:values/LL_varh_value_H{LL_horizon}_T{n_diffusion_steps}_d{discount}_mH{LL_min_horizon}',
     'LL_value_epoch': 'latest',
     'LL_min_horizon': 1,
+
+    'prefix': 'plans/plan_3_3/'
 })
 # from diffuser.utils import watch
 # import diffuser.sampling as sampling

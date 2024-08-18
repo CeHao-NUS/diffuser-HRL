@@ -8,6 +8,8 @@ base['plan'].update({
     'HL_value_loadpath': 'f:values/HL_varh_value_H{HL_horizon}_T{n_diffusion_steps}_d{discount}_D{downsample}_mH{HL_min_horizon}',
     'HL_value_epoch': 'latest',
     'HL_min_horizon': 1,
+
+    'prefix': 'plans/plan_3_1/'
 })
 
 

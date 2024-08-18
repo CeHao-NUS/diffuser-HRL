@@ -29,3 +29,4 @@ python scripts/maze_stitch/plan/plan_3_0.py --dataset maze2d-umaze-v1 \
 --conditional True --init_pose "(1,2)" --target "(1, 1)" --suffix "near2" --prefix plans/plan_3_0 --seg_length $idx  &
 
 wait
+

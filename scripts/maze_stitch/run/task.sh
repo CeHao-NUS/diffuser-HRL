@@ -9,7 +9,7 @@ python scripts/maze_stitch/train/train_diffuser.py --config 'config.stitch.train
 python scripts/maze_stitch/plan/plan_1.py --config 'config.stitch.plan.plan_1_0'
 
 # p-1_1: LL_varh
-python scripts/maze_stitch/train/train_diffuser.py --config 'config.stitch.train.train_LL_varh'
+python scripts/maze_stitch/train/train_diffuser.py --config 'config.stitch.train.train_LL_varh' 
 python scripts/maze_stitch/plan/plan_1.py --config 'config.stitch.plan.plan_1_1'
 
 # p-1_2: LL_value_varh
@@ -54,3 +54,10 @@ python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_2'
 # p-3_3: HL_varh(guide) + LL_varh(guide)
 python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_3' --seg_length 11 \
  --LL_horizon 16 --HL_horizon 192 --n_diffusion_steps 32 --downsample 16 --LL_min_horizon 1 --HL_min_horizon 1
+
+
+
+# =========== new debug
+# python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_2' --seg_length 11 \
+#  --LL_horizon 16 --HL_horizon 192 --n_diffusion_steps 32 --downsample 16 --LL_min_horizon 1 \
+#  --LL_diffusion_loadpath 'None'

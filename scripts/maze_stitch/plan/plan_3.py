@@ -85,6 +85,7 @@ if args.LL_value_loadpath is not None:
         t_stopgrad=args.t_stopgrad,
         scale_grad_by_std=args.scale_grad_by_std,
         verbose=False,
+        batch_size=args.seg_length,
     )
 
     LL_policy = LL_policy_config()
