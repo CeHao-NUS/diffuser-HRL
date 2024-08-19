@@ -1,4 +1,4 @@
-# bash scripts/maze_stitch/run/exp_for.sh 
+# bash scripts/maze_stitch/run/exp_for_p_3.sh 
 
 # p-3_0: HL_fix + LL_fix
 for init_pose in "(1,1.5)" "(1,1.1)" "(3,1)" "(3,2)" "(3,1.5)" "(3,3)" "(2,3)" "(1,3)" "(1,2)"

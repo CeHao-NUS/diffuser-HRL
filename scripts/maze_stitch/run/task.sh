@@ -61,3 +61,7 @@ python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_3'
 # python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_2' --seg_length 11 \
 #  --LL_horizon 16 --HL_horizon 192 --n_diffusion_steps 32 --downsample 16 --LL_min_horizon 1 \
 #  --LL_diffusion_loadpath 'None'
+
+python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_2' --seg_length 11 \
+    --LL_horizon 16 --HL_horizon 192 --n_diffusion_steps 32 --downsample 16 --LL_min_horizon 1 \
+    --conditional True --init_pose "(1,3)" --target "(1, 1)" --suffix "(1,3)"
