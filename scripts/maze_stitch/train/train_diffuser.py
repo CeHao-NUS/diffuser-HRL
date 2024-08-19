@@ -19,13 +19,16 @@ args = Parser().parse_args('diffusion')
 
 if 'downsample' in args._dict:
     downsample = args.downsample
+    model_horizon = args.horizon // downsample
 else:
     downsample = 1
+    model_horizon = args.horizon
 
 if 'min_horizon' in args._dict:
     min_horizon = args.min_horizon
 else:
     min_horizon = 1
+
 
 
 dataset_config = utils.Config(
@@ -61,7 +64,7 @@ action_dim = dataset.action_dim
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon=args.horizon,
+    horizon=model_horizon,
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
@@ -71,7 +74,7 @@ model_config = utils.Config(
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=args.horizon,
+    horizon=model_horizon,
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,

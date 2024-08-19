@@ -19,13 +19,16 @@ args = Parser().parse_args('values')
 
 if 'downsample' in args._dict:
     downsample = args.downsample
+    model_horizon = args.horizon // downsample
 else:
     downsample = 1
+    model_horizon = args.horizon
 
 if 'min_horizon' in args._dict:
     min_horizon = args.min_horizon
 else:
     min_horizon = 1
+
 
 dataset_config = utils.Config(
     args.loader,
