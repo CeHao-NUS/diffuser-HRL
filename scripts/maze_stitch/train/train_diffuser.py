@@ -17,6 +17,17 @@ args = Parser().parse_args('diffusion')
 #---------------------------------- dataset ----------------------------------#
 #-----------------------------------------------------------------------------#
 
+if 'downsample' in args._dict:
+    downsample = args.downsample
+else:
+    downsample = 1
+
+if 'min_horizon' in args._dict:
+    min_horizon = args.min_horizon
+else:
+    min_horizon = 1
+
+
 dataset_config = utils.Config(
     args.loader,
     savepath=(args.savepath, 'dataset_config.pkl'),
@@ -26,6 +37,8 @@ dataset_config = utils.Config(
     preprocess_fns=args.preprocess_fns,
     use_padding=args.use_padding,
     max_path_length=args.max_path_length,
+    downsample=downsample,
+    min_horizon=min_horizon,
 )
 
 render_config = utils.Config(

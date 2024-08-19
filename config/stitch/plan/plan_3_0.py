@@ -48,7 +48,8 @@ base = {
 
         ## sample_kwargs
         'n_guide_steps': 2,
-        'scale': 0.0,
+        'LL_scale': 0.1,
+        'HL_scale': 1.0,
         't_stopgrad': 2,
         'scale_grad_by_std': True,
 

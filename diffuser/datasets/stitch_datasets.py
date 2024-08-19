@@ -16,7 +16,7 @@ class SequenceDataset(torch.utils.data.Dataset):
 
     def __init__(self, env='hopper-medium-replay', horizon=64,
         normalizer='LimitsNormalizer', preprocess_fns=[], max_path_length=1000,
-        max_n_episodes=10000, termination_penalty=0, use_padding=True, seed=None):
+        max_n_episodes=10000, termination_penalty=0, use_padding=True, seed=None, **kwargs):
         self.preprocess_fn = get_preprocess_fn(preprocess_fns, env)
         self.env = env = load_environment(env)
         self.env.seed(seed)
@@ -177,12 +177,13 @@ class HL_goal_dataset(LL_goal_dataset):
 
 
 class LL_varh_dataset(LL_goal_dataset):
-    def __init__(self, *args, discount=0.99, normed=False, min_horizon=1, **kwargs):
+    def __init__(self, *args, discount=0.99, normed=False, min_horizon=1, downsample=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.min_horizon = min_horizon
         self.discount = discount
         self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
         self.normed = normed
+        self.downsample = downsample
 
     def __getitem__(self, idx):
         # 1. get intermediate point
@@ -250,9 +251,6 @@ class LL_varh_value_dataset(LL_varh_dataset):
         return value_batch
     
 class HL_varh_dataset(LL_varh_dataset):
-    def __init__(self, *args, downsample=1, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.downsample = downsample
 
     def __getitem__(self, idx):
         batch = super().__getitem__(idx)
@@ -270,9 +268,6 @@ class HL_varh_dataset(LL_varh_dataset):
         return batch
     
 class HL_varh_value_dataset(LL_varh_value_dataset):
-    def __init__(self, *args, downsample=1, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.downsample = downsample
 
     def __getitem__(self, idx):
         batch = super().__getitem__(idx)

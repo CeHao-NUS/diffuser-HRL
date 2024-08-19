@@ -75,7 +75,7 @@ if args.LL_value_loadpath is not None:
     LL_policy_config = utils.Config(
         args.LL_policy,
         guide=LL_guide,
-        scale=args.scale,
+        scale=args.LL_scale,
         diffusion_model=LL_diffusion,
         normalizer=LL_dataset.normalizer,
         preprocess_fns=args.preprocess_fns,
@@ -128,7 +128,7 @@ if args.HL_value_loadpath is not None:
     HL_policy_config = utils.Config(
         args.HL_policy,
         guide=HL_guide,
-        scale=args.scale,
+        scale=args.HL_scale,
         diffusion_model=HL_diffusion,
         normalizer=HL_dataset.normalizer,
         preprocess_fns=args.preprocess_fns,

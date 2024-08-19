@@ -12,22 +12,18 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.stitch.plan.plan_3_2",
-                "--seg_length",
-                "11",
-                "--LL_horizon",
-                "16",
-                "--HL_horizon",
+                "config.stitch.train.train_HL_varh",
+                "--horizon",
                 "192",
                 "--n_diffusion_steps",
                 "32",
                 "--downsample",
                 "16",
-                "--LL_min_horizon",
-                "1",
-                "--prefix" , "test",
+                "--min_horizon",
+                "1"
             ]
         }
     ]
 }
+
 

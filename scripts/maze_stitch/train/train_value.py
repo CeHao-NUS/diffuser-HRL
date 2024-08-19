@@ -17,6 +17,16 @@ args = Parser().parse_args('values')
 #---------------------------------- dataset ----------------------------------#
 #-----------------------------------------------------------------------------#
 
+if 'downsample' in args._dict:
+    downsample = args.downsample
+else:
+    downsample = 1
+
+if 'min_horizon' in args._dict:
+    min_horizon = args.min_horizon
+else:
+    min_horizon = 1
+
 dataset_config = utils.Config(
     args.loader,
     savepath=(args.savepath, 'dataset_config.pkl'),
@@ -30,6 +40,8 @@ dataset_config = utils.Config(
     discount=args.discount,
     termination_penalty=args.termination_penalty,
     normed=args.normed,
+    downsample=downsample,
+    min_horizon=min_horizon,
 )
 
 render_config = utils.Config(
