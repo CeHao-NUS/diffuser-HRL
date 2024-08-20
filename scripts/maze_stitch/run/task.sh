@@ -20,12 +20,14 @@ python scripts/maze_stitch/plan/plan_1.py --config 'config.stitch.plan.plan_1_2'
 # p1-3: HL_varh
 python scripts/maze_stitch/train/train_diffuser.py --config 'config.stitch.train.train_HL_varh' \
  --horizon 128 --n_diffusion_steps 32 --downsample 16 --min_horizon 1
-python scripts/maze_stitch/plan/plan_1.py --config 'config.stitch.plan.plan_1_3' \
- --horizon 128 --n_diffusion_steps 32 --downsample 16 --min_horizon 1
+python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_0' --seg_length 7 \
+ --LL_horizon 16 --HL_horizon 128 --n_diffusion_steps 32 --downsample 16
 
 # p1-4: HL_value_varh
-python scripts/maze_stitch/train/train_diffuser.py --config 'config.stitch.train.train_HL_varh' \
+python scripts/maze_stitch/train/train_value.py --config 'config.stitch.train.train_HL_varh' \
  --horizon 128 --n_diffusion_steps 32 --downsample 16 --min_horizon 1
+python scripts/maze_stitch/plan/plan_3.py --config 'config.stitch.plan.plan_3_1' --seg_length 7 \
+ --LL_horizon 16 --HL_horizon 128 --n_diffusion_steps 32 --downsample 16  --HL_min_horizon 1
 
 
 # p-2_0: LL diffuer stitch
