@@ -35,6 +35,9 @@ base = {
         'downsample': 16,
         'seg_length': 11,
 
+        'HL_batch_size': 1,
+        'LL_goal_reach': True,
+
         'HL_guide': 'sampling.ValueGuide',
         'HL_policy': 'sampling.GuidedPolicy',
         'LL_guide': 'sampling.ValueGuide',

@@ -8,6 +8,7 @@ p-3_3: HL_varh(guide) + LL_varh(guide)
 
 import json
 import numpy as np
+import torch
 from os.path import join
 import pdb
 
@@ -21,6 +22,50 @@ class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
     config: str = 'config.stitch.plan.plan_2_0'
 
+
+def sort_by_values(x, values):
+    # inds = torch.argsort(values, descending=True)
+    values = values.detach().cpu().numpy()
+    inds = np.argsort(values)[::-1] # descending
+    x = x[inds]
+    values = values[inds]
+    return x, values
+
+def repeat_conditions(cond, batch_size):
+    new_cond = {}
+    for idx in range(batch_size):
+        for k, v in cond.items():
+            new_cond[(idx, k[1])] = v
+    return new_cond
+
+def check_subgoal_reached(observation, target, tol=0.05):
+    return np.linalg.norm(observation[:2] - target[:2]) < tol
+
+def short_cut_LL_trajectory(observations, actions, cond, tol):
+    # iterate all sub-seq. sequence[idx]
+    # if sequence[idx] is close to cond[(idx, last)], then stop here. And continue.
+
+    # do rememebr the length of each sub-seq. sequence[idx]
+    # remember to cut the actions as well
+
+    stitched_obs = None
+    length_of_subseq = {}
+    cut_cond = {0: observations[0, 0]}
+
+    batch_size = observations.shape[0]
+    traj_length = observations.shape[1]
+
+    for idx in range(batch_size):
+        for t in range(traj_length):
+            if check_subgoal_reached(observations[idx, t], cond[(idx, traj_length-1)], tol):
+                stitched_obs = np.concatenate((stitched_obs, observations[idx, :t+1])) if (stitched_obs is not None) else observations[idx, :t+1]
+                length_of_subseq[idx] = t+1
+                cut_cond[len(stitched_obs)-1] = stitched_obs[-1]
+                break
+
+    return stitched_obs, length_of_subseq, cut_cond
+
+
 def stitch_batches(x):
     # flatten, x.shape = (batch, time, dim)
     x = x.reshape(-1, x.shape[-1])
@@ -29,9 +74,6 @@ def stitch_batches(x):
     # x = x.unsqueeze(0)
     x = x[np.newaxis, :]
     return x
-
-def check_subgoal_reached(observation, target, tol=0.05):
-    return np.linalg.norm(observation[:2] - target[:2]) < tol
 
 #---------------------------------- setup ----------------------------------#
 
@@ -138,6 +180,7 @@ if args.HL_value_loadpath is not None:
         t_stopgrad=args.t_stopgrad,
         scale_grad_by_std=args.scale_grad_by_std,
         verbose=False,
+        batch_size=args.HL_batch_size,
     )
 
     HL_policy = HL_policy_config()
@@ -185,32 +228,47 @@ for t in range(env.max_episode_steps):
     if t == 0:
         # +++++++++++++ HL +++++++++++++ #
         HL_cond[(0,0)] = observation
+
+        if args.HL_batch_size > 1:
+            HL_cond = repeat_conditions(HL_cond, args.HL_batch_size)
+
         HL_action, HL_samples = HL_policy(HL_cond, batch_size=args.batch_size)
 
-        hl_obs = HL_samples.observations[0]
+        if args.HL_batch_size > 1:
+            hl_obs, hl_values = sort_by_values(HL_samples.observations, HL_samples.values)
+            hl_goal = hl_obs[0]
+        else:
+            hl_obs = HL_samples.observations
+            hl_goal = HL_samples.observations[0]
 
         for idx in range(args.seg_length):
-            cond_plot[LL_diffusion.horizon * idx] = hl_obs[idx]
+            cond_plot[LL_diffusion.horizon * idx] = hl_goal[idx]
 
         # +++++++++++++ LL +++++++++++++ #
         LL_cond = {}
         for i in range(seg_length):
-            LL_cond[(i,0)] = hl_obs[i]
-            LL_cond[(i, args.LL_horizon - 1)] = hl_obs[i+1]
+            LL_cond[(i,0)] = hl_goal[i]
+            LL_cond[(i, args.LL_horizon - 1)] = hl_goal[i+1]
 
         LL_action, LL_samples = LL_policy(LL_cond, batch_size=args.batch_size)
 
-        actions_plan = stitch_batches(LL_samples.actions)
-        observation_plan = stitch_batches(LL_samples.observations)
+        if args.LL_goal_reach:
+            sequence, length_of_subseq, cut_cond = short_cut_LL_trajectory(LL_samples.observations, LL_samples.actions, LL_cond, tol=0.05)
+            # save length of subseq to txt. For mat is: (key, value)
+            np.savetxt(join(args.savepath, 'length_of_subseq.txt'), np.array(list(length_of_subseq.items())))
 
-        actions = actions_plan[0]
-        sequence = observation_plan[0]
+            # observation_plan = sequence[np.newaxis, :]
+            observation_plan = stitch_batches(LL_samples.observations)
 
-        # actions = samples.actions[0]
-        # sequence = samples.observations[0]
-        print('!!!! last state', sequence[-1][:2], 'target', target[:2],
-              'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
-    # pdb.set_trace()
+        else:
+            actions_plan = stitch_batches(LL_samples.actions)
+            observation_plan = stitch_batches(LL_samples.observations)
+
+            # actions = actions_plan[0]
+            sequence = observation_plan[0]
+
+        # print('!!!! last state', sequence[-1][:2], 'target', target[:2],
+        #       'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
 
     # ####
     if t < len(sequence) - 1:
@@ -247,13 +305,21 @@ for t in range(env.max_episode_steps):
     
     if t == 0: 
         hl_fullpath = join(args.savepath, 'HL.png')
-        renderer.composite(hl_fullpath, HL_samples.observations[:, :seg_length+1, :], ncol=1,  conditions=HL_cond)
+        renderer.composite(hl_fullpath, hl_obs[:, :seg_length+1, :], ncol=1,  conditions=HL_cond)
         
         ll_fullpath = join(args.savepath, 'LL.png')
         renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)
 
         whole_fullpath = join(args.savepath, 'whole.png')
         renderer.composite(whole_fullpath, observation_plan, ncol=1,  conditions=cond_plot)
+
+        # save the HL values to a txt
+        if args.HL_batch_size > 1:
+            np.savetxt(join(args.savepath, 'HL_values.txt'), hl_values)
+
+        if args.LL_goal_reach:
+            cut_LL_path = join(args.savepath, 'cut_LL.png')
+            renderer.composite(cut_LL_path, sequence[None], ncol=1, conditions=cut_cond)
     
     # renderer.render_plan(join(args.savepath, f'{t}_plan.mp4'), samples.actions, samples.observations, state)
 
