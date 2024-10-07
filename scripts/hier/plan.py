@@ -1,11 +1,3 @@
-'''
-p-3_0: HL_fix + LL_fix
-p-3_1: HL_varh(guide) + LL_fix
-p-3_2: HL_fix + LL_varh(guide)
-p-3_3: HL_varh(guide) + LL_varh(guide)
-
-'''
-
 import json
 import numpy as np
 import torch

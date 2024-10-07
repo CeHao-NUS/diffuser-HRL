@@ -40,6 +40,7 @@ env = datasets.load_environment(args.dataset)
 diffusion_experiment = utils.load_diffusion(
     args.loadbase, args.dataset, args.diffusion_loadpath,
     epoch=args.diffusion_epoch, seed=args.seed,
+    device=args.device
 )
 
 diffusion = diffusion_experiment.ema

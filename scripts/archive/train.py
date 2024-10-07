@@ -1,5 +1,4 @@
 import diffuser.utils as utils
-import pdb
 
 
 #-----------------------------------------------------------------------------#
@@ -7,8 +6,8 @@ import pdb
 #-----------------------------------------------------------------------------#
 
 class Parser(utils.Parser):
-    dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.train.train_LL_fixh'
+    dataset: str = 'hopper-medium-expert-v2'
+    config: str = 'config.locomotion'
 
 args = Parser().parse_args('diffusion')
 
@@ -16,20 +15,6 @@ args = Parser().parse_args('diffusion')
 #-----------------------------------------------------------------------------#
 #---------------------------------- dataset ----------------------------------#
 #-----------------------------------------------------------------------------#
-
-if 'downsample' in args._dict:
-    downsample = args.downsample
-    model_horizon = args.horizon // downsample
-else:
-    downsample = 1
-    model_horizon = args.horizon
-
-if 'min_horizon' in args._dict:
-    min_horizon = args.min_horizon
-else:
-    min_horizon = 1
-
-
 
 dataset_config = utils.Config(
     args.loader,
@@ -40,8 +25,6 @@ dataset_config = utils.Config(
     preprocess_fns=args.preprocess_fns,
     use_padding=args.use_padding,
     max_path_length=args.max_path_length,
-    downsample=downsample,
-    min_horizon=min_horizon,
 )
 
 render_config = utils.Config(
@@ -64,17 +47,18 @@ action_dim = dataset.action_dim
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon=model_horizon,
+    horizon=args.horizon,
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
+    attention=args.attention,
     device=args.device,
 )
 
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=model_horizon,
+    horizon=args.horizon,
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,
@@ -102,7 +86,6 @@ trainer_config = utils.Config(
     results_folder=args.savepath,
     bucket=args.bucket,
     n_reference=args.n_reference,
-    n_samples=args.n_samples,
 )
 
 #-----------------------------------------------------------------------------#

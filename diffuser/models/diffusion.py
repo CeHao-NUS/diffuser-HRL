@@ -17,7 +17,7 @@ Sample = namedtuple('Sample', 'trajectories values chains')
 
 
 @torch.no_grad()
-def default_sample_fn(model, x, cond, t):
+def default_sample_fn(model, x, cond, t, **kwargs):
     model_mean, _, model_log_variance = model.p_mean_variance(x=x, cond=cond, t=t)
     model_std = torch.exp(0.5 * model_log_variance)
 
@@ -89,6 +89,10 @@ class GaussianDiffusion(nn.Module):
         ## get loss coefficients and initialize objective
         loss_weights = self.get_loss_weights(action_weight, loss_discount, loss_weights)
         self.loss_fn = Losses[loss_type](loss_weights, self.action_dim)
+
+    @property
+    def device(self):
+        return self.betas.device
 
     def get_loss_weights(self, action_weight, discount, weights_dict):
         '''

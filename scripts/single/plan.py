@@ -1,14 +1,3 @@
-'''
-p-1: only LL
-p-1_0: LL diffuser
-p-1_1: LL_varh
-p-1_2: LL_varh + guide
-'''
-
-
-# plan for varh + value guidance
-
-
 
 import pdb
 

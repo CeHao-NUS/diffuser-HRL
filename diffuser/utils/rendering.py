@@ -307,7 +307,7 @@ class MazeRenderer:
             cond = conditions[idx][:2]
             if not isinstance(idx, int) and len(cond)>1:
                 idx = idx[0]
-            plt.scatter(cond[1], cond[0], c=colors[idx], marker='*', edgecolors='k', 
+            plt.scatter(cond[1], cond[0], color=colors[idx], marker='*', edgecolors='k', 
                         s=100, zorder=30)
 
         plt.axis('off')

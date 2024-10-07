@@ -28,6 +28,7 @@ args = Parser().parse_args('plan')
 diffusion_experiment = utils.load_diffusion(
     args.loadbase, args.dataset, args.diffusion_loadpath,
     epoch=args.diffusion_epoch, seed=args.seed,
+    device=args.device
 )
 
 

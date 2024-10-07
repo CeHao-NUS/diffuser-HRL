@@ -40,6 +40,10 @@ def load_diffusion(*loadpath, epoch='latest', device='cuda:0', seed=None):
     diffusion_config = load_config(*loadpath, 'diffusion_config.pkl')
     trainer_config = load_config(*loadpath, 'trainer_config.pkl')
 
+    # change device of model and diffusion config
+    model_config._device = device
+    diffusion_config._device = device
+
     ## remove absolute path for results loaded from azure
     ## @TODO : remove results folder from within trainer class
     trainer_config._dict['results_folder'] = os.path.join(*loadpath)

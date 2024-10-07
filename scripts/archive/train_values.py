@@ -7,29 +7,15 @@ import pdb
 #-----------------------------------------------------------------------------#
 
 class Parser(utils.Parser):
-    dataset: str = 'maze2d-umaze-v1'
-    config: str = 'config.stitch.train.train_LL_fixh'
+    dataset: str = 'walker2d-medium-replay-v2'
+    config: str = 'config.locomotion'
 
-args = Parser().parse_args('diffusion')
+args = Parser().parse_args('values')
 
 
 #-----------------------------------------------------------------------------#
 #---------------------------------- dataset ----------------------------------#
 #-----------------------------------------------------------------------------#
-
-if 'downsample' in args._dict:
-    downsample = args.downsample
-    model_horizon = args.horizon // downsample
-else:
-    downsample = 1
-    model_horizon = args.horizon
-
-if 'min_horizon' in args._dict:
-    min_horizon = args.min_horizon
-else:
-    min_horizon = 1
-
-
 
 dataset_config = utils.Config(
     args.loader,
@@ -40,8 +26,10 @@ dataset_config = utils.Config(
     preprocess_fns=args.preprocess_fns,
     use_padding=args.use_padding,
     max_path_length=args.max_path_length,
-    downsample=downsample,
-    min_horizon=min_horizon,
+    ## value-specific kwargs
+    discount=args.discount,
+    termination_penalty=args.termination_penalty,
+    normed=args.normed,
 )
 
 render_config = utils.Config(
@@ -56,7 +44,6 @@ renderer = render_config()
 observation_dim = dataset.observation_dim
 action_dim = dataset.action_dim
 
-
 #-----------------------------------------------------------------------------#
 #------------------------------ model & trainer ------------------------------#
 #-----------------------------------------------------------------------------#
@@ -64,7 +51,7 @@ action_dim = dataset.action_dim
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon=model_horizon,
+    horizon=args.horizon,
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
@@ -74,17 +61,11 @@ model_config = utils.Config(
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=model_horizon,
+    horizon=args.horizon,
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,
     loss_type=args.loss_type,
-    clip_denoised=args.clip_denoised,
-    predict_epsilon=args.predict_epsilon,
-    ## loss weighting
-    action_weight=args.action_weight,
-    loss_weights=args.loss_weights,
-    loss_discount=args.loss_discount,
     device=args.device,
 )
 
@@ -102,7 +83,6 @@ trainer_config = utils.Config(
     results_folder=args.savepath,
     bucket=args.bucket,
     n_reference=args.n_reference,
-    n_samples=args.n_samples,
 )
 
 #-----------------------------------------------------------------------------#
@@ -115,19 +95,16 @@ diffusion = diffusion_config(model)
 
 trainer = trainer_config(diffusion, dataset, renderer)
 
-
 #-----------------------------------------------------------------------------#
 #------------------------ test forward & backward pass -----------------------#
 #-----------------------------------------------------------------------------#
 
-utils.report_parameters(model)
-
 print('Testing forward...', end=' ', flush=True)
 batch = utils.batchify(dataset[0], device=args.device)
+
 loss, _ = diffusion.loss(*batch)
 loss.backward()
 print('✓')
-
 
 #-----------------------------------------------------------------------------#
 #--------------------------------- main loop ---------------------------------#
@@ -138,4 +115,3 @@ n_epochs = int(args.n_train_steps // args.n_steps_per_epoch)
 for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')
     trainer.train(n_train_steps=args.n_steps_per_epoch)
-

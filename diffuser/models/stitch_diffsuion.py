@@ -91,6 +91,10 @@ class BatchGaussianDiffusion(nn.Module):
         loss_weights = self.get_loss_weights(action_weight, loss_discount, loss_weights)
         self.loss_fn = Losses[loss_type](loss_weights, self.action_dim)
 
+    @property
+    def device(self):
+        return self.betas.device
+
     def get_loss_weights(self, action_weight, discount, weights_dict):
         '''
             sets loss coefficients for trajectory
