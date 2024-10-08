@@ -3,8 +3,8 @@ current_jobs=0
 
 # bash scripts/eval/exp.sh
 
-dataset="maze2d-umaze-v1"
-# dataset="maze2d-medium-v1"
+# dataset="maze2d-umaze-v1"
+dataset="maze2d-medium-v1"
 # dataset="maze2d-large-v1"
 
 # single
