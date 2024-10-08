@@ -81,7 +81,13 @@ class OfflineEnv(gym.Env):
         if h5path is None:
             if self._dataset_url is None:
                 raise ValueError("Offline env not configured with a dataset URL.")
-            h5path = download_dataset_from_url(self.dataset_url)
+
+            # if self.dataset_url is not start from http, then it is a local file
+            if not self.dataset_url.startswith('http'):
+                dataset_url = os.path.expanduser(self.dataset_url)
+                h5path = download_dataset_from_url(dataset_url)
+            else:
+                h5path = self.dataset_url
 
         data_dict = {}
         with h5py.File(h5path, 'r') as dataset_file:

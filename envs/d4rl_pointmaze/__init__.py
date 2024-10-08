@@ -49,7 +49,7 @@ register(
         'reset_target': False,
         'ref_min_score': 4.83,
         'ref_max_score': 191.99,
-        'dataset_url':'http://maze2d-hardexpv2-sparse.hdf5'
+        'dataset_url': "~/.d4rl_pointmass/datasets/mMaze2-v0.hdf5"
     }
 )
 

@@ -1,6 +1,6 @@
 import diffuser.utils as utils
 import pdb
-
+import envs.d4rl_pointmaze # to enable offline maze env
 
 #-----------------------------------------------------------------------------#
 #----------------------------------- setup -----------------------------------#

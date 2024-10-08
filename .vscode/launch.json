@@ -11,6 +11,10 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args":[
+                "--config",
+                "config.stitch.train.train_LL_fixh",
+                "--dataset",
+                "maze2d-mMaze2-v0",
             ]
         }
     ]
