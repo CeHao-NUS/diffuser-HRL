@@ -17,3 +17,4 @@ python scripts/train/train_diffuser.py --config 'config.hier.train_diff_HL' --da
 
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_LL' --dataset maze2d-large-v1 --device "cuda:5"
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_HL' --dataset maze2d-large-v1 --device "cuda:6"
+
