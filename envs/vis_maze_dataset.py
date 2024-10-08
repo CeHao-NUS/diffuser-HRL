@@ -3,9 +3,8 @@ import matplotlib.pyplot as plt
 
 import envs.d4rl_pointmaze
 
-env = gym.make('maze2d-test-v0')
+env = gym.make('maze2d-testbig-v0')
 dataset = env.get_dataset()
-print('length of dataset:', len(dataset))
 
 observation  = dataset['observations']
 

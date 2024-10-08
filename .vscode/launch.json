@@ -14,7 +14,7 @@
                 "--config",
                 "config.single.train_diff_test",
                 "--dataset",
-                "maze2d-test-v0",
+                "maze2d-testbig-v0",
                 "--device",
                 "cuda:7"
             ]

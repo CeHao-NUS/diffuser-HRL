@@ -6,6 +6,8 @@ import einops
 import pdb
 
 import wandb
+import time
+from datetime import datetime
 
 from .arrays import batch_to_device, to_np, to_device, apply_dict
 from .timer import Timer
@@ -90,8 +92,16 @@ class Trainer(object):
         self.reset_parameters()
         self.step = 0
 
+
+        # delete_the log/ in self.logdir
+        resume_dir = self.logdir.replace('logs/', '')
         # convert / in self.logdir to -
-        resume_dir = self.logdir.replace('/', '-')
+        resume_dir = resume_dir.replace('/', '-')
+
+        # add time to the resume_dir
+        timestamp = datetime.now().strftime('%m-%d-%H-%M')
+        resume_dir = resume_dir + '-' + timestamp
+        
         wandb.init(project='diffuser', resume=resume_dir, entity='cehao-nus-national-university-of-california')
 
     def reset_parameters(self):

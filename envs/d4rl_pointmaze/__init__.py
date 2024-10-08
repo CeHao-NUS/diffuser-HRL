@@ -67,3 +67,19 @@ register(
         'dataset_url': "~/.d4rl_pointmass/datasets/test-v0.hdf5"
     }
 )
+
+
+register(
+    id='maze2d-testbig-v0',
+    entry_point='envs.d4rl_pointmaze:MazeEnv',
+    max_episode_steps=800,
+    kwargs={
+        'maze_spec': maze_name_space['test_mazebig'],
+        'agent_centric_view': True,
+        'reward_type': 'sparse',
+        'reset_target': False,
+        'ref_min_score': 4.83,
+        'ref_max_score': 191.99,
+        'dataset_url': "~/.d4rl_pointmass/datasets/testbig-v0.hdf5"
+    }
+)

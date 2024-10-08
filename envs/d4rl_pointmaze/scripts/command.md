@@ -11,4 +11,4 @@ python envs/d4rl_pointmaze/scripts/generate_d4rl_datasets.py --data_dir '~/.d4rl
 --fixed_maze_size 20
 
 
-python envs/d4rl_pointmaze/scripts/generate_d4rl_datasets.py --data_dir '~/.d4rl_pointmass/datasets' --file_name 'test-v0.hdf5'  --manual_maze 'test_maze' --num_samples 2000 --save_video
+python envs/d4rl_pointmaze/scripts/generate_d4rl_datasets.py --data_dir '~/.d4rl_pointmass/datasets' --file_name 'testbig-v0.hdf5'  --manual_maze 'test_mazebig' --num_samples 100000 --save_video
