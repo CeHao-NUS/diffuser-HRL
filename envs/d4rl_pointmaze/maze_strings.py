@@ -42,9 +42,29 @@ M_MAZE2_V1 = \
 
 
 
+
+test_maze = \
+        "#####\\"+\
+        "#GOO#\\"+\
+        "###O#\\"+\
+        "#OOO#\\"+\
+        "#####"
+
+# "######\\"+\
+# "#OOOO#\\"+\
+# "####O#\\"+\
+# "#OOOO#\\"+\
+# "#OO#O#\\"+\
+# "#O####\\"+\
+# "#OOOO#\\"+\
+# "######"
+
+
+
 maze_name_space= {
     'm_maze1' : M_MAZE_V1,
     'm_maze2' : M_MAZE2_V1,
+    'test_maze' : test_maze,
 }
 
 LARGE_MAZE = \

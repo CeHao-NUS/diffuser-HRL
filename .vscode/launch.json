@@ -12,9 +12,11 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.stitch.train.train_LL_fixh",
+                "config.single.train_diff_test",
                 "--dataset",
-                "maze2d-mMaze2-v0",
+                "maze2d-test-v0",
+                "--device",
+                "cuda:7"
             ]
         }
     ]

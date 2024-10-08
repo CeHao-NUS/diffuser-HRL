@@ -280,7 +280,8 @@ MAZE_BOUNDS = {
     'maze2d-umaze-v1': (0, 5, 0, 5),
     'maze2d-medium-v1': (0, 8, 0, 8),
     'maze2d-large-v1': (0, 9, 0, 12),
-    'maze2d-mMaze2-v0': (0, 18, 0, 18)
+    'maze2d-mMaze2-v0': (0, 18, 0, 18),
+    'maze2d-test-v0': (0, 7, 0, 7)
 }
 
 class MazeRenderer:

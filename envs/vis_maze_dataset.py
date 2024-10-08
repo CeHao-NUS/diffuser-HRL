@@ -1,10 +1,11 @@
 import gym
 import matplotlib.pyplot as plt
 
-# import envs.d4rl_pointmaze
+import envs.d4rl_pointmaze
 
-env = gym.make('maze2d-mMaze2-v0')
+env = gym.make('maze2d-test-v0')
 dataset = env.get_dataset()
+print('length of dataset:', len(dataset))
 
 observation  = dataset['observations']
 
@@ -12,4 +13,5 @@ observation  = dataset['observations']
 
 plt.figure()
 plt.scatter(observation[:,0], observation[ :,1])
-plt.savefig('first_observation.png')
+plt.savefig('images/first_observation.png')
+print('save to images/first_observation.png')

@@ -18,4 +18,5 @@ python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --da
 
 # debug
 
-python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-mMaze2-v0 --device "cuda:0"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_test'  --dataset maze2d-test-v0 --device "cuda:7"
+

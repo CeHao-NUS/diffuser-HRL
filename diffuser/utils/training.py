@@ -5,6 +5,8 @@ import torch
 import einops
 import pdb
 
+import wandb
+
 from .arrays import batch_to_device, to_np, to_device, apply_dict
 from .timer import Timer
 from .cloud import sync_logs
@@ -88,6 +90,10 @@ class Trainer(object):
         self.reset_parameters()
         self.step = 0
 
+        # convert / in self.logdir to -
+        resume_dir = self.logdir.replace('/', '-')
+        wandb.init(project='diffuser', resume=resume_dir, entity='cehao-nus-national-university-of-california')
+
     def reset_parameters(self):
         self.ema_model.load_state_dict(self.model.state_dict())
 
@@ -126,6 +132,7 @@ class Trainer(object):
             if self.step % self.log_freq == 0:
                 infos_str = ' | '.join([f'{key}: {val:8.4f}' for key, val in infos.items()])
                 print(f'{self.step}: {loss:8.4f} | {infos_str} | t: {timer():8.4f}')
+                wandb.log({'loss': loss, 'infos': infos, 'time': timer()})
 
             if self.step == 0 and self.sample_freq:
                 self.render_reference(self.n_reference)
