@@ -83,3 +83,18 @@ register(
         'dataset_url': "~/.d4rl_pointmass/datasets/testbig-v0.hdf5"
     }
 )
+
+'''
+register(
+    id='maze2d-1',
+    entry_point='d4rl.pointmaze:MazeEnv',
+    max_episode_steps=600,
+    kwargs={
+        'maze_spec':MAZE_1,
+        'reward_type':'sparse',
+        'reset_target': False,
+        'ref_min_score': 13.13,
+        'ref_max_score': 277.39,
+    }
+)
+'''

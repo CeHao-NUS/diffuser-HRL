@@ -92,7 +92,7 @@ class Trainer(object):
         self.reset_parameters()
         self.step = 0
 
-
+    def init_wandb(self):
         # delete_the log/ in self.logdir
         resume_dir = self.logdir.replace('logs/', '')
         # convert / in self.logdir to -
@@ -117,7 +117,7 @@ class Trainer(object):
     #------------------------------------ api ------------------------------------#
     #-----------------------------------------------------------------------------#
 
-    def train(self, n_train_steps):
+    def train(self, n_train_steps, wandb_log=False):
 
         timer = Timer()
         for step in range(n_train_steps):
@@ -142,7 +142,8 @@ class Trainer(object):
             if self.step % self.log_freq == 0:
                 infos_str = ' | '.join([f'{key}: {val:8.4f}' for key, val in infos.items()])
                 print(f'{self.step}: {loss:8.4f} | {infos_str} | t: {timer():8.4f}')
-                wandb.log({'loss': loss, 'infos': infos, 'time': timer()})
+                if wandb_log:
+                    wandb.log(data={'loss': loss, 'infos': infos, 'time': timer()}, step=self.step)
 
             if self.step == 0 and self.sample_freq:
                 self.render_reference(self.n_reference)

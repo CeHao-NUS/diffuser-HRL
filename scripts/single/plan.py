@@ -6,6 +6,8 @@ import diffuser.utils as utils
 import numpy as np
 from os.path import join
 import json
+
+import envs.d4rl_pointmaze # to enable offline maze env
 #-----------------------------------------------------------------------------#
 #----------------------------------- setup -----------------------------------#
 #-----------------------------------------------------------------------------#
@@ -98,6 +100,7 @@ cond = {
     diffusion.horizon - 1: np.array([*target, 0, 0]),
 }
 
+print('horizon is', diffusion.horizon)
 
 ## observations for rendering
 rollout = [observation.copy()]
