@@ -69,7 +69,7 @@ maze2d_test_v0 = {
     },
 }
 
-maze2d_tesbigt_v0 = {
+maze2d_testbig_v0 = {
     'diffusion':{
         'horizon': 1024,
         'n_diffusion_steps': 256,

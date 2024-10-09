@@ -90,6 +90,7 @@ maze2d_umaze_v1 = {
         'HL_horizon': 192,
         'n_diffusion_steps': 32,
         'seg_length': 11,
+        'downsample': 16,
     },
 }
 
@@ -99,6 +100,7 @@ maze2d_medium_v1 = {
         'HL_horizon': 256,
         'n_diffusion_steps': 32,
         'seg_length': 7,
+        'downsample': 32,
     },
 }
 
@@ -108,5 +110,6 @@ maze2d_large_v1 = {
         'HL_horizon': 384,
         'n_diffusion_steps': 32,
         'seg_length': 11,
+        'downsample': 32,
     },
 }

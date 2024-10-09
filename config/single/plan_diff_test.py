@@ -67,8 +67,8 @@ base = {
     },
 }
 
-maze2d_tesbigt_v0 = {
-    'diffusion':{
+maze2d_testbig_v0 = {
+    'plan':{
         'horizon': 1024,
         'n_diffusion_steps': 256,
     },

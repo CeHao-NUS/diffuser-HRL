@@ -4,7 +4,8 @@
 
 MAX_JOBS=50
 current_jobs=0
-GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
+# GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
+GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6")
 NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
@@ -51,3 +52,5 @@ done
 wait
 
 echo "Done"
+
+# ===========================================
