@@ -69,7 +69,7 @@ base = {
 
 maze2d_testbig_v0 = {
     'plan':{
-        'horizon': 1024,
+        'horizon': 512,
         'n_diffusion_steps': 256,
     },
 }

@@ -30,7 +30,7 @@ base = {
         'loader': 'datasets.LL_goal_dataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
-        'preprocess_fns': ['maze2d_set_terminals'],
+        'preprocess_fns': [],
         'clip_denoised': True,
         'use_padding': False,
         'max_path_length': 40000,

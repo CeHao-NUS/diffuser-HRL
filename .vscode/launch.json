@@ -12,13 +12,12 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.single.plan_diff_test",
+                "config.hier.train_diff_LL_test",
                 "--dataset",
                 "maze2d-testbig-v0",
                 "--device",
-                "cuda:0"
+                "cuda:6"
             ]
         }
     ]
 }
-

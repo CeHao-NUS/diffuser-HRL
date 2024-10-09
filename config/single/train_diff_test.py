@@ -51,7 +51,7 @@ base = {
         'sample_freq': 5000,
         'n_saves': 50,
         'save_parallel': False,
-        'n_reference': 50,
+        'n_reference': 30,
         'n_samples': 10,
         'bucket': None,
         'device': 'cuda',
@@ -71,7 +71,7 @@ maze2d_test_v0 = {
 
 maze2d_testbig_v0 = {
     'diffusion':{
-        'horizon': 1024,
+        'horizon': 512,
         'n_diffusion_steps': 256,
     },
 }

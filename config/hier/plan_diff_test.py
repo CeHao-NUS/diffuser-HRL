@@ -87,9 +87,9 @@ base = {
 maze2d_testbig_v0 = {
     'plan': {
         'LL_horizon': 32,
-        'HL_horizon': 1024,
+        'HL_horizon': 512,
         'n_diffusion_steps': 32,
-        'seg_length': 31,
+        'seg_length': 15,
         'downsample': 32,
     },
 }
