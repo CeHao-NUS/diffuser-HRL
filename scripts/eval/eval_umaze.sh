@@ -7,8 +7,12 @@
 
 
 # hier
-task="scripts/hier/plan.py"
-config='config.hier.plan_diff'
+# task="scripts/hier/plan.py"
+# config='config.hier.plan_diff'
+
+# forward_noise
+task="scripts/single/plan.py"
+config='config.single.plan_diff_coupled_forwardnoise'
 
 for init_pose in "(1,1.5)" "(1,1.1)" "(3,1)" "(3,2)" "(3,1.5)" "(3,3)" "(2,3)" "(1,3)" "(1,2)"
 do

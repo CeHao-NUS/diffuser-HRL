@@ -18,4 +18,9 @@ python scripts/single/plan.py --config 'config.single.plan_diff_test'  --dataset
 
 
 #  CoupledGaussianDiffusion_ForwardNoise
-python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-medium-v1 --device "cuda:3"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-large-v1 --device "cuda:2"
+
+python scripts/single/plan.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:1"
+

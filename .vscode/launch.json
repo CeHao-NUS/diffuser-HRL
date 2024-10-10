@@ -12,16 +12,13 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.single.train_diff_coupled_forwardnoise",
+                "config.single.plan_diff_coupled_forwardnoise",
                 "--dataset",
                 "maze2d-umaze-v1",
                 "--device",
                 "cuda:1"
             ],
-            "env": {
-                "CUDA_LAUNCH_BLOCKING": "1",
-                "TORCH_USE_CUDA_DSA": "1",
-              }
+
         }
     ]
 }

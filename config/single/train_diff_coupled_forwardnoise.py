@@ -36,7 +36,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/single_diffuser',
+        'prefix': 'diffusion/single_coupled_forwardnoise_diffuser',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
