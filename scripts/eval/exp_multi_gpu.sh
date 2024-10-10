@@ -10,9 +10,10 @@ NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 
-dataset="maze2d-umaze-v1"
-# dataset="maze2d-medium-v1"
+# dataset="maze2d-umaze-v1"
+dataset="maze2d-medium-v1"
 # dataset="maze2d-large-v1"
+# dataset="maze2d-testbig-v0 "
 
 # # single
 # task="scripts/single/plan.py"
@@ -20,10 +21,14 @@ dataset="maze2d-umaze-v1"
 # plan_task="single"
 
 
+# config="config.single.plan_diff_test" # test big
+
 # hier
 # task="scripts/hier/plan.py"
 # config='config.hier.plan_diff'
 # plan_task="hier"
+
+# config='config.hier.plan_diff_test'
 
 # forward_noise
 task="scripts/single/plan.py"

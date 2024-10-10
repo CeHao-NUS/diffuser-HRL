@@ -9,6 +9,7 @@ import diffuser.datasets as datasets
 import diffuser.utils as utils
 import diffuser.sampling as sampling
 
+import envs.d4rl_pointmaze # to enable offline maze env
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'

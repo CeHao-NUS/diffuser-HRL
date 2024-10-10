@@ -1,30 +1,39 @@
 
 
-
 # bash scripts/eval/exp_multi_gpu.sh
 
 MAX_JOBS=50
 current_jobs=0
 # GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
-GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6")
+GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4")
 NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 
 # dataset="maze2d-umaze-v1"
-dataset="maze2d-medium-v1"
+# dataset="maze2d-medium-v1"
 # dataset="maze2d-large-v1"
+dataset="maze2d-testbig-v0"
 
-# single
-# task="scripts/single/plan.py"
+# # single
+task="scripts/single/plan.py"
 # config="config.single.plan_diff"
-# plan_task="single"
+plan_task="single"
 
+
+config="config.single.plan_diff_test" # test big
 
 # hier
-task="scripts/hier/plan.py"
-config='config.hier.plan_diff'
-plan_task="hier"
+# task="scripts/hier/plan.py"
+# config='config.hier.plan_diff'
+# plan_task="hier"
+
+# config='config.hier.plan_diff_test'
+
+# forward_noise
+# task="scripts/single/plan.py"
+# config='config.single.plan_diff_coupled_forwardnoise'
+# plan_task="single_coupled_forwardnoise"
 
 for cond in "True" "False"
 do
@@ -63,25 +72,35 @@ echo "Done"
 MAX_JOBS=50
 current_jobs=0
 # GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
-GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6")
+GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4")
 NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 
 # dataset="maze2d-umaze-v1"
 # dataset="maze2d-medium-v1"
-dataset="maze2d-large-v1"
+# dataset="maze2d-large-v1"
+dataset="maze2d-testbig-v0"
 
-# single
+# # single
 # task="scripts/single/plan.py"
 # config="config.single.plan_diff"
 # plan_task="single"
 
 
+# config="config.single.plan_diff_test" # test big
+
 # hier
 task="scripts/hier/plan.py"
-config='config.hier.plan_diff'
+# config='config.hier.plan_diff'
 plan_task="hier"
+
+config='config.hier.plan_diff_test'
+
+# forward_noise
+# task="scripts/single/plan.py"
+# config='config.single.plan_diff_coupled_forwardnoise'
+# plan_task="single_coupled_forwardnoise"
 
 for cond in "True" "False"
 do

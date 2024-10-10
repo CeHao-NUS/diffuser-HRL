@@ -102,6 +102,12 @@ class GoalDataset(SequenceDataset):
             self.horizon - 1: observations[-1],
         }
     
+class DummyGoalDataset(SequenceDataset):
+    def get_conditions(self, observations):
+        return {
+            0: observations[0],
+        }
+    
 class BatchGaolDataset(SequenceDataset):
     def get_conditions(self, observations):
         '''
@@ -203,13 +209,72 @@ class GoalValueDataset(ValueDataset):
         return value_batch
 
     
-class VarHDataset(GoalDataset):
+class VarHDataset1(GoalDataset):
     def __init__(self, *args, discount=0.99, normed=False, min_horizon=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.min_horizon = min_horizon
         self.discount = discount
         self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
         self.normed = normed
+
+    def __getitem__(self, idx):
+
+
+        # 1. get intermediate point
+        # 2. segment and fill with last point
+        # 3. change conditions
+
+        path_ind, start, end = self.indices[idx]
+        new_length = end - start
+        horizon = self.horizon
+
+        repeats = horizon - new_length
+        new_end = start + new_length
+
+        observations = self.fields.normed_observations[path_ind, start:new_end]
+        actions = self.fields.normed_actions[path_ind, start:new_end]
+
+        # repeat the last observation until end
+        observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
+        
+        zero_actions = np.zeros_like(actions[-1])
+        actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+
+        batch = Batch(trajectories, conditions)
+        return batch
+    
+
+class VarHDataset2(GoalDataset):
+    def __init__(self, *args, discount=0.99, normed=False, min_horizon=1, **kwargs):
+        self.min_horizon = min_horizon
+        super().__init__(*args, **kwargs)
+        self.discount = discount
+        self.discounts = self.discount ** np.arange(self.max_path_length)[:,None]
+        self.normed = normed
+
+    def make_indices(self, path_lengths, horizon):
+        '''
+            makes indices for sampling from dataset;
+            each index maps to a datapoint
+        '''
+        indices = []
+        for i, path_length in enumerate(path_lengths):
+            # the true min horizon is self.min_horizon
+            max_start = min(path_length - 1, self.max_path_length - self.min_horizon)
+
+            if not self.use_padding:
+                max_start = min(max_start, path_length - self.min_horizon)
+
+            for start in range(max_start):
+                end = start + horizon
+                # now end should be less than path_length
+                end = min(end, path_length-1)
+                indices.append((i, start, end))
+        indices = np.array(indices)
+        return indices
 
     def __getitem__(self, idx):
 
@@ -240,7 +305,7 @@ class VarHDataset(GoalDataset):
         batch = Batch(trajectories, conditions)
         return batch
 
-class VarHValueDataset(VarHDataset):
+class VarHValueDataset(VarHDataset1):
 
 
     def __getitem__(self, idx):
@@ -315,32 +380,3 @@ class JointValueDataset(GoalDataset):
 
         return value_batch
     
-# # =================== debug ===================================
-# class GoalDataset(SequenceDataset):
-
-#     def get_conditions(self, observations):
-#         '''
-#             condition on both the current observation and the last observation in the plan
-#         '''
-#         return {
-#             0: observations[0],
-#             self.horizon - 1: observations[-1],
-#         }
-    
-# class HLGoalDataset(GoalDataset):
-#     def __init__(self, *args, downsample=1, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.downsample = downsample
-
-#     def __getitem__(self, idx):
-#         batch = super().__getitem__(idx)
-
-#         # downsample the trajectories and conditions in batch
-#         trajectories = batch.trajectories[::self.downsample]
-#         len_ori = len(batch.trajectories)
-#         len_new = len(trajectories)
-#         conditions = batch.conditions # still the last point
-#         conditions[len_new-1] = conditions.pop(len_ori-1)
-
-#         batch = Batch(trajectories, conditions)
-#         return batch

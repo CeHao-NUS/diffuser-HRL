@@ -23,3 +23,4 @@ python scripts/hier/plan.py --config 'config.hier.plan_diff' --dataset maze2d-me
 # for big
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_LL_test'  --dataset maze2d-testbig-v0 --device "cuda:6"
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_HL_test'  --dataset maze2d-testbig-v0 --device "cuda:5"
+python scripts/hier/plan.py --config 'config.hier.plan_diff_test' --dataset maze2d-testbig-v0 --device "cuda"

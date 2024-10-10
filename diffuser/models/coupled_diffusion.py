@@ -307,7 +307,7 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
 
         self.noised_cond = noised_cond
         x = apply_conditioning(x, self.noised_cond, action_dim)
-
+ 
         return x
     
     def _train_post_apply_conditioning(self, x, cond, t, action_dim):

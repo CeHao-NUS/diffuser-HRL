@@ -6,7 +6,6 @@ python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --da
 # plan traj
 python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze2d-umaze-v1 --device "cuda"
 
-
 # med, large
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-medium-v1 --device "cuda:1"
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-large-v1 --device "cuda:2"
@@ -18,9 +17,28 @@ python scripts/single/plan.py --config 'config.single.plan_diff_test'  --dataset
 
 
 #  CoupledGaussianDiffusion_ForwardNoise
-python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4"
-python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-medium-v1 --device "cuda:3"
-python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-large-v1 --device "cuda:2"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:5"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-medium-v1 --device "cuda:6"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_coupled_forwardnoise'  --dataset maze2d-large-v1 --device "cuda:7"
 
 python scripts/single/plan.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:1"
 
+# train with varh datasets
+
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-umaze-v1 --device "cuda:7"
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-medium-v1 --device "cuda:6"
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-large-v1 --device "cuda:5"
+
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-umaze-v1 --device "cuda:4"
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-medium-v1 --device "cuda:3"
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-large-v1 --device "cuda:2"
+
+# train a dummy condition in training
+python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-umaze-v1 --device "cuda:1" \
+ --loader "datasets.DummyGoalDataset" --prefix 'diffusion/dummygoal_single_diffuser'
+
+ python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze2d-umaze-v1 --device "cuda" \
+  --diffusion_loadpath 'f:diffusion/dummygoal_single_diffuser_H{horizon}_T{n_diffusion_steps}' --prefix 'plans/dummygoal_single/'
+
+ python scripts/single/plan.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda" \
+  --diffusion_loadpath 'f:diffusion/dummygoal_single_diffuser_H{horizon}_T{n_diffusion_steps}' --prefix 'plans/dummygoal_single_fornoise/'
