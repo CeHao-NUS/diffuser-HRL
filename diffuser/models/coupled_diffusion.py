@@ -292,6 +292,31 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
 
         return sample
 
+    # def __init__(self, *arg, **kwargs):
+    #     super().__init__(*arg, **kwargs)
+
+
+    # def add_forward_noise(self, x_start, t, noise=None):
+    #     if noise is None:
+    #         noise = torch.randn_like(x_start)
+
+    #     weight = 0.5
+    #     weight = torch.tensor(weight, device=x_start.device)
+
+    #     # scale self.sqrt_alphas_cumprod from [0, 1] to [1 - weight, 1]
+    #     self.sqrt_alphas_cumprod_scaled = (1 - weight) + weight * self.sqrt_alphas_cumprod
+        
+    #     # scale self.sqrt_one_minus_alphas_cumprod from [0, 1] to [0, weight]
+    #     self.sqrt_one_minus_alphas_cumprod_scaled = weight * self.sqrt_one_minus_alphas_cumprod
+
+
+    #     sample = (
+    #         extract(self.sqrt_alphas_cumprod_scaled, t, x_start.shape) * x_start  +
+    #         extract(self.sqrt_one_minus_alphas_cumprod_scaled, t, x_start.shape) * noise 
+    #     )
+
+    #     return sample
+
 
     '''
     v1: the noise is sampled and added to cond
@@ -304,6 +329,7 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
         for cond_t, val in cond.items():
             noise = torch.randn_like(val)
             noised_cond[cond_t] = self.add_forward_noise(val, t, noise)
+            # noised_cond[cond_t] = val
 
         self.noised_cond = noised_cond
         x = apply_conditioning(x, self.noised_cond, action_dim)
@@ -314,7 +340,8 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
         '''
         add noise to every dim of cond
         '''
-        x = apply_conditioning(x, self.noised_cond, action_dim)
+        # x = apply_conditioning(x, self.noised_cond, action_dim)
+        x = apply_conditioning(x, cond, action_dim)
         return x
     
     def _sample_apply_conditioning(self, x, cond, t, action_dim):
