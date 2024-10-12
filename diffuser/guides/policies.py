@@ -76,3 +76,17 @@ class Policy:
         return action, trajectories
         # else:
         #     return action
+
+    def process_raw_trajectory(self):
+        x_recon_store_torch = self.diffusion_model.x_recon_store
+        x_recon_store = {}
+
+        for key, x_recon in x_recon_store_torch.items():
+            sample = utils.to_np(x_recon)
+            normed_observations = sample[:, :, self.action_dim:]
+            observations = self.normalizer.unnormalize(normed_observations, 'observations') 
+
+            x_recon_store[int(utils.to_np(key[0]))] = observations
+
+        return x_recon_store
+

@@ -1,29 +1,3 @@
-'''
-lv-1: 
-HL as usual.
-training: LL:cond + noise
-sample: LL: cond + noise
-
-lv-2:
-HL as usual.
-training: LL:cond + noise
-sample: LL: HL trajs
-
-lv-3:
-HL as usual, training
-Additional classifier. (tau^x) -> adjust corresponding HL subgoals.
-
-lv-4:
-classifier-free guidance.
-
-Functions:
-1. How cond is formulated? From external. from inside noise
-2. How classifier is working?
-3. A bigger model for both HL and LL. The bigger is only a framework.
-Need to load them separately, but put inside a bigger framework.
-
-'''
-
 from collections import namedtuple
 import numpy as np
 import torch
@@ -67,7 +41,7 @@ def make_timesteps(batch_size, i, device):
     return t
 
 
-class CoupledGaussianDiffusion(nn.Module):
+class DisplayGaussianDiffusion(nn.Module):
     def __init__(self, model, horizon, observation_dim, action_dim, n_timesteps=1000,
         loss_type='l1', clip_denoised=False, predict_epsilon=True,
         action_weight=1.0, loss_discount=1.0, loss_weights=None,
@@ -176,6 +150,9 @@ class CoupledGaussianDiffusion(nn.Module):
     def p_mean_variance(self, x, cond, t):
         x_recon = self.predict_start_from_noise(x, t=t, noise=self.model(x, cond, t))
 
+        # store x_recon
+        self.x_recon_store[t] = x_recon
+
         if self.clip_denoised:
             x_recon.clamp_(-1., 1.)
         else:
@@ -191,8 +168,7 @@ class CoupledGaussianDiffusion(nn.Module):
 
         batch_size = shape[0]
         x = torch.randn(shape, device=device)
-
-        # x = self._sample_apply_conditioning(x, cond, t, self.action_dim)
+        x = apply_conditioning(x, cond, self.action_dim)
 
         chain = [x] if return_chain else None
 
@@ -200,7 +176,7 @@ class CoupledGaussianDiffusion(nn.Module):
         for i in reversed(range(0, self.n_timesteps)):
             t = make_timesteps(batch_size, i, device)
             x, values = sample_fn(self, x, cond, t, **sample_kwargs)
-            x = self._sample_apply_conditioning(x, cond, t, self.action_dim)
+            x = apply_conditioning(x, cond, self.action_dim)
 
             progress.update({'t': i, 'vmin': values.min().item(), 'vmax': values.max().item()})
             if return_chain: chain.append(x)
@@ -221,11 +197,10 @@ class CoupledGaussianDiffusion(nn.Module):
         horizon = horizon or self.horizon
         shape = (batch_size, horizon, self.transition_dim)
 
+        # store all x_recon
+        self.x_recon_store = {}
+
         return self.p_sample_loop(shape, cond, **sample_kwargs)
-    
-    def _sample_apply_conditioning(self, x, cond, t, action_dim):
-        x = apply_conditioning(x, cond, action_dim)
-        return x
 
     #------------------------------------------ training ------------------------------------------#
 
@@ -244,10 +219,10 @@ class CoupledGaussianDiffusion(nn.Module):
         noise = torch.randn_like(x_start)
 
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
+        x_noisy = apply_conditioning(x_noisy, cond, self.action_dim)
 
-        x_noisy = self._train_pre_apply_conditioning(x_noisy, cond, t, self.action_dim)
         x_recon = self.model(x_noisy, cond, t)
-        x_recon = self._train_post_apply_conditioning(x_recon, cond, t, self.action_dim)
+        x_recon = apply_conditioning(x_recon, cond, self.action_dim)
 
         assert noise.shape == x_recon.shape
 
@@ -265,59 +240,7 @@ class CoupledGaussianDiffusion(nn.Module):
 
     def forward(self, cond, *args, **kwargs):
         return self.conditional_sample(cond, *args, **kwargs)
-    
-    def _train_pre_apply_conditioning(self, x, cond, t, action_dim):
-        x = apply_conditioning(x, cond, action_dim)
-        return x
-    
-    def _train_post_apply_conditioning(self, x, cond, t, action_dim):
-        x = apply_conditioning(x, cond, action_dim)
-        return x
 
 
 
-class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
 
-
-
-    # ------------------------------------------ conditioning ------------------------------------------#
-    def add_forward_noise(self, x_start, t, noise=None):
-        if noise is None:
-            noise = torch.randn_like(x_start)
-
-        sample = (
-            extract(self.sqrt_alphas_cumprod, t, x_start.shape) * x_start +
-            extract(self.sqrt_one_minus_alphas_cumprod, t, x_start.shape) * noise
-        )
-
-        return sample
-
-    '''
-    v1: the noise is sampled and added to cond
-    '''
-    def _train_pre_apply_conditioning(self, x, cond, t, action_dim):
-        '''
-        add noise to every dim of cond
-        '''
-        noised_cond = {}
-        for cond_t, val in cond.items():
-            noise = torch.randn_like(val)
-            noised_cond[cond_t] = self.add_forward_noise(val, t, noise)
-            # noised_cond[cond_t] = val
-
-        self.noised_cond = noised_cond
-        x = apply_conditioning(x, self.noised_cond, action_dim)
- 
-        return x
-    
-    def _train_post_apply_conditioning(self, x, cond, t, action_dim):
-        '''
-        add noise to every dim of cond
-        '''
-        # x = apply_conditioning(x, self.noised_cond, action_dim)
-        x = apply_conditioning(x, cond, action_dim)
-        return x
-    
-    def _sample_apply_conditioning(self, x, cond, t, action_dim):
-        return self._train_pre_apply_conditioning(x, cond, t, action_dim)
-    

@@ -3,8 +3,12 @@
 
 # single
 task="scripts/single/plan.py"
-config="config.single.plan_diff"
+# config="config.single.plan_diff"
+config="config.single.varh.plan_diff_var2"
 
+# single store
+# task="scripts/single/plan_list.py"
+# config="config.single.plan_diff_store"
 
 # hier
 # task="scripts/hier/plan.py"

@@ -12,17 +12,14 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.single.train_diff",
+                "config.single.plan_diff_store",
                 "--dataset",
                 "maze2d-umaze-v1",
                 "--device",
-                "cuda:1",
-                "--loader",
-                "datasets.DummyGoalDataset",
-                "--prefix",
-                "diffusion/dummygoal_single_diffuser"
+                "cuda:4"
             ],
 
         }
     ]
 }
+
