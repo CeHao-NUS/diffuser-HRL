@@ -47,13 +47,19 @@ python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze
 python scripts/single/plan.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda" \
  --diffusion_loadpath 'f:diffusion/dummygoal_single_diffuser_H{horizon}_T{n_diffusion_steps}' --prefix 'plans/dummygoal_single_fornoise/'
 
-# test learn epsilon, not bad
+# test learn epsilon, not bad !!!!
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-umaze-v1 --device "cuda:4" \
  --predict_epsilon True --prefix 'diffusion/ep_single/'
 
+python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze2d-umaze-v1 --device "cuda" \
+ --diffusion_loadpath 'diffusion/ep_single/H128_T64' --prefix 'plans/ep_single/'
+ 
 
 # do the single store plotting
-python scripts/train/train_diffuser.py --config 'config.single.train_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4"
-python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4" \
+ --predict_epsilon True
 
-python scripts/single/plan_list.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4"
+python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4" \
+ --conditional True --init_pose "(3, 1)" --target "(1, 1)"  --diffusion_loadpath 'diffusion/ep_single/H128_T64'
+
+python scripts/single/plan_list.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4" 

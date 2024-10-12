@@ -200,7 +200,66 @@ class DisplayGaussianDiffusion(nn.Module):
         # store all x_recon
         self.x_recon_store = {}
 
-        return self.p_sample_loop(shape, cond, **sample_kwargs)
+
+        sample = self.p_sample_loop(shape, cond, **sample_kwargs)
+        self.sample = sample
+        self.cond = cond
+        return sample
+
+    def for_and_back(self, t):
+
+        xT = self.sample.trajectories
+        cond = self.cond
+
+        # 1. given trajectory, add noise based on t
+        noise = torch.randn_like(xT)
+        x_t = self.q_sample(xT, t, noise)
+
+        x_t = apply_conditioning(x_t, cond, self.action_dim)
+
+        # 2. predict x_construct from x_t
+        reverse_noise = self.model(x_t, cond, t)
+        x_recon = self.predict_start_from_noise(x_t, t=t, noise=reverse_noise)
+        return x_recon, x_t
+
+    @torch.no_grad()
+    def p_sample_loop2(self, verbose=True, return_chain=False, sample_fn=default_sample_fn, **sample_kwargs):
+        cond = self.cond
+        xT = self.sample.trajectories
+        shape = xT.shape
+
+        device = self.betas.device
+        self.x_recon_store = {}
+
+        batch_size = shape[0]
+        x = torch.randn(shape, device=device)
+
+        # noise = torch.randn_like(xT)
+        # t= self.n_timesteps-1
+        # t = 0
+        # t = torch.tensor([t], device=device)
+        # x = self.q_sample(xT, t, noise)
+        # x = xT
+        # x = torch.zeros_like(xT, device=device)
+
+        x = apply_conditioning(x, cond, self.action_dim)
+
+        chain = [x] if return_chain else None
+
+        progress = utils.Progress(self.n_timesteps) if verbose else utils.Silent()
+        for i in reversed(range(0, self.n_timesteps)):
+            t = make_timesteps(batch_size, i, device)
+            x, values = sample_fn(self, x, cond, t, **sample_kwargs)
+            x = apply_conditioning(x, cond, self.action_dim)
+
+            progress.update({'t': i, 'vmin': values.min().item(), 'vmax': values.max().item()})
+            if return_chain: chain.append(x)
+
+        progress.stamp()
+
+        x, values = sort_by_values(x, values)
+        if return_chain: chain = torch.stack(chain, dim=1)
+        return Sample(x, values, chain)
 
     #------------------------------------------ training ------------------------------------------#
 

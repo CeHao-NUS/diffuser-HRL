@@ -90,3 +90,31 @@ class Policy:
 
         return x_recon_store
 
+    def get_for_and_back(self):
+        x_bf_store = {}
+        xt_store = {}
+        for t_np in reversed(range(0, self.diffusion_model.n_timesteps)):
+            t = torch.tensor([t_np], device=self.device)
+            x_recon, x_t = self.diffusion_model.for_and_back(t)
+            x_recon = utils.to_np(x_recon)
+            normed_observations = x_recon[:, :, self.action_dim:]
+            observations = self.normalizer.unnormalize(normed_observations, 'observations')
+            x_bf_store[t_np] = observations
+
+            x_t = utils.to_np(x_t)
+            normed_observations = x_t[:, :, self.action_dim:]
+            observations = self.normalizer.unnormalize(normed_observations, 'observations')
+            xt_store[t_np] = observations
+
+
+        return x_bf_store, xt_store
+    
+    def sample_again(self):
+        sample = self.diffusion_model.p_sample_loop2()
+        sample = utils.to_np(sample.trajectories)
+        actions = sample[:, :, :self.action_dim]
+        actions = self.normalizer.unnormalize(actions, 'actions')
+        normed_observations = sample[:, :, self.action_dim:]
+        observations = self.normalizer.unnormalize(normed_observations, 'observations')
+        trajectories = Trajectories(actions, observations)
+        return trajectories

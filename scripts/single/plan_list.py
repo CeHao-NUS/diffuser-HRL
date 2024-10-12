@@ -167,11 +167,40 @@ for t in range(env.max_episode_steps):
 
     observation = next_observation
 
+import os
+# ==================== save intermediate reconstructions
 x_recon_store = policy.process_raw_trajectory()
 for key, x_recon in x_recon_store.items():
-    path_dir = join(args.savepath, f'{key}.png')
+    path_dir = join(args.savepath, 'x_recon', f'{key}.png')
+    if not os.path.exists(join(args.savepath, 'x_recon')):
+        os.makedirs(join(args.savepath, 'x_recon'))
     renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
 
+# ==================== check forward and backward
+x_bf_store, xt_store = policy.get_for_and_back()
+for key, x_bf in x_bf_store.items():
+    path_dir = join(args.savepath, 'x_bf', f'{key}.png')
+    if not os.path.exists(join(args.savepath, 'x_bf')):
+        os.makedirs(join(args.savepath, 'x_bf'))
+    renderer.composite(path_dir, x_bf[:, :, :diffusion.horizon], ncol=1, conditions=cond)
+
+for key, xt in xt_store.items():
+    path_dir = join(args.savepath, 'x_bf', f'{key}_xt.png')
+    renderer.composite(path_dir, xt[:, :, :diffusion.horizon], ncol=1, conditions=cond)
+
+# ==================== sample again
+sample2 = policy.sample_again()
+path_dir = join(args.savepath, 'sample_again.png')
+renderer.composite(path_dir, sample2.observations[:, :, :diffusion.horizon], ncol=1, conditions=cond)
+
+
+# ==================== save intermediate reconstructions
+x_recon_store = policy.process_raw_trajectory()
+for key, x_recon in x_recon_store.items():
+    path_dir = join(args.savepath, 'x_recon2', f'{key}.png')
+    if not os.path.exists(join(args.savepath, 'x_recon2')):
+        os.makedirs(join(args.savepath, 'x_recon2'))
+    renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
 
 # logger.finish(t, env.max_episode_steps, score=score, value=0)
 
