@@ -56,3 +56,4 @@ python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --da
 python scripts/train/train_diffuser.py --config 'config.single.train_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4"
 python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4"
 
+python scripts/single/plan_list.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4"

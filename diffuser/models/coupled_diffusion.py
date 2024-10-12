@@ -176,6 +176,8 @@ class CoupledGaussianDiffusion(nn.Module):
     def p_mean_variance(self, x, cond, t):
         x_recon = self.predict_start_from_noise(x, t=t, noise=self.model(x, cond, t))
 
+        self.x_recon_store[t] = x_recon
+
         if self.clip_denoised:
             x_recon.clamp_(-1., 1.)
         else:
@@ -220,6 +222,8 @@ class CoupledGaussianDiffusion(nn.Module):
         batch_size = len(cond[0])
         horizon = horizon or self.horizon
         shape = (batch_size, horizon, self.transition_dim)
+
+        self.x_recon_store = {}
 
         return self.p_sample_loop(shape, cond, **sample_kwargs)
     
