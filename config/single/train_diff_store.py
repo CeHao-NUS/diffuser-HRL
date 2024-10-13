@@ -14,13 +14,13 @@ base = {
     'diffusion': {
         ## model
         'model': 'models.TemporalUnet',
-        'diffusion': 'models.DisplayGaussianDiffusion',
+        'diffusion': 'models.DisplayCoupledGaussianDiffusion_ForwardNoise',
         'horizon': 256,
         'n_diffusion_steps': 256,
         'action_weight': 1,
         'loss_weights': None,
         'loss_discount': 1,
-        'predict_epsilon': False,
+        'predict_epsilon': True,
         'dim_mults': (1, 4, 8),
         'renderer': 'utils.Maze2dRenderer',
 
