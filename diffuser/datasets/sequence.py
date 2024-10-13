@@ -278,6 +278,7 @@ class VarHDataset2(GoalDataset):
 
     def __getitem__(self, idx):
 
+
         # 1. get intermediate point
         # 2. segment and fill with last point
         # 3. change conditions

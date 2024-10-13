@@ -12,15 +12,11 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.single.plan_diff",
+                "config.single.train_diff",
                 "--dataset",
-                "maze2d-umaze-v1",
+                "maze2d-large-v1",
                 "--device",
-                "cuda",
-                "--diffusion_loadpath",
-                "diffusion/ep_single/H128_T64",
-                "--prefix",
-                "plans/ep_single/"
+                "cuda"
             ],
 
         }

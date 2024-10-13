@@ -2,17 +2,17 @@
 # bash scripts/eval/eval_umaze.sh
 
 # single
-task="scripts/single/plan.py"
+# task="scripts/single/plan.py"
 # config="config.single.plan_diff"
-config="config.single.varh.plan_diff_var2"
+# config="config.single.varh.plan_diff_var2"
 
 # single store
 # task="scripts/single/plan_list.py"
 # config="config.single.plan_diff_store"
 
 # hier
-# task="scripts/hier/plan.py"
-# config='config.hier.plan_diff'
+task="scripts/hier/plan.py"
+config='config.hier.plan_diff'
 
 # forward_noise
 # task="scripts/single/plan.py"
@@ -25,3 +25,4 @@ do
 done
 
 wait
+

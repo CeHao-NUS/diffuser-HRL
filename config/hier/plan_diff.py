@@ -87,9 +87,9 @@ base = {
 maze2d_umaze_v1 = {
     'plan': {
         'LL_horizon': 16,
-        'HL_horizon': 192,
+        'HL_horizon': 128,
         'n_diffusion_steps': 32,
-        'seg_length': 11,
+        'seg_length': 7,
         'downsample': 16,
     },
 }

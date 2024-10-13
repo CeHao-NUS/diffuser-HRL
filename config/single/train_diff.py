@@ -20,7 +20,7 @@ base = {
         'action_weight': 1,
         'loss_weights': None,
         'loss_discount': 1,
-        'predict_epsilon': False,
+        'predict_epsilon': True,
         'dim_mults': (1, 4, 8),
         'renderer': 'utils.Maze2dRenderer',
 

@@ -11,14 +11,14 @@ NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 # dataset="maze2d-umaze-v1"
-dataset="maze2d-medium-v1"
-# dataset="maze2d-large-v1"
+# dataset="maze2d-medium-v1"
+dataset="maze2d-large-v1"
 # dataset="maze2d-testbig-v0 "
 
 # # single
-# task="scripts/single/plan.py"
-# config="config.single.plan_diff"
-# plan_task="single"
+task="scripts/single/plan.py"
+config="config.single.plan_diff"
+plan_task="single"
 
 
 # config="config.single.plan_diff_test" # test big
@@ -31,9 +31,9 @@ dataset="maze2d-medium-v1"
 # config='config.hier.plan_diff_test'
 
 # forward_noise
-task="scripts/single/plan.py"
-config='config.single.plan_diff_coupled_forwardnoise'
-plan_task="single_coupled_forwardnoise"
+# task="scripts/single/plan.py"
+# config='config.single.plan_diff_coupled_forwardnoise'
+# plan_task="single_coupled_forwardnoise"
 
 for cond in "True" "False"
 do
