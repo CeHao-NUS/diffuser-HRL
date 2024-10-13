@@ -318,8 +318,8 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
         '''
         add noise to every dim of cond
         '''
-        # x = apply_conditioning(x, self.noised_cond, action_dim)
-        x = apply_conditioning(x, cond, action_dim)
+        x = apply_conditioning(x, self.noised_cond, action_dim)
+        # x = apply_conditioning(x, cond, action_dim)
         return x
     
     def _sample_apply_conditioning(self, x, cond, t, action_dim):
