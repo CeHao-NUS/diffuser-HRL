@@ -1,4 +1,4 @@
-MAX_JOBS=10
+MAX_JOBS=20
 current_jobs=0
 
 # bash scripts/eval/exp.sh

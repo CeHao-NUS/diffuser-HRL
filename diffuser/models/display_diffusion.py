@@ -209,6 +209,15 @@ class DisplayGaussianDiffusion(nn.Module):
         return sample
     
     def _sample_apply_conditioning(self, x, cond, t, action_dim):
+        # gradually change the conditioning
+        # ratio = (self.n_timesteps - t[0]) / self.n_timesteps
+        # temp_cond = cond.copy()
+        
+
+        # if t[0] <= 10:
+        #     temp_cond[127] = temp_cond[127] +  torch.tensor([0, 2, 0, 0], device=x.device)
+        # x = apply_conditioning(x, temp_cond, action_dim)
+
         x = apply_conditioning(x, cond, action_dim)
         return x
 

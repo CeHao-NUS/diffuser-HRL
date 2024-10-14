@@ -125,8 +125,8 @@ def concatenate_images_with_custom_titles(image_paths, output_path, names, max_c
 
 if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
-    env = env_list[2]
+    env = env_list[1]
 
-    subfolder = 'single_H384_T256_d0.99_b1_condFalse'
+    subfolder = 'single_H256_T256_d0.99_b1_condFalse'
     plot_diffusion(subfolder, env)
 

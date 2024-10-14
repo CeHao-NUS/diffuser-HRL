@@ -59,7 +59,9 @@ python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze
 python scripts/train/train_diffuser.py --config 'config.single.train_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4" \
  --predict_epsilon True
 
-python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4" \
+python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-umaze-v1 --device "cuda" \
  --conditional True --init_pose "(3, 1)" --target "(1, 1)"  --diffusion_loadpath 'diffusion/ep_single/H128_T64'
 
 python scripts/single/plan_list.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4" 
+
+
