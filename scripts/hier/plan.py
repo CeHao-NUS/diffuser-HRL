@@ -231,7 +231,7 @@ for t in range(env.max_episode_steps):
 
         if args.HL_batch_size > 1:
             hl_obs, hl_values = sort_by_values(HL_samples.observations, HL_samples.values)
-            hl_goal = hl_obs[0]
+            hl_goal = hl_obs[0][0: seg_length]
         else:
             hl_obs = HL_samples.observations
             hl_goal = HL_samples.observations[0]
@@ -300,7 +300,8 @@ for t in range(env.max_episode_steps):
     
     if t == 0: 
         hl_fullpath = join(args.savepath, 'HL.png')
-        renderer.composite(hl_fullpath, hl_obs[:, :seg_length+1, :], ncol=1,  conditions=HL_cond)
+        renderer.composite(hl_fullpath, hl_obs[:, :seg_length, :], ncol=1,  conditions=HL_cond)
+        # renderer.composite(hl_fullpath, hl_obs, ncol=1,  conditions=HL_cond)
         
         # ll_fullpath = join(args.savepath, 'LL.png')
         # renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)

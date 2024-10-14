@@ -4,12 +4,15 @@
 # train diffusion
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-umaze-v1 --device "cuda:7"
 # plan traj
-python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze2d-umaze-v1 --device "cuda"
+python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze2d-umaze-v1 --device "cuda" \
+ --conditional True --init_pose "(3, 1)" --target "(1, 1)" 
 
 # med, large
-python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-medium-v1 --device "cuda:6"
+python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-medium-v1 --device "cuda" 
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-large-v1 --device "cuda:5"
 
+python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze2d-medium-v1 --device "cuda"  \
+ --conditional True --init_pose "(1, 6)" --target "(6, 5)" 
 
 # test big
 python scripts/train/train_diffuser.py --config 'config.single.train_diff_test'  --dataset maze2d-testbig-v0 --device "cuda:7"
@@ -63,7 +66,7 @@ python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --d
  --conditional True --init_pose "(3, 1)" --target "(1, 1)" 
 
 python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-medium-v1 --device "cuda" \
- --conditional True --init_pose "(4, 4)" --target "(6, 5)" 
+ --conditional True --init_pose "(1, 6)" --target "(6, 5)" 
 
 
 python scripts/single/plan_list.py --config 'config.single.plan_diff_coupled_forwardnoise'  --dataset maze2d-umaze-v1 --device "cuda:4" 
