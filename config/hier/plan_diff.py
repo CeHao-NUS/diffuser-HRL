@@ -100,7 +100,7 @@ maze2d_medium_v1 = {
         'HL_horizon': 300,
         'n_diffusion_steps': 32,
         'seg_length': 18, # 17*15 = 255
-        'downsample': 16,
+        'downsample': 15,
     },
 }
 
