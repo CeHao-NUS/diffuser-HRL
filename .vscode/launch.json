@@ -12,11 +12,9 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.single.train_diff",
+                "config.hier.train_diff_HL",
                 "--dataset",
-                "maze2d-large-v1",
-                "--device",
-                "cuda"
+                "maze2d-medium-v1"
             ],
 
         }

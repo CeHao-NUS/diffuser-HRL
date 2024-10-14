@@ -143,7 +143,7 @@ HL_renderer = HL_diffusion_experiment.renderer
 
 # HL_policy = Policy(HL_diffusion, HL_dataset.normalizer)
 
-horizon_HL =  args.HL_horizon // args.downsample 
+horizon_HL =  args.HL_horizon // args.downsample
 
 if args.HL_value_loadpath is not None:
         

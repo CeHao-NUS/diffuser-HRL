@@ -73,9 +73,9 @@ maze2d_umaze_v1 = {
 
 maze2d_medium_v1 = {
     'diffusion': {
-        'horizon': 256,
+        'horizon': 300,
         'n_diffusion_steps': 32,
-        'downsample': 32,
+        'downsample': 15,
     },
 }
 

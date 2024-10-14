@@ -96,11 +96,11 @@ maze2d_umaze_v1 = {
 
 maze2d_medium_v1 = {
     'plan': {
-        'LL_horizon': 32,
-        'HL_horizon': 256,
+        'LL_horizon': 16,
+        'HL_horizon': 300,
         'n_diffusion_steps': 32,
-        'seg_length': 7,
-        'downsample': 32,
+        'seg_length': 18, # 17*15 = 255
+        'downsample': 16,
     },
 }
 

@@ -102,12 +102,6 @@ class GoalDataset(SequenceDataset):
             self.horizon - 1: observations[-1],
         }
     
-class DummyGoalDataset(SequenceDataset):
-    def get_conditions(self, observations):
-        return {
-            0: observations[0],
-        }
-    
 class BatchGaolDataset(SequenceDataset):
     def get_conditions(self, observations):
         '''
@@ -208,7 +202,53 @@ class GoalValueDataset(ValueDataset):
         value_batch = ValueBatch(trajectories, conditions, value)
         return value_batch
 
+
+# ================================ HL downsample ================================
+# class HLGoalDataset(GoalDataset):
+
+#     def __init__(self, *args, downsample=1, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.downsample = downsample
+
+#     # change the index based on downsample
+#     def make_indices(self, path_lengths, horizon):
+#         '''
+#             makes indices for sampling from dataset;
+#             each index maps to a datapoint
+#         '''
+#         indices = []
+#         for i, path_length in enumerate(path_lengths):
+#             max_start = min(path_length - 1, self.max_path_length - horizon)
+#             if not self.use_padding:
+#                 max_start = min(max_start, path_length - horizon)
+#             for start in range(max_start):
+#                 end = start + horizon
+#                 indices.append((i, start, end))
+#         indices = np.array(indices)
+#         return indices
+
+#     def get_conditions(self, observations):
+#         '''
+#             condition on both the current observation and the last observation in the plan
+#         '''
+#         return {
+#             0: observations[0],
+#             self.horizon - 1: observations[-1],
+#         }
+
+
+#     def __getitem__(self, idx, eps=1e-4):
+#         path_ind, start, end = self.indices[idx]
+
+#         observations = self.fields.normed_observations[path_ind, start:end]
+#         actions = self.fields.normed_actions[path_ind, start:end]
+
+#         conditions = self.get_conditions(observations)
+#         trajectories = np.concatenate([actions, observations], axis=-1)
+#         batch = Batch(trajectories, conditions)
+#         return batch
     
+# ================================ Varh ================================
 class VarHDataset1(GoalDataset):
     def __init__(self, *args, discount=0.99, normed=False, min_horizon=1, **kwargs):
         self.min_horizon = min_horizon
@@ -341,6 +381,10 @@ class VarHValueDataset(VarHDataset1):
         return value_batch
     
 
+
+
+
+'''
 class JointValueDataset(GoalDataset):
     def __init__(self, *args, discount=0.99, normed=False, **kwargs):
         super().__init__(*args, **kwargs)
@@ -380,3 +424,4 @@ class JointValueDataset(GoalDataset):
 
         return value_batch
     
+'''
