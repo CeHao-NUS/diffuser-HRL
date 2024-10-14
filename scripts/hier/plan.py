@@ -9,7 +9,7 @@ import diffuser.datasets as datasets
 import diffuser.utils as utils
 import diffuser.sampling as sampling
 
-import envs.d4rl_pointmaze # to enable offline maze env
+# import envs.d4rl_pointmaze # to enable offline maze env
 
 class Parser(utils.Parser):
     dataset: str = 'maze2d-umaze-v1'
@@ -302,8 +302,8 @@ for t in range(env.max_episode_steps):
         hl_fullpath = join(args.savepath, 'HL.png')
         renderer.composite(hl_fullpath, hl_obs[:, :seg_length+1, :], ncol=1,  conditions=HL_cond)
         
-        ll_fullpath = join(args.savepath, 'LL.png')
-        renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)
+        # ll_fullpath = join(args.savepath, 'LL.png')
+        # renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)
 
         whole_fullpath = join(args.savepath, 'whole.png')
         renderer.composite(whole_fullpath, observation_plan, ncol=1,  conditions=cond_plot)

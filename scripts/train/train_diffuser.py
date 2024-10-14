@@ -24,6 +24,11 @@ else:
     downsample = 1
     model_horizon = args.horizon
 
+if 'set_length' in args._dict:
+    set_length = args.set_length
+else:
+    set_length = model_horizon
+
 if 'min_horizon' in args._dict:
     min_horizon = args.min_horizon
 else:
@@ -42,6 +47,7 @@ dataset_config = utils.Config(
     max_path_length=args.max_path_length,
     downsample=downsample,
     min_horizon=min_horizon,
+    set_length=set_length,
 )
 
 render_config = utils.Config(

@@ -153,9 +153,10 @@ class LL_goal_dataset(SequenceDataset):
 
 class HL_goal_dataset(LL_goal_dataset):
 
-    def __init__(self, *args, downsample=1, **kwargs):
+    def __init__(self, *args, downsample=1, set_length, **kwargs):
         super().__init__(*args, **kwargs)
         self.downsample = downsample
+        self.set_length = set_length
 
     def __getitem__(self, idx):
         batch = super().__getitem__(idx)
@@ -171,7 +172,8 @@ class HL_goal_dataset(LL_goal_dataset):
         len_new = len(trajectories)
         conditions = batch.conditions # still the last point
         conditions.pop(len_ori-1)
-        conditions[len_new-1] = trajectories[-1, self.action_dim:]
+        # conditions[len_new-1] = trajectories[-1, self.action_dim:]
+        conditions[self.set_length-1] = trajectories[self.set_length-1, self.action_dim:]
 
         batch = Batch(trajectories, conditions)
         return batch

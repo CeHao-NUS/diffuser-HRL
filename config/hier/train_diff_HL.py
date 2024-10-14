@@ -17,7 +17,7 @@ base = {
     'diffusion': {
         ## model
         'model': 'models.TemporalUnet',
-        'diffusion': 'models.GaussianDiffusion',
+        'diffusion': 'models.BatchGaussianDiffusion',
         'horizon': 256,
         'n_diffusion_steps': 256,
         'action_weight': 1,
@@ -36,6 +36,7 @@ base = {
         'use_padding': False,
         'max_path_length': 40000,
         'downsample': 32,
+        'set_length': 32,
 
         ## serialization
         'logbase': 'logs',
@@ -68,6 +69,7 @@ maze2d_umaze_v1 = {
         'horizon': 128,
         'n_diffusion_steps': 32,
         'downsample': 16,
+        'set_length': 18, # to change
     },
 }
 
@@ -75,7 +77,8 @@ maze2d_medium_v1 = {
     'diffusion': {
         'horizon': 300,
         'n_diffusion_steps': 32,
-        'downsample': 15,
+        'downsample': 15, # 300/15 = 20
+        'set_length': 18, # only use 18
     },
 }
 
@@ -84,5 +87,6 @@ maze2d_large_v1 = {
         'horizon': 384,
         'n_diffusion_steps': 32,
         'downsample': 32,
+        'set_length': 18, # to change
     },
 }

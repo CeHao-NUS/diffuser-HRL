@@ -1,4 +1,4 @@
-MAX_JOBS=20
+MAX_JOBS=50
 current_jobs=0
 
 # bash scripts/eval/exp.sh
@@ -8,9 +8,14 @@ dataset="maze2d-medium-v1"
 # dataset="maze2d-large-v1"
 
 # single
-task="scripts/single/plan.py"
-config="config.single.plan_diff"
-plan_task="single"
+# task="scripts/single/plan.py"
+# config="config.single.plan_diff"
+# plan_task="single"
+
+# hier
+task="scripts/hier/plan.py"
+config='config.hier.plan_diff'
+plan_task="hier"
 
 for cond in "True" "False"
 do
