@@ -205,7 +205,7 @@ seg_length = args.seg_length
 assert seg_length <= args.HL_horizon
 
 HL_cond = {
-    (0, seg_length): np.array([*target, 0, 0]),
+    (0, seg_length-1): np.array([*target, 0, 0]),
 }
 
 cond_plot = {LL_diffusion.horizon * args.seg_length - 1: np.array([*target, 0, 0])}
