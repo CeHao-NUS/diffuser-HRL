@@ -38,8 +38,11 @@ python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_v
 python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-medium-v1 --device "cuda:6"
 python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-large-v1 --device "cuda:5"
 
-python scripts/single/plan.py --config 'config.single.varh.plan_diff_var1'  --dataset maze2d-umaze-v1 --device "cuda" \
+python scripts/single/plan.py --config 'config.single.varh.plan_diff_var1'  --dataset maze2d-umaze-v1 --device "cuda:1" \
  --conditional True --init_pose "(3, 1)" --target "(1, 1)" 
+
+python scripts/single/plan.py --config 'config.single.varh.plan_diff_var2'  --dataset maze2d-medium-v1 --device "cuda:1" \
+ --conditional True --init_pose "(1, 6)" --target "(6, 5)" 
 
 # train a dummy condition in training  =========================================================================
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-umaze-v1 --device "cuda:1" \
@@ -60,13 +63,14 @@ python scripts/single/plan.py --config 'config.single.plan_diff'  --dataset maze
  
 
 # do the single store plotting =========================================================================
-python scripts/train/train_diffuser.py --config 'config.single.train_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4" \
- --predict_epsilon True
+python scripts/train/train_diffuser.py --config 'config.single.train_diff_store'  --dataset maze2d-umaze-v1 --device "cuda:4"
 
 python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-umaze-v1 --device "cuda" \
- --conditional True --init_pose "(3, 1)" --target "(1, 1)" 
+ --conditional True --init_pose "(3, 1)" --target "(1, 1)" \
+    --diffusion_loadpath 'diffusion/single_diffuser_varh1_H128_T64_mH16' --prefix 'plans/store_single_varh1/'
 
-python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-medium-v1 --device "cuda" \
+
+python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-medium-v1 --device "cuda:1" \
  --conditional True --init_pose "(1, 6)" --target "(6, 5)" 
 
 

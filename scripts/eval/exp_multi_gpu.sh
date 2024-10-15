@@ -11,14 +11,17 @@ NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 # dataset="maze2d-umaze-v1"
-# dataset="maze2d-medium-v1"
-dataset="maze2d-large-v1"
+dataset="maze2d-medium-v1"
+# dataset="maze2d-large-v1"
 # dataset="maze2d-testbig-v0 "
 
 # # single
 task="scripts/single/plan.py"
-config="config.single.plan_diff"
-plan_task="single"
+# config="config.single.plan_diff"
+# plan_task="single"
+
+config='config.single.varh.plan_diff_var2'
+plan_task="single_var2"
 
 
 # config="config.single.plan_diff_test" # test big

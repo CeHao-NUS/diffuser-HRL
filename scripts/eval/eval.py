@@ -127,6 +127,6 @@ if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
     env = env_list[1]
 
-    subfolder = 'hier_H300_T32_L18_condFalse'
+    subfolder = 'single_var2_H256_T256_d0.99_b1_condFalse'
     plot_diffusion(subfolder, env)
 
