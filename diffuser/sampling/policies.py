@@ -60,6 +60,61 @@ class GuidedPolicy:
             'd -> repeat d', repeat=batch_size,
         )
         return conditions
+    
+    # ========================= for debug store =========================
+    def process_raw_trajectory(self):
+        x_recon_store_torch = self.diffusion_model.x_recon_store
+        x_recon_store = {}
+
+        for key, x_recon in x_recon_store_torch.items():
+            sample = utils.to_np(x_recon)
+            normed_observations = sample[:, :, self.action_dim:]
+            observations = self.normalizer.unnormalize(normed_observations, 'observations') 
+
+            x_recon_store[int(utils.to_np(key[0]))] = observations
+
+        return x_recon_store
+
+    def get_for_and_back(self):
+        x_bf_store = {}
+        xt_store = {}
+        for t_np in reversed(range(0, self.diffusion_model.n_timesteps)):
+            t = torch.tensor([t_np], device=self.device)
+            x_recon, x_t = self.diffusion_model.for_and_back(t)
+            x_recon = utils.to_np(x_recon)
+            normed_observations = x_recon[:, :, self.action_dim:]
+            observations = self.normalizer.unnormalize(normed_observations, 'observations')
+            x_bf_store[t_np] = observations
+
+            x_t = utils.to_np(x_t)
+            normed_observations = x_t[:, :, self.action_dim:]
+            observations = self.normalizer.unnormalize(normed_observations, 'observations')
+            xt_store[t_np] = observations
+
+
+        return x_bf_store, xt_store
+    
+    def sample_again(self):
+        sample = self.diffusion_model.p_sample_loop2()
+        sample = utils.to_np(sample.trajectories)
+        actions = sample[:, :, :self.action_dim]
+        actions = self.normalizer.unnormalize(actions, 'actions')
+        normed_observations = sample[:, :, self.action_dim:]
+        observations = self.normalizer.unnormalize(normed_observations, 'observations')
+        trajectories = Trajectories(actions, observations, sample.values)
+        return trajectories
+
+    def save_values(self):
+        x_value_store_torch = self.diffusion_model.x_value_store
+        x_value_store = {}
+
+        for key, x_value in x_value_store_torch.items():
+            x_value_np = utils.to_np(x_value)
+            # to float number
+            x_value = float(x_value_np)
+            x_value_store[int(utils.to_np(key[0]))] = x_value
+
+        return x_value_store
 
 class RopePolicy(GuidedPolicy):
 

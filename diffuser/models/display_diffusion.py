@@ -170,7 +170,7 @@ class DisplayGaussianDiffusion(nn.Module):
         batch_size = shape[0]
         x = torch.randn(shape, device=device)
 
-        # x = apply_conditioning(x, cond, self.action_dim)
+        x = apply_conditioning(x, cond, self.action_dim)
 
         chain = [x] if return_chain else None
 
@@ -179,6 +179,8 @@ class DisplayGaussianDiffusion(nn.Module):
             t = make_timesteps(batch_size, i, device)
             x, values = sample_fn(self, x, cond, t, **sample_kwargs)
             x = self._sample_apply_conditioning(x, cond, t, self.action_dim)
+
+            self.x_value_store[t] = values
 
             progress.update({'t': i, 'vmin': values.min().item(), 'vmax': values.max().item()})
             if return_chain: chain.append(x)
@@ -201,7 +203,7 @@ class DisplayGaussianDiffusion(nn.Module):
 
         # store all x_recon
         self.x_recon_store = {}
-
+        self.x_value_store = {}
 
         sample = self.p_sample_loop(shape, cond, **sample_kwargs)
         self.sample = sample

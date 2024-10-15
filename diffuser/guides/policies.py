@@ -77,6 +77,7 @@ class Policy:
         # else:
         #     return action
 
+# ================================== for debug store ==================================
     def process_raw_trajectory(self):
         x_recon_store_torch = self.diffusion_model.x_recon_store
         x_recon_store = {}
@@ -118,3 +119,6 @@ class Policy:
         observations = self.normalizer.unnormalize(normed_observations, 'observations')
         trajectories = Trajectories(actions, observations)
         return trajectories
+    
+    def save_values(self):
+        return None

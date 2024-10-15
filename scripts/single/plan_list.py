@@ -168,6 +168,8 @@ for t in range(env.max_episode_steps):
     observation = next_observation
 
 import os
+
+'''
 # ==================== save intermediate reconstructions
 x_recon_store = policy.process_raw_trajectory()
 for key, x_recon in x_recon_store.items():
@@ -175,7 +177,9 @@ for key, x_recon in x_recon_store.items():
     if not os.path.exists(join(args.savepath, 'x_recon')):
         os.makedirs(join(args.savepath, 'x_recon'))
     renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
+'''
 
+'''
 # ==================== check forward and backward
 x_bf_store, xt_store = policy.get_for_and_back()
 for key, x_bf in x_bf_store.items():
@@ -187,20 +191,23 @@ for key, x_bf in x_bf_store.items():
 for key, xt in xt_store.items():
     path_dir = join(args.savepath, 'x_bf', f'{key}_xt.png')
     renderer.composite(path_dir, xt[:, :, :diffusion.horizon], ncol=1, conditions=cond)
-
+'''
+    
+'''
 # ==================== sample again
 sample2 = policy.sample_again()
 path_dir = join(args.savepath, 'sample_again.png')
 renderer.composite(path_dir, sample2.observations[:, :, :diffusion.horizon], ncol=1, conditions=cond)
+'''
 
 
-# ==================== save intermediate reconstructions
-x_recon_store = policy.process_raw_trajectory()
-for key, x_recon in x_recon_store.items():
-    path_dir = join(args.savepath, 'x_recon2', f'{key}.png')
-    if not os.path.exists(join(args.savepath, 'x_recon2')):
-        os.makedirs(join(args.savepath, 'x_recon2'))
-    renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
+# ===================== save values
+x_values = policy.save_values()
+if x_values is not None:
+    # save as a dict
+    json_path = join(args.savepath, 'x_values.json')
+    json.dump(x_values, open(json_path, 'w'), indent=2, sort_keys=True)
+    print('save json to', json_path)
 
 # logger.finish(t, env.max_episode_steps, score=score, value=0)
 
