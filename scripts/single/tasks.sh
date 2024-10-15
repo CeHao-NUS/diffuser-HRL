@@ -70,7 +70,7 @@ python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --d
     --diffusion_loadpath 'diffusion/single_diffuser_varh1_H128_T64_mH16' --prefix 'plans/store_single_varh1/'
 
 
-python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-medium-v1 --device "cuda:1" \
+python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  --dataset maze2d-medium-v1 --device "cuda" \
  --conditional True --init_pose "(1, 6)" --target "(6, 5)" 
 
 

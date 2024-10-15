@@ -217,6 +217,9 @@ class DisplayGaussianDiffusion(nn.Module):
         # if t[0] <= 30:
         #     temp_cond[127] = temp_cond[127] +  torch.tensor([0, 2, 0, 0], device=x.device)
         # x = apply_conditioning(x, temp_cond, action_dim)
+        
+        # x = torch.zeros_like(x, device=x.device) # just test
+        # x = torch.randn_like(x, device=x.device) # just test
 
         x = apply_conditioning(x, cond, action_dim)
         return x
@@ -229,7 +232,10 @@ class DisplayGaussianDiffusion(nn.Module):
 
         # 1. given trajectory, add noise based on t
         noise = torch.randn_like(xT)
-        x_t = self.q_sample(xT, t, noise)
+
+        # x_t = self.q_sample(xT, t, noise)
+        x_t = torch.zeros_like(xT, device=self.device) # just test
+        # x_t = torch.randn_like(xT, device=self.device) # just test
 
         x_t = self._sample_apply_conditioning(x_t, cond, t, self.action_dim)
 

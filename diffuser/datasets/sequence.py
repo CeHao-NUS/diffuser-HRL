@@ -157,6 +157,37 @@ class ValueDataset(SequenceDataset):
         return value_batch
 
 
+class OneValueDataset(ValueDataset):
+    def __getitem__(self, idx):
+        
+        # if data exist in the dataset, get 1
+        # if not in dataset, then make it -1.
+        noise_portion = 0.6
+
+        if np.random.rand() > noise_portion:
+            batch = SequenceDataset.__getitem__(self, idx)
+            value = 1
+            value = np.array([value], dtype=np.float32)
+            value_batch = ValueBatch(*batch, value)
+
+        else:
+            path_ind, start, end = self.indices[idx]
+            observations = self.fields.normed_observations[path_ind, start:end]
+            actions = self.fields.normed_actions[path_ind, start:end]
+
+            # make some wrong noises
+            observations = np.random.normal(0, 1, observations.shape).astype(np.float32)
+            actions = np.random.normal(0, 1, actions.shape).astype(np.float32)
+
+            conditions = self.get_conditions(observations)
+            trajectories = np.concatenate([actions, observations], axis=-1)
+
+            value = -1
+            value = np.array([value], dtype=np.float32)
+            value_batch = ValueBatch(trajectories, conditions, value)
+
+        return value_batch
+
 class GoalValueDataset(ValueDataset):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

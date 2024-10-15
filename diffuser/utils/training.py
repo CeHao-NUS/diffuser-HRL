@@ -92,7 +92,7 @@ class Trainer(object):
         self.reset_parameters()
         self.step = 0
 
-    def init_wandb(self):
+    def init_wandb(self, project='diffuser'):
         # delete_the log/ in self.logdir
         resume_dir = self.logdir.replace('logs/', '')
         # convert / in self.logdir to -
@@ -102,7 +102,7 @@ class Trainer(object):
         timestamp = datetime.now().strftime('%m-%d-%H-%M')
         resume_dir = resume_dir + '-' + timestamp
         
-        wandb.init(project='diffuser', resume=resume_dir, entity='cehao-nus-national-university-of-california')
+        wandb.init(project=project, resume=resume_dir, entity='cehao-nus-national-university-of-california')
 
     def reset_parameters(self):
         self.ema_model.load_state_dict(self.model.state_dict())
