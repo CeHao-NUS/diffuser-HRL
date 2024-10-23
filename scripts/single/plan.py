@@ -181,3 +181,9 @@ json_data = {'score': score, 'step': t, 'return': total_reward, 'term': terminal
     'epoch_diffusion': diffusion_experiment.epoch}
 json.dump(json_data, open(json_path, 'w'), indent=2, sort_keys=True)
 
+# save samples to pickle
+samples = {'observations': samples.observations, 'actions': samples.actions}
+import pickle
+with open(join(args.savepath, 'samples.pkl'), 'wb') as f:
+    pickle.dump(samples, f)
+

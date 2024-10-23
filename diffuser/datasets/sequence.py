@@ -17,14 +17,14 @@ class SequenceDataset(torch.utils.data.Dataset):
 
     def __init__(self, env='hopper-medium-replay', horizon=64,
         normalizer='LimitsNormalizer', preprocess_fns=[], max_path_length=1000,
-        max_n_episodes=10000, termination_penalty=0, use_padding=True, seed=None, **kwargs):
+        max_n_episodes=10000, termination_penalty=0, use_padding=True, seed=None, h5path=None, **kwargs):
         self.preprocess_fn = get_preprocess_fn(preprocess_fns, env)
         self.env = env = load_environment(env)
         self.env.seed(seed)
         self.horizon = horizon
         self.max_path_length = max_path_length
         self.use_padding = use_padding
-        itr = sequence_dataset(env, self.preprocess_fn)
+        itr = sequence_dataset(env, self.preprocess_fn, h5path) # enable customized dataset
 
         fields = ReplayBuffer(max_n_episodes, max_path_length, termination_penalty)
         for i, episode in enumerate(itr):
@@ -188,50 +188,7 @@ class OneValueDataset(ValueDataset):
 
         return value_batch
 
-class GoalValueDataset(ValueDataset):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.min_horizon = 2
-    
-    def __getitem__(self, idx):
-        # batch = super().__getitem__(idx)
-        # path_ind, start, end = self.indices[idx]
 
-        path_ind, start, end = self.indices[idx]
-        horizon = self.horizon
-
-        new_length = np.random.choice(range(self.min_horizon, horizon))
-        repeats = horizon - new_length
-        new_end = start + new_length
-
-        observations = self.fields.normed_observations[path_ind, start:new_end]
-        actions = self.fields.normed_actions[path_ind, start:new_end]
-
-        # repeat the last observation until end
-        # observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], repeats, axis=0)], axis=0)
-        observations = np.concatenate([observations[:1], observations[-1:]], axis=0)
-        
-        # zero_actions = np.zeros_like(actions[-1])
-        # actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], repeats, axis=0)], axis=0)
-        actions = np.concatenate([actions[:1], actions[-1:]], axis=0)
-        actions = np.zeros_like(actions)
-
-        conditions = self.get_conditions(observations)
-        trajectories = np.concatenate([actions, observations], axis=-1)
-
-
-        rewards = self.fields['rewards'][path_ind, start:new_end]
-        rewards = np.ones_like(rewards) * -1 # make the steps to be negative
-
-        discounts = self.discounts[:len(rewards)]
-        value = (discounts * rewards).sum()
-        
-        if self.normed:
-            value = self.normalize_value(value)
-
-        value = np.array([value], dtype=np.float32)
-        value_batch = ValueBatch(trajectories, conditions, value)
-        return value_batch
 
 
 # ================================ HL downsample ================================

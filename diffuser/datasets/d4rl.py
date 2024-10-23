@@ -39,8 +39,8 @@ def load_environment(name):
     env.name = name
     return env
 
-def get_dataset(env):
-    dataset = env.get_dataset()
+def get_dataset(env, h5path=None):
+    dataset = env.get_dataset(h5path)
 
     if 'antmaze' in str(env).lower():
         ## the antmaze-v0 environments have a variety of bugs
@@ -52,7 +52,7 @@ def get_dataset(env):
 
     return dataset
 
-def sequence_dataset(env, preprocess_fn):
+def sequence_dataset(env, preprocess_fn, h5path=None):
     """
     Returns an iterator through trajectories.
     Args:
@@ -67,7 +67,7 @@ def sequence_dataset(env, preprocess_fn):
             rewards
             terminals
     """
-    dataset = get_dataset(env)
+    dataset = get_dataset(env, h5path=None)
     dataset = preprocess_fn(dataset)
 
     N = dataset['rewards'].shape[0]

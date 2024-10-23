@@ -1,9 +1,3 @@
+import d4rl
 import gym
-
-
-import envs.d4rl_pointmaze
-
-env = gym.make('maze2d-randMaze0S40-ac-v0')
-
-
-a = 1
+env = gym.make('maze2d-medium-v1')

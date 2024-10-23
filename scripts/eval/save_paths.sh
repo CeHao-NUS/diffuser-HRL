@@ -1,7 +1,7 @@
 MAX_JOBS=10
 current_jobs=0
 
-# bash scripts/eval/exp.sh
+# bash scripts/eval/save_paths.sh
 
 # dataset="maze2d-umaze-v1"
 dataset="maze2d-medium-v1"
@@ -17,9 +17,9 @@ plan_task="single_save"
 # config='config.hier.plan_diff'
 # plan_task="hier"
 
-for cond in "True" "False"
+for cond in "True" 
 do
-    for idx in {0..150}
+    for idx in {600..1000}
     do
         python $task --dataset $dataset --config $config \
         --suffix "eval_$idx" --prefix plans/$plan_task --conditional $cond --device "cuda:0"\
