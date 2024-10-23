@@ -11,7 +11,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args":[
-                "--config", "config.single.plan_guided_store",
+                "--config", "config.hier.plan_diff_LLG",
                 "--dataset", "maze2d-medium-v1",
                 "--device", "cuda",
                 "--conditional", "True",

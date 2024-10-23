@@ -170,6 +170,8 @@ class BatchGaussianDiffusion(nn.Module):
 
         chain = [x] if return_chain else None
 
+        value_store = {}
+
         progress = utils.Progress(self.n_timesteps) if verbose else utils.Silent()
         for i in reversed(range(0, self.n_timesteps)):
             t = make_timesteps(batch_size, i, device)
@@ -179,10 +181,29 @@ class BatchGaussianDiffusion(nn.Module):
             progress.update({'t': i, 'vmin': values.min().item(), 'vmax': values.max().item()})
             if return_chain: chain.append(x)
 
+            value_store[t[0]] = values
         progress.stamp()
 
         # x, values = sort_by_values(x, values)
         
+        # ==================== save to txt ====================
+        x_value_store = {}
+
+        for key, x_value in value_store.items():
+            x_value_np = utils.to_np(x_value)
+            # to float number
+            x_value = x_value_np.tolist()
+            x_value_store[int(utils.to_np(key))] = x_value
+
+        import json
+        from os.path import join
+
+        json_path = join('images', 'x_values.json')
+        json.dump(x_value_store, open(json_path, 'w'), indent=2, sort_keys=True)
+        print('save json to', json_path)
+
+        # ==================== save to txt ====================
+
         if return_chain: chain = torch.stack(chain, dim=1)
         return Sample(x, values, chain)
 

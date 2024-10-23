@@ -117,6 +117,11 @@ maze2d_umaze_v1 = {
         'horizon': 128,
         'n_diffusion_steps': 64,
     },
+
+    'values':{
+        'horizon': 128,
+        'n_diffusion_steps': 64,
+    },
 }
 
 maze2d_medium_v1 = {
@@ -124,10 +129,20 @@ maze2d_medium_v1 = {
         'horizon': 256,
         'n_diffusion_steps': 256,
     },
+
+    'values':{
+        'horizon': 256,
+        'n_diffusion_steps': 256,
+    },
 }
 
 maze2d_large_v1 = {
     'diffusion':{
+        'horizon': 384,
+        'n_diffusion_steps': 256,
+    },
+
+    'values':{
         'horizon': 384,
         'n_diffusion_steps': 256,
     },

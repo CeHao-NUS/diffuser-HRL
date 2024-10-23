@@ -11,6 +11,14 @@ diffusion_args_to_watch = [
     ('n_diffusion_steps', 'T'),
 ]
 
+value_args_to_watch = [
+    ('prefix', ''),
+    ('horizon', 'H'),
+    ('n_diffusion_steps', 'T'),
+    ## value kwargs
+    ('discount', 'd'),
+]
+
 base = {
     # d-1: LL
     'diffusion': {
@@ -58,11 +66,60 @@ base = {
         'device': 'cuda',
 
     },
+
+    'values': {
+        'model': 'models.ValueFunction',
+        'diffusion': 'models.BatchValueDiffusion',
+        'horizon': 256,
+        'n_diffusion_steps': 256,
+        'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+        'renderer': 'utils.Maze2dRenderer',
+
+        ## value-specific kwargs
+        'discount': 0.99,
+        'termination_penalty': None,
+        'normed': False,
+
+        ## dataset
+        'loader': 'datasets.OneValueDataset',
+        'normalizer': 'LimitsNormalizer',
+        'preprocess_fns': ['maze2d_set_terminals'],
+        'use_padding': False,
+        'max_path_length': 40000,
+        'min_horizon': 16,
+
+        ## serialization
+        'logbase': 'logs',
+        'prefix': 'values/LL_diffuser',
+        'exp_name': watch(value_args_to_watch),
+
+        ## training
+        'n_steps_per_epoch': 10000,
+        'loss_type': 'value_l2',
+        'n_train_steps': 400e3,
+        'batch_size': 32,
+        'learning_rate': 2e-4,
+        'gradient_accumulate_every': 2,
+        'ema_decay': 0.995,
+        'save_freq': 1000,
+        'sample_freq': 0,
+        'n_saves': 50,
+        'save_parallel': False,
+        'n_reference': 50,
+        'bucket': None,
+        'device': 'cuda',
+        'seed': None,
+    },
 }
 
 
 maze2d_umaze_v1 = {
     'diffusion': {
+        'horizon': 16,
+        'n_diffusion_steps': 32,
+    },
+
+    'values': {
         'horizon': 16,
         'n_diffusion_steps': 32,
     },
@@ -73,10 +130,20 @@ maze2d_medium_v1 = {
         'horizon': 16,
         'n_diffusion_steps': 32,
     },
+
+    'values': {
+        'horizon': 16,
+        'n_diffusion_steps': 32,
+    },
 }
 
 maze2d_large_v1 = {
     'diffusion': {
+        'horizon': 32,
+        'n_diffusion_steps': 32,
+    },
+
+    'values': {
         'horizon': 32,
         'n_diffusion_steps': 32,
     },
