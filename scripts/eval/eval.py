@@ -19,8 +19,9 @@ def plot_diffusion(subfolder, env):
     image_list = []
     failed_list = {}
 
-    for idx in range(150):
-        file_name = file_suffix  + str(idx)
+    # for idx in range(150):
+        # file_name = file_suffix  + str(idx)
+    for file_name in os.listdir(base_dir):
         file_path = os.path.join(base_dir, file_name, rollout_name)
         photo_path = os.path.join(base_dir, file_name, photo_name)
 
@@ -32,7 +33,7 @@ def plot_diffusion(subfolder, env):
             score = data['score']   
             score_list.append(score)
             if score < 0.1:
-                failed_list[idx] = score
+                failed_list[file_name] = score
 
 
     mean = np.round(np.mean(score_list) * 100, 2)
@@ -56,10 +57,12 @@ def plot_diffusion(subfolder, env):
     plt.close()
     print(f'KDE Plot saved to ./images/{env}_{subfolder}.png')
 
-
-    
     # save the content  failed list to './failed_list.txt'
     failed_path = base_dir + '/failed_list.txt'
+
+    # sort the failed list by the key string
+    failed_list = dict(sorted(failed_list.items()))
+
 
     with open(failed_path, 'w') as f:
         for key, value in failed_list.items():
@@ -127,6 +130,6 @@ if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
     env = env_list[1]
 
-    subfolder = 'single_var2_H256_T256_d0.99_b1_condFalse'
+    subfolder = 'single_save_H256_T256_d0.99_b1_condTrue'
     plot_diffusion(subfolder, env)
 

@@ -1,4 +1,4 @@
-MAX_JOBS=10
+MAX_JOBS=15
 current_jobs=0
 
 # bash scripts/eval/save_paths.sh
@@ -19,7 +19,7 @@ plan_task="single_save"
 
 for cond in "True" 
 do
-    for idx in {600..1000}
+    for idx in {1000..10000}
     do
         python $task --dataset $dataset --config $config \
         --suffix "eval_$idx" --prefix plans/$plan_task --conditional $cond --device "cuda:0"\

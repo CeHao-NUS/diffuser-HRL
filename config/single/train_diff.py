@@ -79,7 +79,7 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.OneValueDataset',
+        'loader': 'datasets.AverageValueDataset',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,

@@ -16,8 +16,20 @@ import itertools
 from diffuser.datasets.d4rl import load_environment
 
 
-def process_rewards():
-    pass
+def process_env_rewards(reward):
+    out_rewrads = np.ones_like(reward)
+    print('length of env file:', len(reward))
+    return out_rewrads
+
+def process_local_rewards(reward):
+    # set failure reward = -1
+    out_rewrads = np.ones_like(reward)
+    fail_index = np.where(reward < 0.1)
+    out_rewrads[fail_index] = -1
+
+    print('length of local file:', len(reward))
+    print('failure rate:', len(fail_index[0])/len(reward))
+    return out_rewrads
 
 def reset_data():
     return {
@@ -49,6 +61,7 @@ def read_env_dataset(data_all, env_name):
     env = load_environment(env_name)
 
     dataset = env.get_dataset()
+    dataset['rewards'] = process_env_rewards(dataset['rewards'])
     append_data(data_all, dataset['observations'], dataset['actions'], dataset['terminals'], dataset['timeouts'], dataset['rewards'])
 
 def get_keys(h5file):
@@ -75,6 +88,7 @@ def get_dataset(h5path=None):
 
 def read_local_dataset(data_all, local_name):
     data_dict = get_dataset(local_name)
+    data_dict['rewards'] = process_local_rewards(data_dict['rewards'])
     append_data(data_all, data_dict['observations'], data_dict['actions'], data_dict['terminals'], data_dict['timeouts'], data_dict['rewards'])
 
 
