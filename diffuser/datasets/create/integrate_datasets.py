@@ -31,6 +31,7 @@ def process_local_rewards(reward):
     print('failure rate:', len(fail_index[0])/len(reward))
     return out_rewrads
 
+
 def reset_data():
     return {
         'observations': [],
@@ -55,15 +56,47 @@ def flatten_data(data):
         'timeouts': list(itertools.chain(*data['timeouts'])),
         'rewards': list(itertools.chain(*data['rewards'])),
     }
+# ===========================================================================
+def maze2d_set_terminals(env):
+    env = load_environment(env) if type(env) == str else env
+    goal = np.array(env._target)
+    threshold = 0.5
+
+    def _fn(dataset):
+        xy = dataset['observations'][:,:2]
+        distances = np.linalg.norm(xy - goal, axis=-1)
+        at_goal = distances < threshold
+        timeouts = np.zeros_like(dataset['timeouts'])
+
+        ## timeout at time t iff
+        ##      at goal at time t and
+        ##      not at goal at time t + 1
+        timeouts[:-1] = at_goal[:-1] * ~at_goal[1:]
+
+        timeout_steps = np.where(timeouts)[0]
+        path_lengths = timeout_steps[1:] - timeout_steps[:-1]
+
+        print(
+            f'[ utils/preprocessing ] Segmented {env.name} | {len(path_lengths)} paths | '
+            f'min length: {path_lengths.min()} | max length: {path_lengths.max()}'
+        )
+
+        dataset['timeouts'] = timeouts
+        return dataset
+
+    return _fn
 
 def read_env_dataset(data_all, env_name):
     # env = gym.make(env_name)
     env = load_environment(env_name)
 
     dataset = env.get_dataset()
+    dataset = maze2d_set_terminals(env)(dataset)
+
     dataset['rewards'] = process_env_rewards(dataset['rewards'])
     append_data(data_all, dataset['observations'], dataset['actions'], dataset['terminals'], dataset['timeouts'], dataset['rewards'])
 
+# =============================================================================
 def get_keys(h5file):
     keys = []
 
@@ -120,8 +153,8 @@ def integrate(env_list=[], local_list=[], output_dir=''):
     save_data(output_dir, 'integrated.h5', data_all)
     
 if __name__ == '__main__':
-    env_list = ['maze2d-medium-v1']
-    # env_list = []
+    # env_list = ['maze2d-medium-v1']
+    env_list = []
     local_list = ['temp_datasets/med_single_maze2d.hdf5']
     output_dir = './temp_datasets'
     integrate(env_list, local_list, output_dir)

@@ -30,6 +30,8 @@ def append_data(data, s, a, done, timeout, reward):
     data['timeouts'].append(timeout)
     data['rewards'].append(reward)  # Add rewards to dataset
 
+def add_dummy_data(data_list):
+    data_list.append(data_list[-1])
 
 def flatten_data(data):
         return {
@@ -46,10 +48,16 @@ def plan2dataset(data, samples, scores):
 
     n = len(obsevations)
     done = np.full(n, False).tolist()
-    done[-1] = True
     timeout = np.full(n, False).tolist()
-    timeout[-1] = True
     rewards = np.full(n, scores).tolist()
+    add_dummy_data(obsevations)
+    add_dummy_data(actions)
+    add_dummy_data(done)
+    add_dummy_data(timeout)
+    add_dummy_data(rewards)
+
+    done[-1] = True
+    timeout[-1] = True
     append_data(data, obsevations, actions, done, timeout, rewards)
 
 

@@ -13,7 +13,8 @@ def plot_diffusion(subfolder, env):
     
     file_suffix = 'eval_'
     rollout_name = 'rollout.json'
-    photo_name = 'whole.png'
+    # photo_name = 'whole.png'
+    photo_name = 'LL.png'
 
     score_list = []
     image_list = []
@@ -69,6 +70,9 @@ def plot_diffusion(subfolder, env):
             f.write(f'{key}: {value}\n')
 
     print(f'Failed list saved to {failed_path}')
+
+    # only save the failed images
+    image_list = [photo_path for photo_path in image_list if photo_path.split('/')[-2] in failed_list.keys()]
 
     # Concatenate images
     image_names = [f'{i}' for i in range(150)]

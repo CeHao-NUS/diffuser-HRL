@@ -45,7 +45,7 @@ if args.value_loadpath is not None:
     )
 
     ## ensure that the diffusion model and value function are compatible with each other
-    utils.check_compatibility(diffusion_experiment, value_experiment)
+    # utils.check_compatibility(diffusion_experiment, value_experiment)
 
     ## initialize value guide
     value_function = value_experiment.ema
@@ -169,7 +169,7 @@ for t in range(env.max_episode_steps):
 
 import os
 
-'''
+# '''
 # ==================== save intermediate reconstructions
 x_recon_store = policy.process_raw_trajectory()
 for key, x_recon in x_recon_store.items():
@@ -177,9 +177,9 @@ for key, x_recon in x_recon_store.items():
     if not os.path.exists(join(args.savepath, 'x_recon')):
         os.makedirs(join(args.savepath, 'x_recon'))
     renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
-'''
+# '''
 
-'''
+# '''
 # ==================== check forward and backward
 x_bf_store, xt_store = policy.get_for_and_back()
 for key, x_bf in x_bf_store.items():
@@ -191,7 +191,7 @@ for key, x_bf in x_bf_store.items():
 for key, xt in xt_store.items():
     path_dir = join(args.savepath, 'x_bf', f'{key}_xt.png')
     renderer.composite(path_dir, xt[:, :, :diffusion.horizon], ncol=1, conditions=cond)
-'''
+# '''
     
 '''
 # ==================== sample again

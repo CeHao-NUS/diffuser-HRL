@@ -64,7 +64,7 @@ class SequenceDataset(torch.utils.data.Dataset):
             max_start = min(path_length - 1, self.max_path_length - horizon)
             if not self.use_padding:
                 max_start = min(max_start, path_length - horizon)
-            for start in range(max_start):
+            for start in range(max_start+1): # I think, it should include the last one
                 end = start + horizon
                 indices.append((i, start, end))
         indices = np.array(indices)
@@ -159,9 +159,9 @@ class ValueDataset(SequenceDataset):
 
 class AverageValueDataset(ValueDataset):
     def __getitem__(self, idx):
-        batch = super().__getitem__(idx)
+        batch = SequenceDataset.__getitem__(self, idx)
         path_ind, start, end = self.indices[idx]
-        rewards = self.fields['rewards'][path_ind, start:]
+        rewards = self.fields['rewards'][path_ind, start:end]
 
         value = np.mean(rewards)
         if self.normed:
