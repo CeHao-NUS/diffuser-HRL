@@ -85,6 +85,7 @@ base = {
         'use_padding': False,
         'max_path_length': 40000,
         'min_horizon': 16,
+        'h5path': 'temp_datasets/integrated.h5', # !!!!
 
         ## serialization
         'logbase': 'logs',

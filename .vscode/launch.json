@@ -11,6 +11,10 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args":[
+                "--config",
+                "config.single.train_diff",
+                "--dataset",
+                "maze2d-medium-v1"
             ],
 
         }

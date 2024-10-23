@@ -67,7 +67,7 @@ def sequence_dataset(env, preprocess_fn, h5path=None):
             rewards
             terminals
     """
-    dataset = get_dataset(env, h5path=None)
+    dataset = get_dataset(env, h5path)
     dataset = preprocess_fn(dataset)
 
     N = dataset['rewards'].shape[0]

@@ -43,6 +43,8 @@ dataset_config = utils.Config(
     discount=args.discount,
     termination_penalty=args.termination_penalty,
     normed=args.normed,
+    h5path=args.h5path,
+
     downsample=downsample,
     min_horizon=min_horizon,
 )
