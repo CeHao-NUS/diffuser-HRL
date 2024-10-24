@@ -104,6 +104,7 @@ print('horizon is', diffusion.horizon)
 
 ## observations for rendering
 rollout = [observation.copy()]
+next_waypoint_store = []
 
 total_reward = 0
 for t in range(env.max_episode_steps):
@@ -122,6 +123,7 @@ for t in range(env.max_episode_steps):
               'dist', np.linalg.norm(sequence[-1][:2] - target[:2]))
     # pdb.set_trace()
 
+    # '''
     # ####
     if t < len(sequence) - 1:
         next_waypoint = sequence[t+1]
@@ -129,6 +131,19 @@ for t in range(env.max_episode_steps):
         next_waypoint = sequence[-1].copy()
         next_waypoint[2:] = 0
         # pdb.set_trace()
+    # '''
+
+    '''
+    # find the neareaest waypoint
+    dists = np.linalg.norm(sequence[:, :2] - state[:2], axis=1)
+    idx = np.argmin(dists)
+    if idx < len(sequence) - 1:
+        next_waypoint = sequence[idx+1].copy()
+    else:
+        next_waypoint = sequence[-1].copy()
+        next_waypoint[2:] = 0
+    next_waypoint_store.append(next_waypoint)
+    '''
 
     ## can use actions or define a simple controller based on state predictions
     action = next_waypoint[:2] - state[:2] + (next_waypoint[2:] - state[2:])
@@ -161,6 +176,9 @@ for t in range(env.max_episode_steps):
         ## save rollout thus far
         renderer.composite(join(args.savepath, 'rollout.png'), np.array(rollout)[None], ncol=1,        
                            conditions=cond)
+        
+        # next_waypoint_path = join(args.savepath, 'next_waypoint.png')
+        # renderer.composite(next_waypoint_path, np.array(next_waypoint_store)[None], ncol=1, conditions=cond)
 
     if terminal:
         break
@@ -169,7 +187,7 @@ for t in range(env.max_episode_steps):
 
 import os
 
-# '''
+'''
 # ==================== save intermediate reconstructions
 x_recon_store = policy.process_raw_trajectory()
 for key, x_recon in x_recon_store.items():
@@ -177,9 +195,9 @@ for key, x_recon in x_recon_store.items():
     if not os.path.exists(join(args.savepath, 'x_recon')):
         os.makedirs(join(args.savepath, 'x_recon'))
     renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
-# '''
+'''
 
-# '''
+'''
 # ==================== check forward and backward
 x_bf_store, xt_store = policy.get_for_and_back()
 for key, x_bf in x_bf_store.items():
@@ -191,7 +209,7 @@ for key, x_bf in x_bf_store.items():
 for key, xt in xt_store.items():
     path_dir = join(args.savepath, 'x_bf', f'{key}_xt.png')
     renderer.composite(path_dir, xt[:, :, :diffusion.horizon], ncol=1, conditions=cond)
-# '''
+'''
     
 '''
 # ==================== sample again

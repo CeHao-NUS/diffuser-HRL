@@ -33,14 +33,18 @@ def n_step_guided_p_sample(
             x_no_action[:, :, :model.action_dim] = 0
             y, grad = guide.gradients(x_no_action, cond, t)
 
+            # get cpu of y
+            if y[0].cpu().detach().numpy() < 0.8:
+                a = 1 # for debugging
+
         if scale_grad_by_std:
             grad = model_var * grad
 
         grad[t < t_stopgrad] = 0
 
         x = x + scale * grad
-        # x = apply_conditioning(x, cond, model.action_dim)
-        x = apply_batch_conditioning(x, cond, model.action_dim)
+        x = apply_conditioning(x, cond, model.action_dim)
+        # x = apply_batch_conditioning(x, cond, model.action_dim)
 
     model_mean, _, model_log_variance = model.p_mean_variance(x=x, cond=cond, t=t)
 

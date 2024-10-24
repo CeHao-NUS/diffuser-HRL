@@ -45,7 +45,7 @@ if args.value_loadpath is not None:
     )
 
     ## ensure that the diffusion model and value function are compatible with each other
-    utils.check_compatibility(diffusion_experiment, value_experiment)
+    # utils.check_compatibility(diffusion_experiment, value_experiment)
 
     ## initialize value guide
     value_function = value_experiment.ema

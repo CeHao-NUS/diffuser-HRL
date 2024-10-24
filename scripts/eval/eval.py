@@ -20,9 +20,12 @@ def plot_diffusion(subfolder, env):
     image_list = []
     failed_list = {}
 
-    # for idx in range(150):
-        # file_name = file_suffix  + str(idx)
-    for file_name in os.listdir(base_dir):
+
+    all_files = os.listdir(base_dir)
+    # keep the files the start with 'eval_'
+    all_files = [file_name for file_name in all_files if file_name.startswith(file_suffix)]
+
+    for file_name in all_files:
         file_path = os.path.join(base_dir, file_name, rollout_name)
         photo_path = os.path.join(base_dir, file_name, photo_name)
 
@@ -75,7 +78,9 @@ def plot_diffusion(subfolder, env):
     image_list = [photo_path for photo_path in image_list if photo_path.split('/')[-2] in failed_list.keys()]
 
     # Concatenate images
-    image_names = [f'{i}' for i in range(150)]
+    # also remove the prefix 'eval_'
+    image_names = [photo_path.split('/')[-2][5:] for photo_path in image_list]
+
     concatenate_image_name = base_dir +  f'/{env}_{subfolder}_concatenated.png'
     concatenate_images_with_custom_titles(image_list, concatenate_image_name, image_names, max_columns=5, font_size=100)
 
@@ -132,8 +137,8 @@ def concatenate_images_with_custom_titles(image_paths, output_path, names, max_c
 
 if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
-    env = env_list[1]
+    env = env_list[2]
 
-    subfolder = 'single_save_H256_T256_d0.99_b1_condTrue'
+    subfolder = 'single_save_H384_T256_d0.99_b1_condTrue'
     plot_diffusion(subfolder, env)
 
