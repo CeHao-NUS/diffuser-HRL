@@ -73,7 +73,7 @@ base['plan'].update({
 #         'max_render': 8,
 
 #         ## diffusion model
-#         'horizon': 256,
+#         'horizon': 320,
 #         'n_diffusion_steps': 256,
 
 #         ## value function

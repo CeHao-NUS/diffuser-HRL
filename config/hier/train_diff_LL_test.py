@@ -17,7 +17,7 @@ base = {
         ## model
         'model': 'models.TemporalUnet',
         'diffusion': 'models.BatchGaussianDiffusion',
-        'horizon': 256,
+        'horizon': 320,
         'n_diffusion_steps': 256,
         'action_weight': 1,
         'loss_weights': None,

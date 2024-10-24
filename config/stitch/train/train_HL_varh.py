@@ -29,7 +29,7 @@ base = {
         ## model
         'model': 'models.TemporalUnet',
         'diffusion': 'models.BatchGaussianDiffusion',
-        'horizon': 256,
+        'horizon': 320,
         'n_diffusion_steps': 256,
         'action_weight': 1,
         'loss_weights': None,
@@ -75,7 +75,7 @@ base = {
     'values': {
         'model': 'models.ValueFunction',
         'diffusion': 'models.BatchValueDiffusion',
-        'horizon': 256,
+        'horizon': 320,
         'n_diffusion_steps': 256,
         'dim_mults': (1, 2, 2, 2, 4, 4, 8),
         'renderer': 'utils.Maze2dRenderer',

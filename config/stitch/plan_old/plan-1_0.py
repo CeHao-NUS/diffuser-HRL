@@ -54,7 +54,7 @@ base = {
         'max_render': 8,
 
         ## diffusion model
-        'horizon': 256,
+        'horizon': 320,
         'n_diffusion_steps': 256,
 
         ## value function
@@ -80,14 +80,14 @@ maze2d_umaze_v1 = {
 
 maze2d_medium_v1 = {
     'plan':{
-        'horizon': 256,
+        'horizon': 320,
         'n_diffusion_steps': 256,
     },
 }
 
 maze2d_large_v1 = {
     'plan':{
-        'horizon': 384,
+        'horizon': 448,
         'n_diffusion_steps': 256,
     },
 }
