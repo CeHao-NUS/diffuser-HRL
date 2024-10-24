@@ -29,6 +29,10 @@ if 'min_horizon' in args._dict:
 else:
     min_horizon = 1
 
+if 'h5path' in args._dict:
+    h5path = args.h5path
+else:
+    h5path = None
 
 dataset_config = utils.Config(
     args.loader,
@@ -43,8 +47,8 @@ dataset_config = utils.Config(
     discount=args.discount,
     termination_penalty=args.termination_penalty,
     normed=args.normed,
-    h5path=args.h5path,
 
+    h5path=h5path,
     downsample=downsample,
     min_horizon=min_horizon,
 )

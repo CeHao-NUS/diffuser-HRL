@@ -29,6 +29,7 @@ base = {
 
         'sample_fun': sampling.stitch_functions.default_sample_fn,
 
+        'guide': 'sampling.ValueGuide',
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,

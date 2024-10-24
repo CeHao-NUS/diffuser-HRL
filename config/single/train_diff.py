@@ -67,7 +67,7 @@ base = {
 
     'values': {
         'model': 'models.ValueFunction',
-        'diffusion': 'models.BatchValueDiffusion',
+        'diffusion': 'models.ValueDiffusion',
         'horizon': 256,
         'n_diffusion_steps': 256,
         'dim_mults': (1, 2, 2, 2, 4, 4, 8),

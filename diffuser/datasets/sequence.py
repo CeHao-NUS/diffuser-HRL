@@ -282,10 +282,6 @@ class VarHDataset1(GoalDataset):
 
     def __getitem__(self, idx):
 
-        # 1. get intermediate point
-        # 2. segment and fill with last point
-        # 3. change conditions
-
         path_ind, start, end = self.indices[idx]
 
         shorten_length = end - start
@@ -307,6 +303,20 @@ class VarHDataset1(GoalDataset):
 
         batch = Batch(trajectories, conditions)
         return batch
+    
+class VarHValueDataset1(VarHDataset1):
+    
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+        path_ind, start, end = self.indices[idx]
+        shorten_length = end - start
+        value = - shorten_length # important!!
+
+        if self.normed:
+            value = self.normalize_value(value)
+        value = np.array([value], dtype=np.float32)
+        value_batch = ValueBatch(*batch, value)
+        return value_batch  
     
 
 class VarHDataset2(GoalDataset):
@@ -346,8 +356,8 @@ class VarHDataset2(GoalDataset):
         batch = Batch(trajectories, conditions)
         return batch
 
-class VarHValueDataset(VarHDataset1):
 
+class VarHValueDataset2(VarHDataset2):
 
     def __getitem__(self, idx):
         path_ind, start, end = self.indices[idx]

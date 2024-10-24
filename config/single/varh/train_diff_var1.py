@@ -72,7 +72,7 @@ base = {
 
     'values': {
         'model': 'models.ValueFunction',
-        'diffusion': 'models.BatchValueDiffusion',
+        'diffusion': 'models.ValueDiffusion',
         'horizon': 256,
         'n_diffusion_steps': 256,
         'dim_mults': (1, 2, 2, 2, 4, 4, 8),
@@ -84,7 +84,7 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.LL_varh_value_dataset',
+        'loader': 'datasets.VarHValueDataset1',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
@@ -93,7 +93,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'values/LL_varh_value',
+        'prefix': 'values/single_varh1',
         'exp_name': watch(value_args_to_watch),
 
         ## training

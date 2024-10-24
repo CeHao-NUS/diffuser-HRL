@@ -12,7 +12,6 @@ python scripts/single/plan.py --config 'config.single.plan_guided' --dataset maz
     --conditional True --init_pose "(6, 1)" --target "(6, 5)"
 
 
-
 # store list =================================================================
 
 python scripts/single/plan_list.py --config 'config.single.plan_guided_store' --dataset maze2d-medium-v1 --device "cuda" \

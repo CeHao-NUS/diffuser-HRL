@@ -29,6 +29,7 @@ base = {
 
         'sample_fun': sampling.stitch_functions.default_sample_fn,
 
+        'guide': 'sampling.ValueGuide',
         'policy': 'sampling.GuidedPolicy',
         'max_episode_length': 1000,
         'batch_size': 1,
@@ -38,7 +39,7 @@ base = {
 
         ## sample_kwargs
         'n_guide_steps': 2,
-        'scale': 1.0,
+        'scale': 0.1,
         't_stopgrad': 2,
         'scale_grad_by_std': True,
 
@@ -75,6 +76,7 @@ maze2d_umaze_v1 = {
         'n_diffusion_steps': 64,
         'min_horizon': 16,
     },
+    
 }
 
 maze2d_medium_v1 = {
