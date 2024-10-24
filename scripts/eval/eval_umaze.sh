@@ -2,16 +2,17 @@
 # bash scripts/eval/eval_umaze.sh
 
 # single
-task="scripts/single/plan.py"
+# task="scripts/single/plan.py"
 # config="config.single.plan_diff"
 # config="config.single.varh.plan_diff_var1"
 
 # config="config.single.varh.plan_guided_var1"
-config="config.single.varh.plan_Dfix_Gvar1"
+# config="config.single.varh.plan_Dfix_Gvar1"
 
 # single store
-# task="scripts/single/plan_list.py"
+task="scripts/single/plan_list.py"
 # config="config.single.plan_diff_store"
+config="config.single.plan_guided_store"
 
 # hier
 # task="scripts/hier/plan.py"

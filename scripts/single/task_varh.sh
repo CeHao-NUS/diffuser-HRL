@@ -17,3 +17,9 @@ python scripts/train/train_diffuser.py --config 'config.single.varh.plan_diff_va
 
 
 
+# store list =================================================================
+python scripts/single/plan_list.py --config 'config.single.plan_diff_store'  \
+ --conditional True --init_pose "(3,1)" --target "(1, 1)"
+
+python scripts/single/plan_list.py --config 'config.single.plan_guided_store'  \
+ --conditional True --init_pose "(1,2)" --target "(1, 1)" --prefix 'plans/guided_store/'

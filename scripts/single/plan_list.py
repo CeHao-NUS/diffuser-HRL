@@ -187,7 +187,7 @@ for t in range(env.max_episode_steps):
 
 import os
 
-'''
+# '''
 # ==================== save intermediate reconstructions
 x_recon_store = policy.process_raw_trajectory()
 for key, x_recon in x_recon_store.items():
@@ -195,7 +195,7 @@ for key, x_recon in x_recon_store.items():
     if not os.path.exists(join(args.savepath, 'x_recon')):
         os.makedirs(join(args.savepath, 'x_recon'))
     renderer.composite(path_dir, x_recon[:, :, :diffusion.horizon], ncol=1, conditions=cond)
-'''
+# '''
 
 '''
 # ==================== check forward and backward
