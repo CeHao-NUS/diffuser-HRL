@@ -13,6 +13,6 @@ base['plan'].update({
     'value_epoch': 'latest',
     'prefix': 'plans/single_guided_varh1/',
     'min_horizon': 16,
-    'scale': 1.0,
+    'scale': 0.0,
 })
 

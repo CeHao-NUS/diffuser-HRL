@@ -17,11 +17,11 @@ dataset="maze2d-large-v1"
 
 # # single
 task="scripts/single/plan.py"
-config="config.single.plan_diff"
-plan_task="single"
+# config="config.single.plan_diff"
+# plan_task="single"
 
-# config='config.single.varh.plan_diff_var1'
-# plan_task="single_var1"
+config='config.single.varh.plan_diff_var1'
+plan_task="single_var1"
 
 
 # config="config.single.plan_diff_test" # test big
@@ -43,7 +43,7 @@ do
 
         python $task --dataset $dataset --config $config \
         --suffix "eval_$idx" --prefix plans/$plan_task --conditional $cond --device "$gpu" \
-        &
+         &
 
         # Increment the current_jobs counter
         current_jobs=$((current_jobs + 1))
