@@ -36,7 +36,7 @@ def plot_diffusion(subfolder, env):
             data = json.load(f)
             score = data['score']   
             score_list.append(score)
-            if score < 0.1:
+            if score < 0.5:
                 failed_list[file_name] = score
 
 
@@ -74,6 +74,13 @@ def plot_diffusion(subfolder, env):
 
     print(f'Failed list saved to {failed_path}')
 
+
+    # save all images
+    image_names = [photo_path.split('/')[-2] for photo_path in image_list]
+    concatenate_image_name = base_dir +  f'/{env}_{subfolder}.png'
+    concatenate_images_with_custom_titles(image_list, concatenate_image_name, image_names, max_columns=5, font_size=100)
+
+
     # only save the failed images
     image_list = [photo_path for photo_path in image_list if photo_path.split('/')[-2] in failed_list.keys()]
 
@@ -81,8 +88,9 @@ def plot_diffusion(subfolder, env):
     # also remove the prefix 'eval_'
     image_names = [photo_path.split('/')[-2][5:] for photo_path in image_list]
 
-    concatenate_image_name = base_dir +  f'/{env}_{subfolder}_concatenated.png'
+    concatenate_image_name = base_dir +  f'/{env}_{subfolder}_failure.png'
     concatenate_images_with_custom_titles(image_list, concatenate_image_name, image_names, max_columns=5, font_size=100)
+
 
 from PIL import Image, ImageDraw, ImageFont
 import os
@@ -139,6 +147,6 @@ if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
     env = env_list[2]
 
-    subfolder = 'single_save_H384_T256_d0.99_b1_condTrue'
+    subfolder = 'single_H448_T256_d0.99_b1_condFalse'
     plot_diffusion(subfolder, env)
 

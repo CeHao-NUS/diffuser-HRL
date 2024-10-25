@@ -11,17 +11,17 @@ NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 # dataset="maze2d-umaze-v1"
-dataset="maze2d-medium-v1"
-# dataset="maze2d-large-v1"
+# dataset="maze2d-medium-v1"
+dataset="maze2d-large-v1"
 # dataset="maze2d-testbig-v0 "
 
 # # single
 task="scripts/single/plan.py"
-# config="config.single.plan_diff"
-# plan_task="single"
+config="config.single.plan_diff"
+plan_task="single"
 
-config='config.single.varh.plan_diff_var2'
-plan_task="single_var2"
+# config='config.single.varh.plan_diff_var1'
+# plan_task="single_var1"
 
 
 # config="config.single.plan_diff_test" # test big
@@ -33,14 +33,9 @@ plan_task="single_var2"
 
 # config='config.hier.plan_diff_test'
 
-# forward_noise
-# task="scripts/single/plan.py"
-# config='config.single.plan_diff_coupled_forwardnoise'
-# plan_task="single_coupled_forwardnoise"
-
 for cond in "True" "False"
 do
-    for idx in {0..150}
+    for idx in {0..149}
     do
         # Determine which GPU to assign based on the job index
         gpu_idx=$((current_jobs % NUM_GPUS))

@@ -32,3 +32,6 @@ python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_v
 # large value
 python scripts/train/train_value.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-large-v1 --device "cuda:3" \
  --horizon 512
+
+
+ 

@@ -18,7 +18,7 @@ base = {
         ## model
         'model': 'models.TemporalUnet',
         'diffusion': 'models.BatchGaussianDiffusion',
-        'horizon': 320,
+        'horizon': 256,
         'n_diffusion_steps': 256,
         'action_weight': 1,
         'loss_weights': None,
@@ -73,18 +73,28 @@ maze2d_umaze_v1 = {
     },
 }
 
+# maze2d_medium_v1 = {
+#     'diffusion': {
+#         'horizon': 300, # 15 * 17 = 255
+#         'n_diffusion_steps': 32,
+#         'downsample': 15, # 300/15 = 20
+#         'set_length': 18, # only use 18
+#     },
+# }
+
 maze2d_medium_v1 = {
     'diffusion': {
-        'horizon': 300,
+        'horizon': 372,
         'n_diffusion_steps': 32,
-        'downsample': 15, # 300/15 = 20
-        'set_length': 18, # only use 18
+        'downsample': 31, # 31 * 11 = 341
+        'set_length': 12, # only use 12
     },
 }
 
+
 maze2d_large_v1 = {
     'diffusion': {
-        'horizon': 448,
+        'horizon': 384,
         'n_diffusion_steps': 32,
         'downsample': 32,
         'set_length': 18, # to change
