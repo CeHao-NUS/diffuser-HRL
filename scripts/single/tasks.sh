@@ -31,9 +31,9 @@ python scripts/single/plan.py --config 'config.single.plan_diff_coupled_forwardn
 
 # train with varh datasets =========================================================================
 
-python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-umaze-v1 --device "cuda:7"
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-umaze-v1 --device "cuda:6"
 python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-medium-v1 --device "cuda:6"
-python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-large-v1 --device "cuda:5"
+python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var1'  --dataset maze2d-large-v1 --device "cuda:4"
 
 python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-umaze-v1 --device "cuda:7"
 python scripts/train/train_diffuser.py --config 'config.single.varh.train_diff_var2'  --dataset maze2d-medium-v1 --device "cuda:6"

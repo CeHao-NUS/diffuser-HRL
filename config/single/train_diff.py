@@ -81,12 +81,12 @@ base = {
         ## dataset
         'loader': 'datasets.AverageValueDataset',
         'normalizer': 'LimitsNormalizer',
-        # 'preprocess_fns': ['maze2d_set_terminals'],
-        'preprocess_fns': [],
+        'preprocess_fns': ['maze2d_set_terminals'],
+        # 'preprocess_fns': [],
         'use_padding': False,
         'max_path_length': 40000,
         'min_horizon': 16,
-        'h5path': 'temp_datasets/integrated.h5', # !!!!
+        # 'h5path': 'temp_datasets/integrated.h5', # !!!!
         # 'h5path': 'temp_datasets/med_single_maze2d.hdf5', # !!!!
 
         ## serialization
