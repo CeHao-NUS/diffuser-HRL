@@ -12,14 +12,15 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.hier.plan_diff",
+                "config.hier.varh.plan_diff_LLvar1",
                 "--dataset",
                 "maze2d-umaze-v1",
                 "--device",
                 "cuda",
                 "--conditional", "True",
                 "--init_pose", "(3,3)",
-                "--target", "(1, 1)"
+                "--target", "(1, 1)",
+                "--LL_scale", "0.0",
             ],
 
         }

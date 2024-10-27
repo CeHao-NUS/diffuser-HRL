@@ -107,6 +107,9 @@ if args.LL_value_loadpath is not None:
     LL_guide_config = utils.Config(args.LL_guide, model=LL_value_function, verbose=False)
     LL_guide = LL_guide_config()
 
+
+    LL_sample_fn = args.LL_sample_fn  if "LL_sample_fn" in args._dict else sampling.n_step_guided_p_sample
+
     ## policies are wrappers around an unconditional diffusion model and a value guide
     LL_policy_config = utils.Config(
         args.LL_policy,
@@ -116,7 +119,7 @@ if args.LL_value_loadpath is not None:
         normalizer=LL_dataset.normalizer,
         preprocess_fns=args.preprocess_fns,
         ## sampling kwargs
-        sample_fn=sampling.n_step_guided_p_sample,
+        sample_fn=LL_sample_fn,
         n_guide_steps=args.n_guide_steps,
         t_stopgrad=args.t_stopgrad,
         scale_grad_by_std=args.scale_grad_by_std,

@@ -25,3 +25,15 @@ python scripts/hier/plan.py --config 'config.hier.plan_diff' --dataset maze2d-me
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_LL_test'  --dataset maze2d-testbig-v0 --device "cuda:6"
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_HL_test'  --dataset maze2d-testbig-v0 --device "cuda:5"
 python scripts/hier/plan.py --config 'config.hier.plan_diff_test' --dataset maze2d-testbig-v0 --device "cuda"
+
+
+# varh LL ======================================================
+python scripts/train/train_diffuser.py --config 'config.hier.varh.train_diff_LL_var1' --dataset maze2d-umaze-v1 --device "cuda:7"
+
+python scripts/train/train_value.py  --config 'config.hier.varh.train_diff_LL_var1' --dataset maze2d-umaze-v1 --device "cuda:6"
+
+
+python scripts/hier/plan.py --config 'config.hier.varh.plan_diff_LLvar1' --dataset maze2d-umaze-v1 --device "cuda" \
+ --LL_scale 0.0 --conditional True --init_pose "(3, 3)" --target "(1, 1)"
+
+

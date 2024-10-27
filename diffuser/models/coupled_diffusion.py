@@ -34,7 +34,7 @@ import diffuser.utils as utils
 from .helpers import (
     cosine_beta_schedule,
     extract,
-    apply_conditioning,
+    apply_batch_conditioning,
     Losses,
 )
 
@@ -195,6 +195,7 @@ class CoupledGaussianDiffusion(nn.Module):
         x = torch.randn(shape, device=device)
 
         # x = self._sample_apply_conditioning(x, cond, t, self.action_dim)
+        x = apply_batch_conditioning(x, cond, self.action_dim)
 
         chain = [x] if return_chain else None
 
@@ -228,7 +229,7 @@ class CoupledGaussianDiffusion(nn.Module):
         return self.p_sample_loop(shape, cond, **sample_kwargs)
     
     def _sample_apply_conditioning(self, x, cond, t, action_dim):
-        x = apply_conditioning(x, cond, action_dim)
+        x = apply_batch_conditioning(x, cond, action_dim)
         return x
 
     #------------------------------------------ training ------------------------------------------#
@@ -271,12 +272,15 @@ class CoupledGaussianDiffusion(nn.Module):
         return self.conditional_sample(cond, *args, **kwargs)
     
     def _train_pre_apply_conditioning(self, x, cond, t, action_dim):
-        x = apply_conditioning(x, cond, action_dim)
+        x = apply_batch_conditioning(x, cond, action_dim)
         return x
     
     def _train_post_apply_conditioning(self, x, cond, t, action_dim):
-        x = apply_conditioning(x, cond, action_dim)
+        x = apply_batch_conditioning(x, cond, action_dim)
         return x
+
+
+
 
 
 
@@ -310,7 +314,7 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
             # noised_cond[cond_t] = val
 
         self.noised_cond = noised_cond
-        x = apply_conditioning(x, self.noised_cond, action_dim)
+        x = apply_batch_conditioning(x, self.noised_cond, action_dim)
  
         return x
     
@@ -318,8 +322,8 @@ class CoupledGaussianDiffusion_ForwardNoise(CoupledGaussianDiffusion):
         '''
         add noise to every dim of cond
         '''
-        x = apply_conditioning(x, self.noised_cond, action_dim)
-        # x = apply_conditioning(x, cond, action_dim)
+        x = apply_batch_conditioning(x, self.noised_cond, action_dim)
+        # x = apply_batch_conditioning(x, cond, action_dim)
         return x
     
     def _sample_apply_conditioning(self, x, cond, t, action_dim):
