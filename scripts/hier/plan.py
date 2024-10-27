@@ -121,13 +121,13 @@ if args.LL_value_loadpath is not None:
         t_stopgrad=args.t_stopgrad,
         scale_grad_by_std=args.scale_grad_by_std,
         verbose=False,
-        batch_size=args.seg_length,
+        batch_size=args.seg_length-1,
     )
 
     LL_policy = LL_policy_config()
 
 else:
-    LL_policy = Policy(LL_diffusion, LL_dataset.normalizer, batch_size=args.seg_length)
+    LL_policy = Policy(LL_diffusion, LL_dataset.normalizer, batch_size=args.seg_length-1)
 
 
 # +++++++++++++ HL +++++++++++++ #
@@ -208,7 +208,8 @@ HL_cond = {
     (0, seg_length-1): np.array([*target, 0, 0]),
 }
 
-cond_plot = {LL_diffusion.horizon * args.seg_length - 1: np.array([*target, 0, 0])}
+# cond_plot = {(LL_diffusion.horizon-1) * args.seg_length - 1: np.array([*target, 0, 0])}
+cond_plot = {}
 
 ## observations for rendering
 rollout = [observation.copy()]
@@ -237,11 +238,11 @@ for t in range(env.max_episode_steps):
             hl_goal = HL_samples.observations[0]
 
         for idx in range(args.seg_length):
-            cond_plot[LL_diffusion.horizon * idx] = hl_goal[idx]
+            cond_plot[(LL_diffusion.horizon - 1) * idx] = hl_goal[idx]
 
         # +++++++++++++ LL +++++++++++++ #
         LL_cond = {}
-        for i in range(seg_length):
+        for i in range(seg_length-1):
             LL_cond[(i,0)] = hl_goal[i]
             LL_cond[(i, args.LL_horizon - 1)] = hl_goal[i+1]
 
@@ -303,8 +304,8 @@ for t in range(env.max_episode_steps):
         renderer.composite(hl_fullpath, hl_obs[:, :seg_length, :], ncol=1,  conditions=HL_cond)
         # renderer.composite(hl_fullpath, hl_obs, ncol=1,  conditions=HL_cond)
         
-        # ll_fullpath = join(args.savepath, 'LL.png')
-        # renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)
+        ll_fullpath = join(args.savepath, 'LL.png')
+        renderer.composite(ll_fullpath, LL_samples.observations, ncol=1,  conditions=LL_cond)
 
         whole_fullpath = join(args.savepath, 'whole.png')
         renderer.composite(whole_fullpath, observation_plan, ncol=1,  conditions=cond_plot)

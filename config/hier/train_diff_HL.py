@@ -64,12 +64,21 @@ base = {
 }
 
 
+# maze2d_umaze_v1 = {
+#     'diffusion': {
+#         'horizon': 128,
+#         'n_diffusion_steps': 32,
+#         'downsample': 16,
+#         'set_length': 18, # to change
+#     },
+# }
+
 maze2d_umaze_v1 = {
     'diffusion': {
-        'horizon': 128,
+        'horizon': 248,
         'n_diffusion_steps': 32,
-        'downsample': 16,
-        'set_length': 18, # to change
+        'downsample': 31,
+        'set_length': 5, # to change
     },
 }
 

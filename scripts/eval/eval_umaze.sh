@@ -10,13 +10,13 @@
 # config="config.single.varh.plan_Dfix_Gvar1"
 
 # single store
-task="scripts/single/plan_list.py"
+# task="scripts/single/plan_list.py"
 # config="config.single.plan_diff_store"
-config="config.single.plan_guided_store"
+# config="config.single.plan_guided_store"
 
 # hier
-# task="scripts/hier/plan.py"
-# config='config.hier.plan_diff'
+task="scripts/hier/plan.py"
+config='config.hier.plan_diff'
 
 
 

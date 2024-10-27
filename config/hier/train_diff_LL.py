@@ -115,15 +115,27 @@ base = {
 
 maze2d_umaze_v1 = {
     'diffusion': {
-        'horizon': 16,
+        'horizon': 32,
         'n_diffusion_steps': 32,
     },
 
     'values': {
-        'horizon': 16,
+        'horizon': 32,
         'n_diffusion_steps': 32,
     },
 }
+
+# maze2d_umaze_v1 = {
+#     'diffusion': {
+#         'horizon': 16,
+#         'n_diffusion_steps': 32,
+#     },
+
+#     'values': {
+#         'horizon': 16,
+#         'n_diffusion_steps': 32,
+#     },
+# }
 
 maze2d_medium_v1 = {
     'diffusion': {

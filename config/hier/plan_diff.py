@@ -84,13 +84,23 @@ base = {
     },
 }
 
+# maze2d_umaze_v1 = {
+#     'plan': {
+#         'LL_horizon': 16,
+#         'HL_horizon': 128,
+#         'n_diffusion_steps': 32,
+#         'seg_length': 7,
+#         'downsample': 16,
+#     },
+# }
+
 maze2d_umaze_v1 = {
     'plan': {
-        'LL_horizon': 16,
-        'HL_horizon': 128,
+        'LL_horizon': 32,
+        'HL_horizon': 248,
         'n_diffusion_steps': 32,
-        'seg_length': 7,
-        'downsample': 16,
+        'seg_length': 5, # 31*4 = 124
+        'downsample': 31,
     },
 }
 
