@@ -15,8 +15,13 @@
 # config="config.single.plan_guided_store"
 
 # hier
-task="scripts/hier/plan.py"
-config='config.hier.plan_diff'
+# task="scripts/hier/plan.py"
+# config='config.hier.plan_diff'
+
+
+# couple
+task="scripts/couple/plan.py"
+config='config.couple.plan_diff_HLGap'
 
 
 
@@ -24,7 +29,7 @@ for init_pose in "(1,1.5)" "(1,1.1)" "(3,1)" "(3,2)" "(3,1.5)" "(3,3)" "(2,3)" "
 do
     python $task --config $config --dataset maze2d-umaze-v1 --device "cuda" \
     --conditional True --init_pose $init_pose --target "(1, 1)" --suffix $init_pose \
-    --horizon 64  &
+     &
 done
 
 wait

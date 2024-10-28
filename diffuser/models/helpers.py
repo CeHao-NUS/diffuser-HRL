@@ -243,20 +243,22 @@ Losses = {
 
 def segment_to_k(a, k):
     n, x = a.shape  # n is the number of rows, x is the number of columns
-    segment_size = n // k
-    remainder = n % k  # Extra elements to distribute
+    segment_size = n // (k - 1)
+    remainder = n % (k - 1)
 
-    # Initialize arrays to store endpoints and lengths
-    endpoints = np.empty((k, x), dtype=np.float32)  # Each endpoint is a row from `a`, so shape is [k, x]
-    lengths = np.empty(k, dtype=int)
+    # Initialize arrays to store endpoints and segment lengths
+    endpoints = np.empty((k, x), np.float32)  # Each endpoint is a row from `a`, shape is [k, x]
+    lengths = np.empty(k - 1, dtype=int)
 
     start = 0
-    for i in range(k):
-        # Calculate the end index of each segment
+    for i in range(k - 1):
         end = start + segment_size + (1 if i < remainder else 0)
-        endpoints[i] = a[end - 1]  # Last row of each segment
-        lengths[i] = end - start   # Length of each segment
+        endpoints[i] = a[start]  # Start row of each segment
+        lengths[i] = end - start  # Length of each segment
         start = end
+
+    # Add the final endpoint
+    endpoints[-1] = a[-1]
 
     return endpoints, lengths
 
