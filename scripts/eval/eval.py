@@ -13,8 +13,8 @@ def plot_diffusion(subfolder, env):
     
     file_suffix = 'eval_'
     rollout_name = 'rollout.json'
-    # photo_name = 'whole.png'
-    photo_name = 'LL.png'
+    photo_name = 'whole.png'
+    # photo_name = 'LL.png'
 
     score_list = []
     image_list = []
@@ -55,8 +55,9 @@ def plot_diffusion(subfolder, env):
     if not os.path.exists('./images'):
         os.makedirs('./images')
 
+    last_of_subfolder = subfolder.split('/')[-1]
     # Display the plot
-    plt.savefig(f'./images/{env}_{subfolder}.png', dpi=300)
+    plt.savefig(f'./images/{env}_{last_of_subfolder}.png', dpi=300)
     # plt.show()
     plt.close()
     print(f'KDE Plot saved to ./images/{env}_{subfolder}.png')
@@ -75,9 +76,10 @@ def plot_diffusion(subfolder, env):
     print(f'Failed list saved to {failed_path}')
 
 
+    
     # save all images
     image_names = [photo_path.split('/')[-2] for photo_path in image_list]
-    concatenate_image_name = base_dir +  f'/{env}_{subfolder}.png'
+    concatenate_image_name = base_dir +  f'/{env}_{last_of_subfolder}.png'
     concatenate_images_with_custom_titles(image_list, concatenate_image_name, image_names, max_columns=5, font_size=100)
 
 
@@ -88,7 +90,7 @@ def plot_diffusion(subfolder, env):
     # also remove the prefix 'eval_'
     image_names = [photo_path.split('/')[-2][5:] for photo_path in image_list]
 
-    concatenate_image_name = base_dir +  f'/{env}_{subfolder}_failure.png'
+    concatenate_image_name = base_dir +  f'/{env}_{last_of_subfolder}_failure.png'
     concatenate_images_with_custom_titles(image_list, concatenate_image_name, image_names, max_columns=5, font_size=100)
 
 
@@ -145,8 +147,8 @@ def concatenate_images_with_custom_titles(image_paths, output_path, names, max_c
 
 if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
-    env = env_list[2]
+    env = env_list[0]
 
-    subfolder = 'single_var1_H512_T256_d0.99_b1_condFalse'
+    subfolder = 'couple/plan_diff_HLGap/H128_T32_L5_condTrue_mH16'
     plot_diffusion(subfolder, env)
 

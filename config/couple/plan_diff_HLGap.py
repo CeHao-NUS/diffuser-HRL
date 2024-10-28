@@ -16,6 +16,7 @@ plan_args_to_watch = [
     ('seg_length', 'L'),
     ##
     ('conditional', 'cond'),
+    ('min_horizon', 'mH'),
 ]
 
 
@@ -92,7 +93,7 @@ maze2d_umaze_v1 = {
         'LL_horizon': 32,
         'HL_horizon': 128,
         'n_diffusion_steps': 32,
-        'min_horizon': 127,
+        'min_horizon': 16,
         'seg_length': 5,   
         'padding_length': 3, 
     },

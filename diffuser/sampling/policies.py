@@ -61,6 +61,43 @@ class GuidedPolicy:
         )
         return conditions
     
+    # ========================= for reverse =========================  only for special diffusion model
+    def init_diffusion(self, conditions, batch_size=1, verbose=True):
+        conditions = {k: self.preprocess_fn(v) for k, v in conditions.items()}
+        conditions = self._format_conditions(conditions, batch_size)
+
+        ## run reverse diffusion process
+        self.diffusion_model(conditions, guide=self.guide, verbose=verbose, **self.sample_kwargs)
+
+    def reverse_diffusion(self,  conditions, verbose=True):
+        conditions = {k: self.preprocess_fn(v) for k, v in conditions.items()}
+        conditions = self._format_conditions(conditions, 1)
+
+        ## run reverse diffusion process
+        done = self.diffusion_model.reverse_sample(conditions, verbose=verbose, **self.sample_kwargs)
+    
+        sample = self.diffusion_model.output_sample(conditions)
+
+        return sample, done
+    
+    def get_final_sample(self, conditions):
+        samples = self.diffusion_model.output_sample(conditions)
+        trajectories = utils.to_np(samples.trajectories)
+
+        ## extract action [ batch_size x horizon x transition_dim ]
+        actions = trajectories[:, :, :self.action_dim]
+        actions = self.normalizer.unnormalize(actions, 'actions')
+
+        ## extract first action
+        action = actions[0, 0]
+
+        normed_observations = trajectories[:, :, self.action_dim:]
+        observations = self.normalizer.unnormalize(normed_observations, 'observations')
+
+        trajectories = Trajectories(actions, observations, samples.values)
+        return action, trajectories
+
+
     # ========================= for debug store =========================
     def process_raw_trajectory(self):
         x_recon_store_torch = self.diffusion_model.x_recon_store
@@ -116,39 +153,4 @@ class GuidedPolicy:
 
         return x_value_store
 
-class RopePolicy(GuidedPolicy):
 
-    def __call__(self, conditions, batch_size=1, verbose=True):
-        conditions = {k: self.preprocess_fn(v) for k, v in conditions.items()}
-        conditions = self._format_conditions(conditions, batch_size)
-
-        ## run reverse diffusion process
-        samples = self.diffusion_model(conditions, guide=self.guide, training=False, verbose=verbose, **self.sample_kwargs)
-        trajectories = utils.to_np(samples.trajectories)
-
-        ## extract action [ batch_size x horizon x transition_dim ]
-        actions = trajectories[:, :, :self.action_dim]
-        actions = self.normalizer.unnormalize(actions, 'actions')
-
-        ## extract first action
-        action = actions[0, 0]
-
-        normed_observations = trajectories[:, :, self.action_dim:]
-        observations = self.normalizer.unnormalize(normed_observations, 'observations')
-
-        trajectories = Trajectories(actions, observations, samples.values)
-        return action, trajectories
-
-    def _format_conditions(self, conditions, batch_size):
-        conditions = utils.apply_dict(
-            self.normalizer.normalize,
-            conditions,
-            'observations',
-        )
-        conditions = utils.to_torch(conditions, dtype=torch.float32, device=self.device)
-        # conditions = utils.apply_dict(
-        #     einops.repeat,
-        #     conditions,
-        #     'd -> repeat d', repeat=batch_size,
-        # )
-        return conditions

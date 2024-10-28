@@ -12,13 +12,14 @@
             "console": "integratedTerminal",
             "args":[
                 "--config",
-                "config.couple.train_diff_HL_fixgap",
+                "config.couple.plan_diff_HLGap",
                 "--dataset",
                 "maze2d-umaze-v1",
                 "--device",
-                "cuda:4"
+                "cuda"
             ],
 
         }
     ]
 }
+
