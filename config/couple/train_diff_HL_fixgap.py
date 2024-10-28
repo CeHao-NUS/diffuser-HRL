@@ -10,6 +10,7 @@ diffusion_args_to_watch = [
     ('horizon', 'H'),
     ('n_diffusion_steps', 'T'),
     ('min_horizon', 'mH'),
+    ('seg_length', 'L'),
 ]
 
 base = {
@@ -37,12 +38,12 @@ base = {
         'max_path_length': 40000,
 
         'min_horizon': 1,
-        'set_length': 5,
+        'seg_length': 5,
         'padding_length': 3, # 3+5=8
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/HL_diffuser',
+        'prefix': 'diffusion/HL_diff_gap',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
@@ -71,7 +72,8 @@ maze2d_umaze_v1 = {
         'horizon': 128,
         'n_diffusion_steps': 32,
         'min_horizon': 16,
-        'set_length': 5,
+        'seg_length': 5,
+        'padding_length': 3,
     },
 }
 
@@ -80,7 +82,7 @@ maze2d_medium_v1 = {
         'horizon': 372,
         'n_diffusion_steps': 32,
         'downsample': 31, # 31 * 11 = 341
-        'set_length': 12, # only use 12
+        'seg_length': 12, # only use 12
     },
 }
 
@@ -90,6 +92,6 @@ maze2d_large_v1 = {
         'horizon': 384,
         'n_diffusion_steps': 32,
         'downsample': 32,
-        'set_length': 18, # to change
+        'seg_length': 18, # to change
     },
 }

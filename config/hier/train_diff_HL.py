@@ -36,7 +36,7 @@ base = {
         'use_padding': False,
         'max_path_length': 40000,
         'downsample': 32,
-        'set_length': 32,
+        'seg_length': 32,
 
         ## serialization
         'logbase': 'logs',
@@ -69,7 +69,7 @@ base = {
 #         'horizon': 128,
 #         'n_diffusion_steps': 32,
 #         'downsample': 16,
-#         'set_length': 18, # to change
+#         'seg_length': 18, # to change
 #     },
 # }
 
@@ -78,7 +78,7 @@ maze2d_umaze_v1 = {
         'horizon': 248,
         'n_diffusion_steps': 32,
         'downsample': 31,
-        'set_length': 5, # to change
+        'seg_length': 5, # to change
     },
 }
 
@@ -87,7 +87,7 @@ maze2d_umaze_v1 = {
 #         'horizon': 300, # 15 * 17 = 255
 #         'n_diffusion_steps': 32,
 #         'downsample': 15, # 300/15 = 20
-#         'set_length': 18, # only use 18
+#         'seg_length': 18, # only use 18
 #     },
 # }
 
@@ -96,7 +96,7 @@ maze2d_medium_v1 = {
         'horizon': 372,
         'n_diffusion_steps': 32,
         'downsample': 31, # 31 * 11 = 341
-        'set_length': 12, # only use 12
+        'seg_length': 12, # only use 12
     },
 }
 
@@ -106,6 +106,6 @@ maze2d_large_v1 = {
         'horizon': 384,
         'n_diffusion_steps': 32,
         'downsample': 32,
-        'set_length': 18, # to change
+        'seg_length': 18, # to change
     },
 }

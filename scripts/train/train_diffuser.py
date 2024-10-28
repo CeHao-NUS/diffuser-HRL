@@ -24,16 +24,16 @@ else:
     downsample = 1
     model_horizon = args.horizon
 
-if 'set_length' in args._dict:
-    set_length = args.set_length
+if 'seg_length' in args._dict:
+    seg_length = args.seg_length
 
     if 'padding_length' in args._dict:
         padding_length = args.padding_length
-        model_horizon = set_length + padding_length
+        model_horizon = seg_length + padding_length
     else:
         padding_length = 0
 else:
-    set_length = model_horizon
+    seg_length = model_horizon
 
 0
 
@@ -54,7 +54,7 @@ dataset_config = utils.Config(
     max_path_length=args.max_path_length,
     downsample=downsample,
     min_horizon=min_horizon,
-    set_length=set_length,
+    seg_length=seg_length,
     padding_length=padding_length,
 )
 

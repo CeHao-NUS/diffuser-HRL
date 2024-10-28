@@ -398,8 +398,8 @@ class VarHValueDataset2(VarHDataset2):
 
 
 class VarHGapDataset(VarHDataset1):
-    def __init__(self, *args, set_length=1, padding_length=0, **kwargs):
-        self.set_length = set_length
+    def __init__(self, *args, seg_length=1, padding_length=0, **kwargs):
+        self.seg_length = seg_length
         self.padding_length = padding_length
         super().__init__(*args, **kwargs)
 
@@ -410,7 +410,7 @@ class VarHGapDataset(VarHDataset1):
         '''
         return {
             0: observations[0],
-            self.set_length: observations[-1],
+            self.seg_length: observations[-1],
         }
 
     def __getitem__(self, idx):
@@ -419,8 +419,8 @@ class VarHGapDataset(VarHDataset1):
         observations = self.fields.normed_observations[path_ind, start:end]
         actions = self.fields.normed_actions[path_ind, start:end]
 
-        observations, lengths = segment_to_k(observations, self.set_length)
-        actions, lengths = segment_to_k(actions, self.set_length)
+        observations, lengths = segment_to_k(observations, self.seg_length)
+        actions, lengths = segment_to_k(actions, self.seg_length)
 
         # repeat the last observation until end
         observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], self.padding_length, axis=0)], axis=0)
