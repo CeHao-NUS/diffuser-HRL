@@ -26,14 +26,21 @@ else:
 
 if 'set_length' in args._dict:
     set_length = args.set_length
+
+    if 'padding_length' in args._dict:
+        padding_length = args.padding_length
+        model_horizon = set_length + padding_length
+    else:
+        padding_length = 0
 else:
     set_length = model_horizon
+
+0
 
 if 'min_horizon' in args._dict:
     min_horizon = args.min_horizon
 else:
     min_horizon = 1
-
 
 
 dataset_config = utils.Config(
@@ -48,6 +55,7 @@ dataset_config = utils.Config(
     downsample=downsample,
     min_horizon=min_horizon,
     set_length=set_length,
+    padding_length=padding_length,
 )
 
 render_config = utils.Config(

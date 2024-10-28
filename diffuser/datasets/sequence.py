@@ -8,6 +8,8 @@ from .d4rl import load_environment, sequence_dataset
 from .normalization import DatasetNormalizer
 from .buffer import ReplayBuffer
 
+from diffuser.models.helpers import segment_to_k
+
 
 Batch = namedtuple('Batch', 'trajectories conditions')
 ValueBatch = namedtuple('ValueBatch', 'trajectories conditions values')
@@ -329,7 +331,6 @@ class VarHDataset2(GoalDataset):
 
     def __getitem__(self, idx):
 
-
         # 1. get intermediate point
         # 2. segment and fill with last point
         # 3. change conditions
@@ -393,6 +394,45 @@ class VarHValueDataset2(VarHDataset2):
     
 
 
+# ================================================================================================
+
+
+class VarHGapDataset(VarHDataset1):
+    def __init__(self, *args, set_length=1, padding_length=0, **kwargs):
+        self.set_length = set_length
+        self.padding_length = padding_length
+        super().__init__(*args, **kwargs)
+
+
+    def get_conditions(self, observations):
+        '''
+            condition on both the current observation and the last observation in the plan
+        '''
+        return {
+            0: observations[0],
+            self.set_length: observations[-1],
+        }
+
+    def __getitem__(self, idx):
+        path_ind, start, end = self.indices[idx]
+
+        observations = self.fields.normed_observations[path_ind, start:end]
+        actions = self.fields.normed_actions[path_ind, start:end]
+
+        observations, lengths = segment_to_k(observations, self.set_length)
+        actions, lengths = segment_to_k(actions, self.set_length)
+
+        # repeat the last observation until end
+        observations = np.concatenate([observations, np.repeat(observations[-1, np.newaxis, :], self.padding_length, axis=0)], axis=0)
+        
+        zero_actions = np.zeros_like(actions[-1])
+        actions = np.concatenate([actions, np.repeat(zero_actions[np.newaxis, :], self.padding_length, axis=0)], axis=0)
+
+        conditions = self.get_conditions(observations)
+        trajectories = np.concatenate([actions, observations], axis=-1)
+
+        batch = Batch(trajectories, conditions)
+        return batch
 
 
 '''

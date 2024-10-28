@@ -235,3 +235,34 @@ Losses = {
     'value_l1': ValueL1,
     'value_l2': ValueL2,
 }
+
+
+#-----------------------------------------------------------------------------#
+#--------------------------------- dataset ---------------------------------#
+#-----------------------------------------------------------------------------#
+
+def segment_to_k(a, k):
+    n, x = a.shape  # n is the number of rows, x is the number of columns
+    segment_size = n // k
+    remainder = n % k  # Extra elements to distribute
+
+    # Initialize arrays to store endpoints and lengths
+    endpoints = np.empty((k, x), dtype=np.float32)  # Each endpoint is a row from `a`, so shape is [k, x]
+    lengths = np.empty(k, dtype=int)
+
+    start = 0
+    for i in range(k):
+        # Calculate the end index of each segment
+        end = start + segment_size + (1 if i < remainder else 0)
+        endpoints[i] = a[end - 1]  # Last row of each segment
+        lengths[i] = end - start   # Length of each segment
+        start = end
+
+    return endpoints, lengths
+
+def next_power_of_2(n):
+    x = 1
+    while x <= n:
+        x *= 2
+    return x
+

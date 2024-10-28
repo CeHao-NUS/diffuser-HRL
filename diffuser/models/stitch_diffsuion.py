@@ -236,10 +236,10 @@ class BatchGaussianDiffusion(nn.Module):
         noise = torch.randn_like(x_start)
 
         x_noisy = self.q_sample(x_start=x_start, t=t, noise=noise)
-        x_noisy = apply_conditioning(x_noisy, cond, self.action_dim)
+        x_noisy = apply_batch_conditioning(x_noisy, cond, self.action_dim)
 
         x_recon = self.model(x_noisy, cond, t)
-        x_recon = apply_conditioning(x_recon, cond, self.action_dim)
+        x_recon = apply_batch_conditioning(x_recon, cond, self.action_dim)
 
         assert noise.shape == x_recon.shape
 
