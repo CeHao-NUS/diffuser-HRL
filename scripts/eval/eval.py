@@ -149,6 +149,6 @@ if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
     env = env_list[0]
 
-    subfolder = 'couple/plan_diff_HLGap/H128_T32_L5_condTrue_mH16'
+    subfolder = 'couple/plan_diff_HLGap/H128_T32_L5_condFalse_mH16'
     plot_diffusion(subfolder, env)
 

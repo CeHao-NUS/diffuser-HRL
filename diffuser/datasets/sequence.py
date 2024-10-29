@@ -410,7 +410,7 @@ class VarHGapDataset(VarHDataset1):
         '''
         return {
             0: observations[0],
-            self.seg_length: observations[-1],
+            self.seg_length -1: observations[-1],
         }
 
     def __getitem__(self, idx):
