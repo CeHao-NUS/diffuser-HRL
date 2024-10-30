@@ -101,20 +101,22 @@ maze2d_umaze_v1 = {
 
 maze2d_medium_v1 = {
     'plan': {
-        'LL_horizon': 16,
-        'HL_horizon': 300,
+        'LL_horizon': 32,
+        'HL_horizon': 320,
         'n_diffusion_steps': 32,
-        'seg_length': 18, # 17*15 = 255
-        'downsample': 15,
+        'min_horizon': 16,
+        'seg_length': 11, 
+        'padding_length': 1,
     },
 }
 
 maze2d_large_v1 = {
     'plan': {
         'LL_horizon': 32,
-        'HL_horizon': 384,
+        'HL_horizon': 448,
         'n_diffusion_steps': 32,
-        'seg_length': 11,
-        'downsample': 32,
+        'min_horizon': 16,
+        'seg_length': 15, 
+        'padding_length': 1,
     },
 }

@@ -79,19 +79,21 @@ maze2d_umaze_v1 = {
 
 maze2d_medium_v1 = {
     'diffusion': {
-        'horizon': 372,
+        'horizon': 320,
         'n_diffusion_steps': 32,
-        'downsample': 31, # 31 * 11 = 341
-        'seg_length': 12, # only use 12
+        'min_horizon': 16,
+        'seg_length': 11, 
+        'padding_length': 1,
     },
 }
 
 
 maze2d_large_v1 = {
     'diffusion': {
-        'horizon': 384,
+        'horizon': 448,
         'n_diffusion_steps': 32,
-        'downsample': 32,
-        'seg_length': 18, # to change
+        'min_horizon': 16,
+        'seg_length': 15, 
+        'padding_length': 1,
     },
 }
