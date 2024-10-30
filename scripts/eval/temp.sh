@@ -2,7 +2,7 @@
 
 # bash scripts/eval/exp_multi_gpu.sh
 
-MAX_JOBS=50
+MAX_JOBS=40
 current_jobs=0
 # GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
 GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4")
@@ -12,16 +12,19 @@ NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 # dataset="maze2d-umaze-v1"
 # dataset="maze2d-medium-v1"
-# dataset="maze2d-large-v1"
-dataset="maze2d-testbig-v0"
+dataset="maze2d-large-v1"
+# dataset="maze2d-testbig-v0 "
 
 # # single
-task="scripts/single/plan.py"
+# task="scripts/single/plan.py"
 # config="config.single.plan_diff"
-plan_task="single"
+# plan_task="single"
+
+# config='config.single.varh.plan_diff_var1'
+# plan_task="single_var1"
 
 
-config="config.single.plan_diff_test" # test big
+# config="config.single.plan_diff_test" # test big
 
 # hier
 # task="scripts/hier/plan.py"
@@ -30,14 +33,14 @@ config="config.single.plan_diff_test" # test big
 
 # config='config.hier.plan_diff_test'
 
-# forward_noise
-# task="scripts/single/plan.py"
-# config='config.single.plan_diff_coupled_forwardnoise'
-# plan_task="single_coupled_forwardnoise"
+task="scripts/couple/plan.py"
+config='config.couple.plan_diff_HLGap'
+plan_task="couple/plan_diff_HLGap/"
+
 
 for cond in "True" "False"
 do
-    for idx in {0..150}
+    for idx in {0..149}
     do
         # Determine which GPU to assign based on the job index
         gpu_idx=$((current_jobs % NUM_GPUS))
@@ -45,7 +48,7 @@ do
 
         python $task --dataset $dataset --config $config \
         --suffix "eval_$idx" --prefix plans/$plan_task --conditional $cond --device "$gpu" \
-        &
+         &
 
         # Increment the current_jobs counter
         current_jobs=$((current_jobs + 1))
@@ -67,9 +70,10 @@ echo "Done"
 
 
 
+
 # bash scripts/eval/exp_multi_gpu.sh
 
-MAX_JOBS=50
+MAX_JOBS=40
 current_jobs=0
 # GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
 GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4")
@@ -77,34 +81,37 @@ NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 
-# dataset="maze2d-umaze-v1"
+dataset="maze2d-umaze-v1"
 # dataset="maze2d-medium-v1"
 # dataset="maze2d-large-v1"
-dataset="maze2d-testbig-v0"
+# dataset="maze2d-testbig-v0 "
 
 # # single
 # task="scripts/single/plan.py"
 # config="config.single.plan_diff"
 # plan_task="single"
 
+# config='config.single.varh.plan_diff_var1'
+# plan_task="single_var1"
+
 
 # config="config.single.plan_diff_test" # test big
 
 # hier
-task="scripts/hier/plan.py"
+# task="scripts/hier/plan.py"
 # config='config.hier.plan_diff'
-plan_task="hier"
+# plan_task="hier"
 
-config='config.hier.plan_diff_test'
+# config='config.hier.plan_diff_test'
 
-# forward_noise
-# task="scripts/single/plan.py"
-# config='config.single.plan_diff_coupled_forwardnoise'
-# plan_task="single_coupled_forwardnoise"
+task="scripts/couple/plan.py"
+config='config.couple.plan_diff_HLGap'
+plan_task="couple/plan_diff_HLGap/"
+
 
 for cond in "True" "False"
 do
-    for idx in {0..150}
+    for idx in {0..149}
     do
         # Determine which GPU to assign based on the job index
         gpu_idx=$((current_jobs % NUM_GPUS))
@@ -112,7 +119,7 @@ do
 
         python $task --dataset $dataset --config $config \
         --suffix "eval_$idx" --prefix plans/$plan_task --conditional $cond --device "$gpu" \
-        &
+         &
 
         # Increment the current_jobs counter
         current_jobs=$((current_jobs + 1))
@@ -131,3 +138,72 @@ wait
 echo "Done"
 
 # ===========================================
+
+
+
+
+
+# bash scripts/eval/exp_multi_gpu.sh
+
+MAX_JOBS=40
+current_jobs=0
+# GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
+GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4")
+NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
+
+
+
+dataset="maze2d-umaze-v1"
+# dataset="maze2d-medium-v1"
+# dataset="maze2d-large-v1"
+# dataset="maze2d-testbig-v0 "
+
+# # single
+# task="scripts/single/plan.py"
+# config="config.single.plan_diff"
+# plan_task="single"
+
+# config='config.single.varh.plan_diff_var1'
+# plan_task="single_var1"
+
+
+# config="config.single.plan_diff_test" # test big
+
+# hier
+# task="scripts/hier/plan.py"
+# config='config.hier.plan_diff'
+# plan_task="hier"
+
+# config='config.hier.plan_diff_test'
+
+task="scripts/couple/plan.py"
+config='config.couple.plan_diff_HLGap_LLvar'
+plan_task="couple/plan_diff_HLGap_LLvar/"
+
+for cond in "True" "False"
+do
+    for idx in {0..149}
+    do
+        # Determine which GPU to assign based on the job index
+        gpu_idx=$((current_jobs % NUM_GPUS))
+        gpu="${GPU_IDS[$gpu_idx]}"
+
+        python $task --dataset $dataset --config $config \
+        --suffix "eval_$idx" --prefix plans/$plan_task --conditional $cond --device "$gpu" \
+         &
+
+        # Increment the current_jobs counter
+        current_jobs=$((current_jobs + 1))
+
+        # If the maximum number of parallel jobs is reached, wait for all of them to finish
+        if [ "$current_jobs" -ge "$MAX_JOBS" ]; then
+            wait
+            current_jobs=0
+        fi
+    done
+done
+
+# Wait for any remaining jobs to complete
+wait
+
+echo "Done"

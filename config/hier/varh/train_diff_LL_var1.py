@@ -134,11 +134,13 @@ maze2d_medium_v1 = {
     'diffusion': {
         'horizon': 32,
         'n_diffusion_steps': 32,
+        'min_horizon': 1,
     },
 
     'values': {
         'horizon': 32,
         'n_diffusion_steps': 32,
+        'min_horizon': 1,
     },
 }
 
@@ -146,10 +148,12 @@ maze2d_large_v1 = {
     'diffusion': {
         'horizon': 32,
         'n_diffusion_steps': 32,
+        'min_horizon': 1,
     },
 
     'values': {
         'horizon': 32,
         'n_diffusion_steps': 32,
+        'min_horizon': 1,
     },
 }

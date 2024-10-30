@@ -21,7 +21,8 @@
 
 # couple
 task="scripts/couple/plan.py"
-config='config.couple.plan_diff_HLGap'
+# config='config.couple.plan_diff_HLGap'
+config='config.couple.plan_diff_HLGap_LLvar'
 
 
 

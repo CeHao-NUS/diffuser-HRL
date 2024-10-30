@@ -34,8 +34,9 @@ if 'seg_length' in args._dict:
         padding_length = 0
 else:
     seg_length = model_horizon
+    padding_length = 0
 
-0
+
 
 if 'min_horizon' in args._dict:
     min_horizon = args.min_horizon
