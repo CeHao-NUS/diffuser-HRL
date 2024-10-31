@@ -32,7 +32,7 @@ base = {
         'preprocess_fns': [],
         'clip_denoised': True,
         'use_padding': False,
-        'max_path_length': 70000,
+        'max_path_length': 40000,
 
         ## serialization
         'logbase': 'logs',

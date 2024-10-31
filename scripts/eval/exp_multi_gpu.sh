@@ -2,26 +2,26 @@
 
 # bash scripts/eval/exp_multi_gpu.sh
 
-MAX_JOBS=40
+MAX_JOBS=50
 current_jobs=0
 # GPU_IDS=("cuda:0" "cuda:1" "cuda:2" "cuda:3" "cuda:4" "cuda:5" "cuda:6" "cuda:7")
-GPU_IDS=("cuda:1" "cuda:2" "cuda:3" "cuda:4")
+GPU_IDS=("cuda:0" "cuda:1" "cuda:2")
 NUM_GPUS=${#GPU_IDS[@]} # Number of GPUs (8 in this case)
 
 
 
 # dataset="maze2d-umaze-v1"
-dataset="maze2d-medium-v1"
-# dataset="maze2d-large-v1"
+# dataset="maze2d-medium-v1"
+dataset="maze2d-large-v1"
 # dataset="maze2d-testbig-v0 "
 
 # # single
-# task="scripts/single/plan.py"
+task="scripts/single/plan.py"
 # config="config.single.plan_diff"
 # plan_task="single"
 
-# config='config.single.varh.plan_diff_var1'
-# plan_task="single_var1"
+config='config.single.varh.plan_diff_var1'
+plan_task="single_var1"
 
 
 # config="config.single.plan_diff_test" # test big
@@ -33,9 +33,9 @@ dataset="maze2d-medium-v1"
 
 # config='config.hier.plan_diff_test'
 
-task="scripts/couple/plan.py"
-config='config.couple.plan_diff_HLGap'
-plan_task="couple/plan_diff_HLGap/"
+# task="scripts/couple/plan.py"
+# config='config.couple.plan_diff_HLGap'
+# plan_task="couple/plan_diff_HLGap/"
 
 # config='config.couple.plan_diff_HLGap_LLvar'
 # plan_task="couple/plan_diff_HLGap_LLvar/"

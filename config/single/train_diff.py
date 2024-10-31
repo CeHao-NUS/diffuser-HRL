@@ -39,7 +39,7 @@ base = {
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
-        'max_path_length': 70000,
+        'max_path_length': 40000,
 
         ## serialization
         'logbase': 'logs',
@@ -84,7 +84,7 @@ base = {
         'preprocess_fns': ['maze2d_set_terminals'],
         # 'preprocess_fns': [],
         'use_padding': False,
-        'max_path_length': 70000,
+        'max_path_length': 40000,
         'min_horizon': 16,
         # 'h5path': 'temp_datasets/integrated.h5', # !!!!
         # 'h5path': 'temp_datasets/med_single_maze2d.hdf5', # !!!!

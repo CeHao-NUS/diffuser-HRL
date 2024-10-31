@@ -13,8 +13,8 @@ def plot_diffusion(subfolder, env):
     
     file_suffix = 'eval_'
     rollout_name = 'rollout.json'
-    photo_name = 'whole.png'
-    # photo_name = 'LL.png'
+    # photo_name = 'whole.png'
+    photo_name = 'LL.png'
 
     score_list = []
     image_list = []
@@ -57,10 +57,13 @@ def plot_diffusion(subfolder, env):
 
     last_of_subfolder = subfolder.split('/')[-1]
     # Display the plot
-    plt.savefig(f'./images/{env}_{last_of_subfolder}.png', dpi=300)
+    image_dir = base_dir + f'/kde_{env}_{last_of_subfolder}.png'
+
+    # plt.savefig(f'./images/{env}_{last_of_subfolder}.png', dpi=300)
+    plt.savefig(image_dir, dpi=300)
     # plt.show()
     plt.close()
-    print(f'KDE Plot saved to ./images/{env}_{subfolder}.png')
+    print(f'KDE Plot saved to' + image_dir)
 
     # save the content  failed list to './failed_list.txt'
     failed_path = base_dir + '/failed_list.txt'
@@ -147,8 +150,9 @@ def concatenate_images_with_custom_titles(image_paths, output_path, names, max_c
 
 if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
-    env = env_list[1]
+    env = env_list[2]
 
-    subfolder = 'couple/plan_diff_HLGap/hier_H384_T32_L11_condTrue'
+    # subfolder = 'couple/plan_diff_HLGap_LLvar/H512_T32_L17_condFalse_mH16'
+    subfolder = 'single_var1_H512_T256_d0.99_b1_condFalse'
     plot_diffusion(subfolder, env)
 

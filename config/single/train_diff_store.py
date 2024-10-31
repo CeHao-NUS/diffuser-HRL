@@ -32,7 +32,7 @@ base = {
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
-        'max_path_length': 70000,
+        'max_path_length': 40000,
 
         ## serialization
         'logbase': 'logs',
