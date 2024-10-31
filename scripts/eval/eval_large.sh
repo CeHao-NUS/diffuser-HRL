@@ -19,7 +19,7 @@
 task="scripts/couple/plan.py"
 config='config.couple.plan_diff_HLGap'
 
-for init_pose in "(1,1)" "(1,4)" "(1,9)" "(7,1)" "(3,8)" "(5,4)" "(3,6)" "(6,8)" "(5,10)"
+for init_pose in "(1,1)" "(1,4)" "(1,9)" "(7,1)" "(3,8)" "(5,4)" "(5,7)" "(3,6)" "(6,8)" "(5,10)"
 do
     python $task --config $config --dataset maze2d-large-v1 --device "cuda:5" \
     --conditional True --init_pose $init_pose --target "(7,9)" --suffix $init_pose  \

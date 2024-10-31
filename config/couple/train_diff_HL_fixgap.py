@@ -35,7 +35,7 @@ base = {
         'preprocess_fns': ['maze2d_set_terminals'],
         'clip_denoised': True,
         'use_padding': False,
-        'max_path_length': 40000,
+        'max_path_length': 70000,
 
         'min_horizon': 1,
         'seg_length': 5,
@@ -88,23 +88,23 @@ maze2d_medium_v1 = {
 }
 
 
-# maze2d_large_v1 = {
-#     'diffusion': {
-#         'horizon': 448,
-#         'n_diffusion_steps': 32,
-#         'min_horizon': 16,
-#         'seg_length': 15, 
-#         'padding_length': 1,
-#     },
-# }
-
-
 maze2d_large_v1 = {
     'diffusion': {
-        'horizon': 512,
+        'horizon': 448,
         'n_diffusion_steps': 32,
         'min_horizon': 16,
-        'seg_length': 17, 
+        'seg_length': 15, 
         'padding_length': 1,
     },
 }
+
+
+# maze2d_large_v1 = {
+#     'diffusion': {
+#         'horizon': 512,
+#         'n_diffusion_steps': 32,
+#         'min_horizon': 16,
+#         'seg_length': 17, 
+#         'padding_length': 3,
+#     },
+# }

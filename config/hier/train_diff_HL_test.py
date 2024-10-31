@@ -34,7 +34,7 @@ base = {
         'preprocess_fns': [],
         'clip_denoised': True,
         'use_padding': False,
-        'max_path_length': 40000,
+        'max_path_length': 70000,
         'downsample': 32,
 
         ## serialization

@@ -147,8 +147,8 @@ def concatenate_images_with_custom_titles(image_paths, output_path, names, max_c
 
 if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
-    env = env_list[2]
+    env = env_list[1]
 
-    subfolder = 'couple/plan_diff_HLGap/H448_T32_L15_condTrue_mH16'
+    subfolder = 'couple/plan_diff_HLGap/hier_H384_T32_L11_condTrue'
     plot_diffusion(subfolder, env)
 

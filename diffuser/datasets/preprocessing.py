@@ -57,8 +57,15 @@ def add_deltas(env):
 
 
 def maze2d_set_terminals(env):
+    env_name = env
     env = load_environment(env) if type(env) == str else env
-    goal = np.array(env._target)
+
+    if env_name == 'maze2d-medium-v1':
+        goal = np.array([6, 6]) # default is 
+    elif env_name == 'maze2d-large-v1':
+        goal = np.array([7, 10])
+    else:
+        goal = np.array(env._target)
     threshold = 0.5
 
     def _fn(dataset):
