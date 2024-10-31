@@ -81,7 +81,7 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.OneValueDataset',
+        'loader': 'datasets.LL_varh_value_dataset',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         'use_padding': False,
@@ -124,18 +124,6 @@ maze2d_umaze_v1 = {
         'n_diffusion_steps': 32,
     },
 }
-
-# maze2d_umaze_v1 = {
-#     'diffusion': {
-#         'horizon': 16,
-#         'n_diffusion_steps': 32,
-#     },
-
-#     'values': {
-#         'horizon': 16,
-#         'n_diffusion_steps': 32,
-#     },
-# }
 
 maze2d_medium_v1 = {
     'diffusion': {

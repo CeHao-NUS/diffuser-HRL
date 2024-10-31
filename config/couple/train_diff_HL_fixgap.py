@@ -88,23 +88,23 @@ maze2d_medium_v1 = {
 }
 
 
-maze2d_large_v1 = {
-    'diffusion': {
-        'horizon': 448,
-        'n_diffusion_steps': 32,
-        'min_horizon': 16,
-        'seg_length': 15, 
-        'padding_length': 1,
-    },
-}
-
-
 # maze2d_large_v1 = {
 #     'diffusion': {
-#         'horizon': 512,
+#         'horizon': 448,
 #         'n_diffusion_steps': 32,
 #         'min_horizon': 16,
-#         'seg_length': 17, 
-#         'padding_length': 3,
+#         'seg_length': 15, 
+#         'padding_length': 1,
 #     },
 # }
+
+
+maze2d_large_v1 = {
+    'diffusion': {
+        'horizon': 512,
+        'n_diffusion_steps': 32,
+        'min_horizon': 16,
+        'seg_length': 17, 
+        'padding_length': 3,
+    },
+}
