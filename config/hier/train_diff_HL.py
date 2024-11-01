@@ -76,7 +76,8 @@ base = {
         'diffusion': 'models.BatchValueDiffusion',
         'horizon': 320,
         'n_diffusion_steps': 256,
-        'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+        # 'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+        'dim_mults': (1, 4, 8),
         'renderer': 'utils.Maze2dRenderer',
 
         ## value-specific kwargs
@@ -92,6 +93,7 @@ base = {
         'max_path_length': 40000,
         'min_horizon': 16,
         'downsample': 32,
+        'seg_length': 32,
 
         ## serialization
         'logbase': 'logs',
@@ -139,7 +141,7 @@ maze2d_umaze_v1 = {
 
 maze2d_medium_v1 = {
     'diffusion': {
-        'horizon': 372,
+        'horizon': 372, 
         'n_diffusion_steps': 32,
         'downsample': 31, # 31 * 11 = 341
         'seg_length': 12, # only use 12
@@ -149,9 +151,16 @@ maze2d_medium_v1 = {
 
 maze2d_large_v1 = {
     'diffusion': {
-        'horizon': 512,
+        'horizon': 496,
         'n_diffusion_steps': 32,
         'downsample': 31, # 31 * 16 = 496
-        'seg_length': 17, # to change
+        'seg_length': 16, # to change
+    },
+
+    'values': {
+        'horizon': 496,
+        'n_diffusion_steps': 32,
+        'downsample': 31, # 31 * 16 = 496
+        'seg_length': 16, # to change
     },
 }

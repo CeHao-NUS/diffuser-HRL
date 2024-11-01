@@ -13,8 +13,17 @@ diffusion_args_to_watch = [
     ('seg_length', 'L'),
 ]
 
+value_args_to_watch = [
+    ('prefix', ''),
+    ('horizon', 'H'),
+    ('n_diffusion_steps', 'T'),
+    ## value kwargs
+    ('discount', 'd'),
+    ('min_horizon', 'mH'),
+    ('seg_length', 'L'),
+]
+
 base = {
-    # d-3
     'diffusion': {
         ## model
         'model': 'models.TemporalUnet',
@@ -64,6 +73,54 @@ base = {
         'device': 'cuda',
 
     },
+
+    'values': {
+        'model': 'models.ValueFunction',
+        'diffusion': 'models.BatchValueDiffusion',
+        'horizon': 320,
+        'n_diffusion_steps': 256,
+        # 'dim_mults': (1, 2, 2, 2, 4, 4, 8),
+        'dim_mults': (1, 4, 8),
+        'renderer': 'utils.Maze2dRenderer',
+
+        ## value-specific kwargs
+        'discount': 0.99,
+        'termination_penalty': None,
+        'normed': False,
+
+        ## dataset
+        'loader': 'datasets.VarHGapValueDataset',
+        'normalizer': 'LimitsNormalizer',
+        'preprocess_fns': ['maze2d_set_terminals'],
+        'use_padding': False,
+        'max_path_length': 40000,
+
+        'min_horizon': 16,
+        'seg_length': 5,
+        'padding_length': 3, # 3+5=8
+
+        ## serialization
+        'logbase': 'logs',
+        'prefix': 'values/HL_gap_value',
+        'exp_name': watch(value_args_to_watch),
+
+        ## training
+        'n_steps_per_epoch': 10000,
+        'loss_type': 'value_l2',
+        'n_train_steps': 400e3,
+        'batch_size': 32,
+        'learning_rate': 2e-4,
+        'gradient_accumulate_every': 2,
+        'ema_decay': 0.995,
+        'save_freq': 1000,
+        'sample_freq': 0,
+        'n_saves': 50,
+        'save_parallel': False,
+        'n_reference': 50,
+        'bucket': None,
+        'device': 'cuda',
+        'seed': None,
+    },
 }
 
 
@@ -88,17 +145,6 @@ maze2d_medium_v1 = {
 }
 
 
-# maze2d_large_v1 = {
-#     'diffusion': {
-#         'horizon': 448,
-#         'n_diffusion_steps': 32,
-#         'min_horizon': 16,
-#         'seg_length': 15, 
-#         'padding_length': 1,
-#     },
-# }
-
-
 maze2d_large_v1 = {
     'diffusion': {
         'horizon': 512,
@@ -106,5 +152,13 @@ maze2d_large_v1 = {
         'min_horizon': 16,
         'seg_length': 17, 
         'padding_length': 3,
+    },
+
+    'values': {
+        'horizon': 512,
+        'n_diffusion_steps': 32,
+        'min_horizon': 16,
+        'seg_length': 17, # 17 + 1
+        'padding_length': 1,
     },
 }

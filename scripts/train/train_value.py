@@ -24,6 +24,20 @@ else:
     downsample = 1
     model_horizon = args.horizon
 
+if 'seg_length' in args._dict:
+    seg_length = args.seg_length
+
+    if 'padding_length' in args._dict:
+        padding_length = args.padding_length
+        model_horizon = seg_length + padding_length
+    else:
+        padding_length = 0
+else:
+    seg_length = model_horizon
+    padding_length = 0
+
+
+
 if 'min_horizon' in args._dict:
     min_horizon = args.min_horizon
 else:
@@ -51,6 +65,8 @@ dataset_config = utils.Config(
     h5path=h5path,
     downsample=downsample,
     min_horizon=min_horizon,
+    seg_length=seg_length,
+    padding_length=padding_length,
 )
 
 render_config = utils.Config(
@@ -72,7 +88,7 @@ action_dim = dataset.action_dim
 model_config = utils.Config(
     args.model,
     savepath=(args.savepath, 'model_config.pkl'),
-    horizon=args.horizon,
+    horizon=model_horizon,
     transition_dim=observation_dim + action_dim,
     cond_dim=observation_dim,
     dim_mults=args.dim_mults,
@@ -82,7 +98,7 @@ model_config = utils.Config(
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=args.horizon,
+    horizon=model_horizon,
     observation_dim=observation_dim,
     action_dim=action_dim,
     n_timesteps=args.n_diffusion_steps,

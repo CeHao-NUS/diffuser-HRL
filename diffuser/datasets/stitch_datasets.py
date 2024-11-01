@@ -21,7 +21,7 @@ class SequenceDataset(torch.utils.data.Dataset):
         self.env = env = load_environment(env)
         self.env.seed(seed)
         self.horizon = horizon
-        max_path_length = 70000 ## temporary
+        max_path_length = 40000 ## temporary
         self.max_path_length = max_path_length
         self.use_padding = use_padding
         itr = sequence_dataset(env, self.preprocess_fn)

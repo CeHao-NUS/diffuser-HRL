@@ -79,15 +79,13 @@ base = {
         'normed': False,
 
         ## dataset
-        'loader': 'datasets.AverageValueDataset',
+        'loader': 'datasets.VarHValueDataset1',
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
         # 'preprocess_fns': [],
         'use_padding': False,
         'max_path_length': 40000,
         'min_horizon': 16,
-        # 'h5path': 'temp_datasets/integrated.h5', # !!!!
-        # 'h5path': 'temp_datasets/med_single_maze2d.hdf5', # !!!!
 
         ## serialization
         'logbase': 'logs',
@@ -139,26 +137,26 @@ maze2d_medium_v1 = {
     },
 }
 
-# maze2d_large_v1 = {
-#     'diffusion':{
-#         'horizon': 448,
-#         'n_diffusion_steps': 256,
-#     },
-
-#     'values':{
-#         'horizon': 448,
-#         'n_diffusion_steps': 256,
-#     },
-# }
-
 maze2d_large_v1 = {
     'diffusion':{
-        'horizon': 512,
+        'horizon': 448,
         'n_diffusion_steps': 256,
     },
 
     'values':{
-        'horizon': 512,
+        'horizon': 448,
         'n_diffusion_steps': 256,
     },
 }
+
+# maze2d_large_v1 = {
+#     'diffusion':{
+#         'horizon': 512,
+#         'n_diffusion_steps': 256,
+#     },
+
+#     'values':{
+#         'horizon': 512,
+#         'n_diffusion_steps': 256,
+#     },
+# }
