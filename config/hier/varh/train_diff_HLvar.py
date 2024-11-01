@@ -37,7 +37,7 @@ base = {
         'renderer': 'utils.Maze2dRenderer',
 
         ## dataset
-        'loader': 'datasets.HL_goal_dataset',
+        'loader': 'datasets.HL_varh_dataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
@@ -49,7 +49,7 @@ base = {
 
         ## serialization
         'logbase': 'logs',
-        'prefix': 'diffusion/HL_diffuser',
+        'prefix': 'diffusion/HL_diff_varh',
         'exp_name': watch(diffusion_args_to_watch),
 
         ## training
