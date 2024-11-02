@@ -87,18 +87,18 @@ maze2d_medium_v1 = {
     },
 }
 
-# maze2d_large_v1 = {
-#     'plan':{
-#         'horizon': 448,
-#         'n_diffusion_steps': 256,
-#         'min_horizon': 16,
-#     },
-# }
-
 maze2d_large_v1 = {
     'plan':{
-        'horizon': 512,
+        'horizon': 448,
         'n_diffusion_steps': 256,
         'min_horizon': 16,
     },
 }
+
+# maze2d_large_v1 = {
+#     'plan':{
+#         'horizon': 512,
+#         'n_diffusion_steps': 256,
+#         'min_horizon': 16,
+#     },
+# }
