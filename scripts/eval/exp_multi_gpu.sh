@@ -16,23 +16,23 @@ dataset="maze2d-large-v1"
 # dataset="maze2d-testbig-v0 "
 
 # # single
-task="scripts/single/plan.py"
+# task="scripts/single/plan.py"
 # config="config.single.plan_diff"
 # plan_task="single"
 
 # config='config.single.varh.plan_diff_var1'
 # plan_task="single_var1"
 
-config="config.single.plan_guided"
-plan_task="plan_guided"
+# config="config.single.plan_guided"
+# plan_task="plan_guided"
 
 
 # config="config.single.plan_diff_test" # test big
 
 # hier
-# task="scripts/hier/plan.py"
-# config='config.hier.plan_diff'
-# plan_task="hier"
+task="scripts/hier/plan.py"
+config='config.hier.plan_diff'
+plan_task="hier"
 
 # config='config.hier.plan_diff_test'
 

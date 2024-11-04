@@ -8,13 +8,13 @@ import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw, ImageFont
 
 
-def plot_diffusion(subfolder, env):
+def plot_diffusion(subfolder, env, file_suffix='eval_', photo_name='LL.png'):
     base_dir = f'./logs/{env}/plans/{subfolder}'
     
-    file_suffix = 'eval_'
+    # file_suffix = 'eval_'
     rollout_name = 'rollout.json'
     # photo_name = 'whole.png'
-    photo_name = 'LL.png'
+    # photo_name = 'LL.png'
 
     score_list = []
     image_list = []
@@ -23,7 +23,8 @@ def plot_diffusion(subfolder, env):
 
     all_files = os.listdir(base_dir)
     # keep the files the start with 'eval_'
-    all_files = [file_name for file_name in all_files if file_name.startswith(file_suffix)]
+    if file_suffix is not None:
+        all_files = [file_name for file_name in all_files if file_name.startswith(file_suffix)]
 
     for file_name in all_files:
         file_path = os.path.join(base_dir, file_name, rollout_name)
@@ -82,6 +83,10 @@ def plot_diffusion(subfolder, env):
     
     # save all images
     image_names = [photo_path.split('/')[-2] for photo_path in image_list]
+    # sort the image_names list by the key string
+    image_list = [photo_path for _, photo_path in sorted(zip(image_names, image_list))]
+    image_names = sorted(image_names)
+
     concatenate_image_name = base_dir +  f'/{env}_{last_of_subfolder}.png'
     concatenate_images_with_custom_titles(image_list, concatenate_image_name, image_names, max_columns=5, font_size=100)
 
@@ -153,6 +158,15 @@ if __name__ == '__main__':
     env = env_list[2]
 
     # subfolder = 'couple/plan_diff_HLGap_LLvar/H512_T32_L17_condFalse_mH16'
-    subfolder = 'single_var1_H512_T256_d0.99_b1_condFalse'
-    plot_diffusion(subfolder, env)
+    # subfolder = 'single_var1_H512_T256_d0.99_b1_condFalse'
+
+    subfolder = 'couple/HLGap_LLvarh_H512_T32_L17_condTrue_mH16'
+
+    photo_name = 'whole.png'
+    # photo_name = 'LL.png'
+
+    file_suffix = "("
+    # file_suffix = 'eval_'
+
+    plot_diffusion(subfolder, env, file_suffix=file_suffix, photo_name=photo_name)
 

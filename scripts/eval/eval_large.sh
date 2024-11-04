@@ -17,13 +17,17 @@
 # hier
 # task="scripts/hier/plan.py"
 # config='config.hier.plan_diff'
+# config='config.hier.varh.plan_diff_HLvar'
 
 # couple
-task="scripts/couple/plan.py"
+# task="scripts/couple/plan.py"
 # config='config.couple.plan_diff_HLGap'
-config='config.couple.plan_diff_HLGap_LLvar'
+# config='config.couple.plan_diff_HLGap_LLvar'
+# config='config.couple.plan_diff_HLGapGuided_LLvar'
 
-for init_pose in "(1,1)" "(1,4)" "(1,9)" "(7,1)" "(3,8)" "(5,4)" "(5,7)" "(3,6)" "(6,8)" "(5,10)"
+
+# for init_pose in "(1,1)" "(1,4)" "(1,9)" "(7,1)" "(3,8)" "(5,4)" "(5,7)" "(3,6)" "(6,8)" "(5,10)"
+for init_pose in "${init_poses[@]}"
 do
     python $task --config $config --dataset maze2d-large-v1 --device "cuda" \
     --conditional True --init_pose $init_pose --target "(7,9)" --suffix $init_pose  \
