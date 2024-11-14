@@ -381,6 +381,14 @@ class Maze2dRenderer(MazeRenderer):
 
         return super().renders(observations, cond_plot, **kwargs)
 
+class DummyRenderer:
+    
+    def __init__(self, *args, **kwds):
+        pass
+
+    def composite(self, *args, **kwds):
+        pass
+
 #-----------------------------------------------------------------------------#
 #---------------------------------- rollouts ---------------------------------#
 #-----------------------------------------------------------------------------#
