@@ -394,7 +394,7 @@ from diffuser.datasets.bitsdataset import bits_to_text
 
 class BitsRenderer:
     def __init__(self, *args, **kwds):
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
     def composite(self, savepath, observations):
         texts = [bits_to_text(bits, self.tokenizer, 16) for bits in observations]

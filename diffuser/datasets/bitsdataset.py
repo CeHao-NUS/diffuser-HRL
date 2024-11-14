@@ -49,17 +49,30 @@ def bits2int(x, out_dtype):
     x = np.sum(x * (2 ** np.arange(x.shape[-1])), axis=-1)
     return x
 
+def bits2range(x):
+    # convert the 0 in x to -1
+    return 2 * x - 1
+
+def range2bits(x):
+    # set in x, if x > 0, set as 1, else 0
+    y = x.copy()
+    y[x>=0] = 1
+    y[x<0] = 0
+    return y
+
 def text_to_bits(text, tokenizer, n_bits=16):
     """Tokenize text and convert tokens to binary bits."""
     # Tokenize without special tokens
     tokens = tokenizer(text, add_special_tokens=False, return_tensors="np")["input_ids"].squeeze()
     # print('tokens:', tokens)
     bits = int2bits(tokens, n=n_bits, out_dtype=np.int32)
+    bits = bits2range(bits)
     return bits
 
 def bits_to_text(bits, tokenizer, n_bits=16):
     """Convert binary bits back to text using tokenizer."""
     # Convert bits to token IDs
+    bits = range2bits(bits)
     token_ids = bits2int(bits, out_dtype=np.int32)
     
     # Decode token IDs to text, skip special tokens to ensure clean output
@@ -82,7 +95,7 @@ class BitDataset(torch.utils.data.Dataset):
 
     def __init__(self, text_data_dir='datasets/bit_dataset.txt', n_bits=16, horizon=64, observation_dim=16, action_dim=0):
         self.text_data = load_custom_texts(text_data_dir)
-        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+        self.tokenizer = AutoTokenizer.from_pretrained("gpt2")
         self.n_bits = n_bits
         self.bits =[text_to_bits(text, self.tokenizer, n_bits) for text in self.text_data]
         self.horizon = horizon
