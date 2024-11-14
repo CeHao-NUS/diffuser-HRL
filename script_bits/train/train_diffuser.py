@@ -122,8 +122,8 @@ print('✓')
 
 n_epochs = int(args.n_train_steps // args.n_steps_per_epoch)
 
-# trainer.init_wandb() # to enable logger
+trainer.init_wandb() # to enable logger
 for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')
-    trainer.train(n_train_steps=args.n_steps_per_epoch, wandb_log=False)
+    trainer.train(n_train_steps=args.n_steps_per_epoch, wandb_log=True)
 

@@ -22,7 +22,7 @@ base = {
         'loss_discount': 1,
         'predict_epsilon': False,
         'dim_mults': (1, 4, 8),
-        'renderer': 'utils.DummyRenderer',
+        'renderer': 'utils.BitsRenderer',
 
         ## dataset
         'loader': 'datasets.BitDataset',
@@ -42,7 +42,7 @@ base = {
         'n_steps_per_epoch': 10000,
         'loss_type': 'l2',
         'n_train_steps': 2e6,
-        'batch_size': 4,
+        'batch_size': 8,
         'learning_rate': 2e-4,
         'gradient_accumulate_every': 2,
         'ema_decay': 0.995,

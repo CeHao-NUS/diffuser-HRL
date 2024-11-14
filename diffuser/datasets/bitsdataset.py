@@ -72,11 +72,11 @@ Batch = namedtuple('Batch', 'trajectories conditions')
 
 class Normalizer:
     def normalize(self, text, type):
-        pass
+        return text
 
     def unnormalize(self, bits, type):
         # return bits_to_text(bits)
-        pass
+        return bits
 
 class BitDataset(torch.utils.data.Dataset):
 

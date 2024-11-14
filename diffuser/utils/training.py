@@ -102,7 +102,7 @@ class Trainer(object):
         timestamp = datetime.now().strftime('%m-%d-%H-%M')
         resume_dir = resume_dir + '-' + timestamp
         
-        wandb.init(project=project, resume=resume_dir, entity='cehao-nus-national-university-of-california')
+        wandb.init(project=project, resume=resume_dir, entity='cehao')
 
     def reset_parameters(self):
         self.ema_model.load_state_dict(self.model.state_dict())
@@ -121,6 +121,7 @@ class Trainer(object):
 
         timer = Timer()
         for step in range(n_train_steps):
+            # print(f'step: {step}')
             for i in range(self.gradient_accumulate_every):
                 batch = next(self.dataloader)
                 batch = batch_to_device(batch, device=self.model.device)

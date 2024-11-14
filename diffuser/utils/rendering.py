@@ -381,13 +381,33 @@ class Maze2dRenderer(MazeRenderer):
 
         return super().renders(observations, cond_plot, **kwargs)
 
-class DummyRenderer:
+# class DummyRenderer:
     
-    def __init__(self, *args, **kwds):
-        pass
+#     def __init__(self, *args, **kwds):
+#         pass
 
-    def composite(self, *args, **kwds):
-        pass
+#     def composite(self, *args, **kwds):
+#         pass
+
+from transformers import AutoTokenizer
+from diffuser.datasets.bitsdataset import bits_to_text
+
+class BitsRenderer:
+    def __init__(self, *args, **kwds):
+        self.tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
+
+    def composite(self, savepath, observations):
+        texts = [bits_to_text(bits, self.tokenizer, 16) for bits in observations]
+        # print('generated texts:', texts)
+
+        # change savepath the last png as txt
+        savepath = savepath[:-4] + '.txt'
+
+        with open(savepath, 'w') as f:
+            for text in texts:
+                f.write(text + '\n')
+
+        print(f'Saved {len(observations)} samples to: {savepath}')
 
 #-----------------------------------------------------------------------------#
 #---------------------------------- rollouts ---------------------------------#
