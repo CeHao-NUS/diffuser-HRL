@@ -127,7 +127,7 @@ class BitDataset(torch.utils.data.Dataset):
         trajectories = observations
         batch = Batch(trajectories, conditions)
 
-        assert observations.shape == (32, 16)
+        # assert observations.shape == (32, 16)
         return batch
     
     def decode_bit2text(self, bits):

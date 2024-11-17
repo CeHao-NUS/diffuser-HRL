@@ -15,7 +15,7 @@ base = {
         ## model
         'model': 'models.TemporalUnet',
         'diffusion': 'models.GaussianDiffusion',
-        'horizon': 32,
+        'horizon': 128,
         'n_diffusion_steps': 32,
         'action_weight': 1,
         'loss_weights': None,
