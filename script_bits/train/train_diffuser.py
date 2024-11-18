@@ -26,9 +26,8 @@ dataset_config = utils.Config(
     args.loader,
     savepath=(args.savepath, 'dataset_config.pkl'),
     horizon=args.horizon,
-    n_bits=16,
-    observation_dim=16,
-    action_dim=0,
+    n_bits=4,
+    tokenizer_save_path = './custom_tokenizer',
 )
 
 render_config = utils.Config(

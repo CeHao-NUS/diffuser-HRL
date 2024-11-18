@@ -389,8 +389,9 @@ class Maze2dRenderer(MazeRenderer):
 #     def composite(self, *args, **kwds):
 #         pass
 
+
 from transformers import AutoTokenizer
-from diffuser.datasets.bitsdataset import bits_to_text
+from diffuser.datasets.bits_fun.bitsdataset import bits_to_text
 
 class BitsRenderer:
     def __init__(self, *args, **kwds):
@@ -408,6 +409,36 @@ class BitsRenderer:
                 f.write(text + '\n')
 
         print(f'Saved {len(observations)} samples to: {savepath}')
+
+from transformers import PreTrainedTokenizerFast
+from diffuser.datasets.bits_fun.bits_utils import text_to_bits, divide_list
+class StateTrajRenderer:
+    def __init__(self, tokenizer_save_path, n_bits, *args, **kwds):
+        
+        self.tokenizer = PreTrainedTokenizerFast.from_pretrained(tokenizer_save_path)
+        self.n_bits = n_bits
+
+    def composite(self, savepath, observations):
+        # seperate each obj [(horizon, n_bits * n_objs), ()]
+
+        generated_texts = []
+
+        for state in observations:
+            state_divided = divide_list(state, self.n_bits)
+            texts = [bits_to_text(bits, self.tokenizer, self.n_bits) for bits in state_divided]
+            generated_texts.append(texts)
+
+        # change savepath the last png as txt
+        savepath = savepath[:-4] + '.txt'
+
+        with open(savepath, 'w') as f:
+            for texts in generated_texts:
+                for text in texts:
+                    f.write(text + '\n')
+                f.write('\n')
+
+        print(f'Saved {len(observations)} samples to: {savepath}')
+    
 
 #-----------------------------------------------------------------------------#
 #---------------------------------- rollouts ---------------------------------#

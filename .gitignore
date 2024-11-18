@@ -1,7 +1,7 @@
 *.ipynb
 images
 
-
+custom_tokenizer/
 bin/
 logs/
 wandb/

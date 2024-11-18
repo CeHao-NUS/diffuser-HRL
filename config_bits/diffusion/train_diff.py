@@ -15,17 +15,17 @@ base = {
         ## model
         'model': 'models.TemporalUnet',
         'diffusion': 'models.GaussianDiffusion',
-        'horizon': 128,
+        'horizon': 12,
         'n_diffusion_steps': 32,
         'action_weight': 1,
         'loss_weights': None,
         'loss_discount': 1,
         'predict_epsilon': False,
         'dim_mults': (1, 4, 8),
-        'renderer': 'utils.BitsRenderer',
+        'renderer': 'utils.StateTrajRenderer',
 
         ## dataset
-        'loader': 'datasets.BitDataset',
+        'loader': 'datasets.StateTrajBitDataset',
         'termination_penalty': None,
         'normalizer': 'LimitsNormalizer',
         'preprocess_fns': ['maze2d_set_terminals'],
