@@ -411,7 +411,7 @@ class BitsRenderer:
         print(f'Saved {len(observations)} samples to: {savepath}')
 
 from transformers import PreTrainedTokenizerFast
-from diffuser.datasets.bits_fun.bits_utils import text_to_bits, divide_list
+from diffuser.datasets.bits_fun.bits_utils import bits_to_text_customize, divide_list
 class StateTrajRenderer:
     def __init__(self, tokenizer_save_path, n_bits, *args, **kwds):
         
@@ -419,14 +419,20 @@ class StateTrajRenderer:
         self.n_bits = n_bits
 
     def composite(self, savepath, observations):
-        # seperate each obj [(horizon, n_bits * n_objs), ()]
+        # seperate each obj  n_samples, [(horizon, n_bits * n_objs), ()]
 
         generated_texts = []
 
-        for state in observations:
-            state_divided = divide_list(state, self.n_bits)
-            texts = [bits_to_text(bits, self.tokenizer, self.n_bits) for bits in state_divided]
-            generated_texts.append(texts)
+        for sample in observations:
+            
+            sample_text = []
+            for state in sample:
+                state_divided = divide_list(state, self.n_bits)
+                # texts = [bits_to_text_customize(bits, self.tokenizer, self.n_bits) for bits in state_divided
+                texts = bits_to_text_customize(np.array(state_divided), self.tokenizer, self.n_bits)
+                sample_text.append(texts)
+
+            generated_texts.append(sample_text + ['\n'])
 
         # change savepath the last png as txt
         savepath = savepath[:-4] + '.txt'
@@ -434,7 +440,8 @@ class StateTrajRenderer:
         with open(savepath, 'w') as f:
             for texts in generated_texts:
                 for text in texts:
-                    f.write(text + '\n')
+                    text = [str(item) if item is None else item for item in text] # convert None to "None"
+                    f.write(" ".join(text) + '\n')
                 f.write('\n')
 
         print(f'Saved {len(observations)} samples to: {savepath}')

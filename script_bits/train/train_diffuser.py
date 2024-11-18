@@ -24,7 +24,9 @@ model_horizon = args.horizon
 
 dataset_config = utils.Config(
     args.loader,
+    data_dir = 'datasets/bits_fun/bit_dataset.txt',
     savepath=(args.savepath, 'dataset_config.pkl'),
+    set_tokenizer=True,
     horizon=args.horizon,
     n_bits=4,
     tokenizer_save_path = './custom_tokenizer',
@@ -34,6 +36,8 @@ render_config = utils.Config(
     args.renderer,
     savepath=(args.savepath, 'render_config.pkl'),
     env=args.dataset,
+    tokenizer_save_path = './custom_tokenizer',
+    n_bits = 4,
 )
 
 dataset = dataset_config()
