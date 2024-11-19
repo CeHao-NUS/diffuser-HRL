@@ -76,7 +76,7 @@ class Trainer(object):
 
         self.dataset = dataset
         self.dataloader = cycle(torch.utils.data.DataLoader(
-            self.dataset, batch_size=train_batch_size, num_workers=1, shuffle=True, pin_memory=True
+            self.dataset, batch_size=train_batch_size, num_workers=0, shuffle=True, pin_memory=True
         ))
         self.dataloader_vis = cycle(torch.utils.data.DataLoader(
             self.dataset, batch_size=1, num_workers=0, shuffle=True, pin_memory=True
@@ -92,7 +92,7 @@ class Trainer(object):
         self.reset_parameters()
         self.step = 0
 
-    def init_wandb(self, project='diffuser'):
+    def init_wandb(self, project='bits_diffuser'):
         # delete_the log/ in self.logdir
         resume_dir = self.logdir.replace('logs/', '')
         # convert / in self.logdir to -
@@ -234,13 +234,13 @@ class Trainer(object):
             normed_observations = trajectories[:, :, self.dataset.action_dim:]
 
             # [ 1 x 1 x observation_dim ]
-            normed_conditions = to_np(batch.conditions[0])[:,None]
+            # normed_conditions = to_np(batch.conditions[0])[:,None]
 
             ## [ n_samples x (horizon + 1) x observation_dim ]
-            normed_observations = np.concatenate([
-                np.repeat(normed_conditions, n_samples, axis=0),
-                normed_observations
-            ], axis=1)
+            # normed_observations = np.concatenate([
+            #     np.repeat(normed_conditions, n_samples, axis=0),
+            #     normed_observations
+            # ], axis=1)
 
             ## [ n_samples x (horizon + 1) x observation_dim ]
             observations = self.dataset.normalizer.unnormalize(normed_observations, 'observations')
