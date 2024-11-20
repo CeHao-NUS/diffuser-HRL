@@ -64,20 +64,27 @@ def create_tokenizer(texts, save_path="./custom_tokenizer"):
 
 
 # =========================  a class to parse the text
-def convert_state_trajectory(text_data):
+def convert_state_trajectory(text_data, no_first_line=True):
     # 1. first row is task description
     # 2. the rest are steps
 
     # create a dict, key is the task, value is the steps {task: [['close', 'infridge'], ['open', 'onpan']]}
     task_dict = {}
-    for texts in text_data:
+    for idx, texts in enumerate(text_data):
         lines = texts.strip().split("\n")
-        task = lines[0]
-        steps = lines[1:]
+        if no_first_line:
+            task = f"task_{idx}"
+            steps = lines
+        else:
+            task = lines[0]
+            steps = lines[1:]
         task_dict[task] = []
 
         for i, step in enumerate(steps):
-            step_no_index = step.split(".")[1].strip()
+            if "." in step:
+                step_no_index = step.split(".")[1].strip()
+            else:
+                step_no_index = step
             # seperate by whitespace 
             simplified_state = [item.split()[-1] for item in step_no_index.split(' ')]
             task_dict[task].append(simplified_state)

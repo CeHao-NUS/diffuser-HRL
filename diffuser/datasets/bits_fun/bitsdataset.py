@@ -23,7 +23,8 @@ class Normalizer:
 
 class StateTrajBitDataset(torch.utils.data.Dataset):
 
-    def __init__(self, data_dir='', horizon=12, n_bits=4, n_objs=9, set_tokenizer=False, tokenizer_save_path='./custom_tokenizer'):
+    def __init__(self, data_dir='', horizon=12, n_bits=4, n_objs=9, set_tokenizer=False, tokenizer_save_path='./custom_tokenizer',
+                 cond_index=[0]):
         # 1. read dataset
         text_data = load_custom_texts(data_dir) # a list of strings
 
@@ -37,9 +38,10 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
         if set_tokenizer:
             all_data_texts = flatten_and_concatenate ( list(state_trajectory.values()) )
             all_data_texts = " ".join(all_data_texts)
-            self.tokenizer = create_tokenizer(all_data_texts, tokenizer_save_path)
+            create_tokenizer(all_data_texts, tokenizer_save_path)
         
         self.tokenizer = PreTrainedTokenizerFast.from_pretrained(tokenizer_save_path)
+        print('self.tokenizer', self.tokenizer.vocab_size)
 
         # 4. create the dataset / a list of np.array / [ (horizon, n_bits * n_objs), [], []]
         self.dataset = convert_tokenized_state_traj(state_trajectory, self.tokenizer, n_bits)
@@ -50,6 +52,7 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
 
         self.observation_dim = n_bits * n_objs
         self.action_dim = 0
+        self.cond_index = cond_index
 
         self.normalizer = Normalizer()
 
@@ -57,8 +60,10 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
         return len(self.dataset)
     
     def get_conditions(self, observations):
-        return {0: observations[0],
-                self.horizon -1 : observations[-1]}
+        # return {0: observations[0],
+        #         self.horizon -1 : observations[-1]}
+
+        return {i: observations[i] for i in self.cond_index}
     
     def __getitem__(self, idx):
         observations = self.dataset[idx]

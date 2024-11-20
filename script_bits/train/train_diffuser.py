@@ -20,7 +20,11 @@ args = Parser().parse_args('diffusion')
 #---------------------------------- dataset ----------------------------------#
 #-----------------------------------------------------------------------------#
 model_horizon = args.horizon
+# n_bits = 5
+# n_objs = 2
 
+n_bits = 5
+n_objs = 2
 
 dataset_config = utils.Config(
     args.loader,
@@ -28,8 +32,10 @@ dataset_config = utils.Config(
     savepath=(args.savepath, 'dataset_config.pkl'),
     set_tokenizer=True,
     horizon=args.horizon,
-    n_bits=4,
+    n_bits=n_bits,
+    n_objs = n_objs,
     tokenizer_save_path = './custom_tokenizer',
+    cond_index = [0, 1, 2, 3, 4, 5, 6]
 )
 
 render_config = utils.Config(
@@ -37,7 +43,7 @@ render_config = utils.Config(
     savepath=(args.savepath, 'render_config.pkl'),
     env=args.dataset,
     tokenizer_save_path = './custom_tokenizer',
-    n_bits = 4,
+    n_bits = n_bits,
 )
 
 dataset = dataset_config()
