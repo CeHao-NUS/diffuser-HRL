@@ -23,7 +23,7 @@ model_horizon = args.horizon
 # n_bits = 5
 # n_objs = 2
 
-n_bits = 5
+n_bits = 6
 n_objs = 2
 
 dataset_config = utils.Config(

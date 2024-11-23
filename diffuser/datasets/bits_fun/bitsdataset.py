@@ -46,6 +46,10 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
         # 4. create the dataset / a list of np.array / [ (horizon, n_bits * n_objs), [], []]
         self.dataset = convert_tokenized_state_traj(state_trajectory, self.tokenizer, n_bits)
 
+        self.padding_token = text_to_bits('[PAD]', self.tokenizer, n_bits)
+        # repeat n_objs times
+        self.padding_token = np.tile(self.padding_token, (n_objs))
+
         self.horizon = horizon
         self.n_bits = n_bits
         self.n_objs = n_objs
@@ -70,7 +74,7 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
 
         # if length < self.horizon, pad with the last observation
         if len(observations) < self.horizon:
-            observations = np.concatenate([observations, np.tile(observations[-1], (self.horizon - len(observations), 1))])
+            observations = np.concatenate([observations, np.tile(self.padding_token, (self.horizon - len(observations), 1))])
         else:
             observations = observations[:self.horizon]
 

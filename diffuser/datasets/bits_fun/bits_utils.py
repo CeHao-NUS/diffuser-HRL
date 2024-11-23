@@ -179,5 +179,6 @@ def bits_to_text_customize(bits, tokenizer, n_bits=16):
     token_ids = bits2int(bits, out_dtype=np.int32)
     
     # Decode token IDs to text, skip special tokens to ensure clean output
-    text = tokenizer.convert_ids_to_tokens(token_ids, skip_special_tokens=True)
+    # text = tokenizer.convert_ids_to_tokens(token_ids, skip_special_tokens=True)
+    text = tokenizer.convert_ids_to_tokens(token_ids)
     return text
