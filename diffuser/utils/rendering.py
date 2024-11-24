@@ -432,7 +432,7 @@ class StateTrajRenderer:
                 texts = bits_to_text_customize(np.array(state_divided), self.tokenizer, self.n_bits)
                 sample_text.append(texts)
 
-            generated_texts.append(sample_text + ['\n'])
+            generated_texts.append(sample_text)
 
         # change savepath the last png as txt
         savepath = savepath[:-4] + '.txt'
