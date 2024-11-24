@@ -10,7 +10,7 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 #-----------------------------------------------------------------------------#
 
 class Parser(utils.Parser):
-    dataset: str = 'None'
+    dataset: str = 'tamp_easy'
     config: str = 'config_bits.diffusion.train_diff'
 
 args = Parser().parse_args('diffusion')
@@ -20,30 +20,25 @@ args = Parser().parse_args('diffusion')
 #---------------------------------- dataset ----------------------------------#
 #-----------------------------------------------------------------------------#
 model_horizon = args.horizon
-# n_bits = 5
-# n_objs = 2
-
-n_bits = 6
-n_objs = 2
 
 dataset_config = utils.Config(
     args.loader,
-    data_dir = 'datasets/bits_fun/bit_dataset.txt',
+    data_dir = args.train_data_dir,
     savepath=(args.savepath, 'dataset_config.pkl'),
     set_tokenizer=True,
     horizon=args.horizon,
-    n_bits=n_bits,
-    n_objs = n_objs,
-    tokenizer_save_path = './custom_tokenizer',
-    cond_index = [0, 1, 2, 3, 4, 5, 6]
+    n_bits=args.n_bits,
+    n_objs = args.n_objs,
+    tokenizer_save_path = args.tokenizer_save_path,
+    cond_index = args.cond_index,
 )
 
 render_config = utils.Config(
     args.renderer,
     savepath=(args.savepath, 'render_config.pkl'),
     env=args.dataset,
-    tokenizer_save_path = './custom_tokenizer',
-    n_bits = n_bits,
+    tokenizer_save_path = args.tokenizer_save_path,
+    n_bits = args.n_bits,
 )
 
 dataset = dataset_config()

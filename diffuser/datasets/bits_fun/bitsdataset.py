@@ -13,6 +13,10 @@ Batch = namedtuple('Batch', 'trajectories conditions')
 
 
 class Normalizer:
+    def __init__(self, observation_dim=0, action_dim=0):
+        self.observation_dim = observation_dim
+        self.action_dim = action_dim
+
     def normalize(self, text, type):
         return text
 
@@ -24,7 +28,7 @@ class Normalizer:
 class StateTrajBitDataset(torch.utils.data.Dataset):
 
     def __init__(self, data_dir='', horizon=12, n_bits=4, n_objs=9, set_tokenizer=False, tokenizer_save_path='./custom_tokenizer',
-                 cond_index=[0]):
+                 cond_index=[0], **kwargs):
         # 1. read dataset
         text_data = load_custom_texts(data_dir) # a list of strings
 
@@ -58,7 +62,7 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
         self.action_dim = 0
         self.cond_index = cond_index
 
-        self.normalizer = Normalizer()
+        self.normalizer = Normalizer(self.observation_dim, self.action_dim)
 
     def __len__(self):
         return len(self.dataset)

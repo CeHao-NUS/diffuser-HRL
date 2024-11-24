@@ -33,6 +33,13 @@ base = {
         'use_padding': False,
         'max_path_length': 40000,
 
+        'n_bits': 6,
+        'n_objs': 2,
+        'cond_index': [0, 1, 2, 3, 4, 5, 6],
+
+        'tokenizer_save_path': './custom_tokenizer',
+        'train_data_dir': '', # TODO
+
         ## serialization
         'logbase': 'logs',
         'prefix': 'diffusion_bits/single_diffuser',
@@ -57,7 +64,15 @@ base = {
 
     },
 
+
     
 }
 
+
+tamp_easy = {
+    'diffusion':{
+        'horizon': 96,
+        'train_data_dir': "/home/crtie/.d4rl/datasets/tamp_p0.1_n10000/dataset.txt", 
+    },
+}
 
