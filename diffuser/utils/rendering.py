@@ -437,7 +437,9 @@ class StateTrajRenderer:
         # change savepath the last png as txt
         savepath = savepath[:-4] + '.txt'
 
-        with open(savepath, 'w') as f:
+        mode = 'a' if os.path.exists(savepath) else 'w'
+
+        with open(savepath, mode) as f:
             for texts in generated_texts:
                 for text in texts:
                     text = [str(item) if item is None else item for item in text] # convert None to "None"

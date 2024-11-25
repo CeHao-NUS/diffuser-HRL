@@ -1,5 +1,5 @@
-from create import *
-from utils import *
+from diffuser.datasets.bits_fun.gen_dataset.create import *
+from diffuser.datasets.bits_fun.gen_dataset.utils import *
 import numpy as np
 from collections import Counter
 
@@ -85,7 +85,11 @@ class Dynamic:
             if self.verbose:
                 print('====================')
                 print(act)
-            state_new = self.apply_action(self.state, act)
+            try:
+                state_new = self.apply_action(self.state, act)
+            except:
+                print('Error: Failed to apply action')
+                break
             if state_new:
                 if self.verbose:
                     self.state.diff_with(state_new)
@@ -216,7 +220,7 @@ def check_generated_actions(task, verbose=False):
     return dynamic.stage.finished_tasks - 1, dynamic.stage_action_num
 
 
-def eval_env(dataset_text_dir='', verbose=False):
+def eval_env(dataset_text_dir='', verbose_eval=True, verbose_dynamic=False):
     # ============ 0. read state and actions from txt
 
     # seperate by individual '\n' 
@@ -228,17 +232,20 @@ def eval_env(dataset_text_dir='', verbose=False):
 
     state_traj = convert_state_trajectory(texts)
 
+    if verbose_eval:
+        print('Total tasks: ', len(state_traj))
+
     all_length = []
     all_stage_action_num = []
 
     for task_name in state_traj.keys():
-        if verbose:
+        if verbose_dynamic:
             print('+++++++++++++++++++++++++++'*3)
             print(task_name)
             print('+++++++++++++++++++++++++++'*3)
         task = state_traj[task_name][0]
 
-        now_stage, stage_action_num = check_generated_actions(task, verbose=verbose)
+        now_stage, stage_action_num = check_generated_actions(task, verbose=verbose_dynamic)
         # if now_stage < 10:
         #     a = 1
         all_length.append(now_stage)
@@ -246,8 +253,9 @@ def eval_env(dataset_text_dir='', verbose=False):
 
     frequency = Counter(all_length)
 
-    # print('Frequency: ', frequency)
-    # print('Average: ', sum(all_length) / len(all_length))
+    if verbose_eval:
+        print('Frequency: ', frequency)
+        print('Average: ', sum(all_length) / len(all_length))
     
 
     # stage_action_num is a list of dict, convert it to dict of lists
@@ -263,9 +271,12 @@ def eval_env(dataset_text_dir='', verbose=False):
         mean = np.mean(converted_stage_action_num[key])
         std = np.std(converted_stage_action_num[key])
 
-        # print(f'{key}: mean {np.round(mean,1)}, std {np.round(std, 2)}')
+        if verbose_eval:
+            print(f'{key}: mean {np.round(mean,1)}, std {np.round(std, 2)}')
 
     return all_length, converted_stage_action_num
 
 if __name__ == "__main__":
-    eval_env("/home/crtie/.d4rl/datasets/tamp_p0.1_n10000/dataset.txt")
+    # pass
+    # eval_env("/home/crtie/.d4rl/datasets/tamp_p0.1_n10000/dataset.txt")
+    eval_env("/home/crtie/ch/diffuser-HRL/logs/tamp_easy/diffusion_bits/single_diffuser_H96_T64/sample-2000-1.txt")

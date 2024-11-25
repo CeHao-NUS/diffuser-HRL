@@ -7,6 +7,8 @@ import numpy as np
 from os.path import join
 import json
 
+import torch
+
 #-----------------------------------------------------------------------------#
 #----------------------------------- setup -----------------------------------#
 #-----------------------------------------------------------------------------#
@@ -70,17 +72,43 @@ if args.value_loadpath is not None:
     # logger = logger_config()
     policy = policy_config()
 else:
-    from diffuser.guides.policies import Policy
-    policy = Policy(diffusion, dataset.normalizer)
+    from diffuser.guides.bit_policy import BitPolicy
+    policy = BitPolicy(diffusion)
+
+
 
 #---------------------------------- main loop ----------------------------------#
+from diffuser.utils.arrays import batch_to_device, to_np
+from diffuser.utils.rendering import StateTrajRenderer
 
-# 1. use the policy to run sample for all data. save
+# 0. get the cond from dataset
+dataloader = torch.utils.data.DataLoader(dataset, batch_size=512)
+render = StateTrajRenderer(tokenizer_save_path='./custom_tokenizer', n_bits=dataset.n_bits)
+
+
+save_path_dir = 'test.txt'
+
+for batch in dataloader:
+    batch = batch_to_device(batch, device=args.device)
+
+
+    # 1. use the policy to run sample for all data. save
+    samples = diffusion(batch.conditions, batch_size=len(batch.conditions[0]))
+    observations = to_np(samples.trajectories)
+
+    # parse to text, save to local text file
+
+    render.composite(save_path_dir, observations)
 
 
 # 2. call the dynamics and calculate the results
 
+from diffuser.datasets.bits_fun.gen_dataset.dynamics import eval_env
 
+all_length, converted_stage_action_num = eval_env(save_path_dir)
+
+
+# 3. 
 
 a = 1
 
