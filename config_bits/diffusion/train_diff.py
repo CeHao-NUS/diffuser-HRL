@@ -72,7 +72,7 @@ base = {
 tamp_easy = {
     'diffusion':{
         'horizon': 96,
-        'train_data_dir': "/home/crtie/.d4rl/datasets/tamp_p0.1_n1000/dataset.txt", 
+        'train_data_dir': "/home/crtie/.d4rl/datasets/tamp_p0.1_n10000/dataset.txt", 
     },
 }
 

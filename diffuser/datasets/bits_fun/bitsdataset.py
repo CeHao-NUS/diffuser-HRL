@@ -29,6 +29,24 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
 
     def __init__(self, data_dir='', horizon=12, n_bits=4, n_objs=9, set_tokenizer=False, tokenizer_save_path='./custom_tokenizer',
                  cond_index=[0], **kwargs):
+        
+        self.horizon = horizon
+        self.n_bits = n_bits
+        self.n_objs = n_objs
+        
+        self.update_datset(data_dir, set_tokenizer, tokenizer_save_path)
+
+        self.padding_token = text_to_bits('[PAD]', self.tokenizer, n_bits)
+        # repeat n_objs times
+        self.padding_token = np.tile(self.padding_token, (n_objs))
+
+        self.observation_dim = n_bits * n_objs
+        self.action_dim = 0
+        self.cond_index = cond_index
+
+        self.normalizer = Normalizer(self.observation_dim, self.action_dim)
+
+    def update_datset(self, data_dir='', set_tokenizer=False, tokenizer_save_path='./custom_tokenizer'):
         # 1. read dataset
         text_data = load_custom_texts(data_dir) # a list of strings
 
@@ -48,21 +66,8 @@ class StateTrajBitDataset(torch.utils.data.Dataset):
         print('self.tokenizer', self.tokenizer.vocab_size)
 
         # 4. create the dataset / a list of np.array / [ (horizon, n_bits * n_objs), [], []]
-        self.dataset = convert_tokenized_state_traj(state_trajectory, self.tokenizer, n_bits)
+        self.dataset = convert_tokenized_state_traj(state_trajectory, self.tokenizer, self.n_bits)
 
-        self.padding_token = text_to_bits('[PAD]', self.tokenizer, n_bits)
-        # repeat n_objs times
-        self.padding_token = np.tile(self.padding_token, (n_objs))
-
-        self.horizon = horizon
-        self.n_bits = n_bits
-        self.n_objs = n_objs
-
-        self.observation_dim = n_bits * n_objs
-        self.action_dim = 0
-        self.cond_index = cond_index
-
-        self.normalizer = Normalizer(self.observation_dim, self.action_dim)
 
     def __len__(self):
         return len(self.dataset)

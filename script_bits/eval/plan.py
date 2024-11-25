@@ -36,6 +36,9 @@ diffusion = diffusion_experiment.ema
 dataset = diffusion_experiment.dataset
 renderer = diffusion_experiment.renderer
 
+# reset the dataset.
+# dataset.update_datset(data_dir="/home/crtie/.d4rl/datasets/tamp_p0.1_n1000/dataset.txt")
+
 
 if args.value_loadpath is not None:
 
@@ -82,11 +85,15 @@ from diffuser.utils.arrays import batch_to_device, to_np
 from diffuser.utils.rendering import StateTrajRenderer
 
 # 0. get the cond from dataset
-dataloader = torch.utils.data.DataLoader(dataset, batch_size=512)
+dataloader = torch.utils.data.DataLoader(dataset, batch_size=1024)
 render = StateTrajRenderer(tokenizer_save_path='./custom_tokenizer', n_bits=dataset.n_bits)
 
 
-save_path_dir = 'test.txt'
+# remove args.save_path_dir file
+
+import os
+if os.path.exists(args.save_path_dir):
+    os.remove(args.save_path_dir)
 
 for batch in dataloader:
     batch = batch_to_device(batch, device=args.device)
@@ -98,14 +105,14 @@ for batch in dataloader:
 
     # parse to text, save to local text file
 
-    render.composite(save_path_dir, observations)
+    render.composite(args.save_path_dir, observations)
 
 
 # 2. call the dynamics and calculate the results
 
 from diffuser.datasets.bits_fun.gen_dataset.dynamics import eval_env
 
-all_length, converted_stage_action_num = eval_env(save_path_dir)
+all_length, converted_stage_action_num = eval_env(args.save_path_dir)
 
 
 # 3. 

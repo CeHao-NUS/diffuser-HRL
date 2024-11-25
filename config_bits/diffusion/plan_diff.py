@@ -72,6 +72,7 @@ tamp_easy = {
     'plan':{
         'horizon': 96,
         'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results.txt',
     },
 }
 
