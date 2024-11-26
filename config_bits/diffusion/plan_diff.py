@@ -72,7 +72,49 @@ tamp_easy = {
     'plan':{
         'horizon': 96,
         'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results.txt',
+        'save_path_dir': 'logs/plans/tamp_single/results_easy.txt',
+    },
+}
+
+tamp_med = {
+    'plan':{
+        'horizon': 112,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_med.txt',
+    },
+}
+
+tamp_hard = {
+    'plan':{
+        'horizon': 128,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_hard.txt',
+    },
+}
+
+
+# ==========================================
+tamp_easy_eval = {
+    'plan':{
+        'horizon': 96,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_easy.txt',
+    },
+}
+
+tamp_med_eval = {
+    'plan':{
+        'horizon': 112,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_med.txt',
+    },
+}
+
+tamp_hard_eval = {
+    'plan':{
+        'horizon': 128,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_hard.txt',
     },
 }
 

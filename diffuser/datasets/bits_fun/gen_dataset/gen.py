@@ -60,7 +60,7 @@ def gen_fun2(traj):
 
 # 0.1, 0.3., 0.5
 # 1e3, 1e4
-variance_prob = 0.5
+variance_prob = 0.1
 num_traj = int(1e3)
 
 # '''

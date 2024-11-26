@@ -429,7 +429,7 @@ task_mapping = {
 # ===================================== traj ================================
 # [['state':[State], 'actions': ['', '', '']], ]
 
-from .task_seq import generate_sequence_with_11_12
+from diffuser.datasets.bits_fun.gen_dataset.task_seq import generate_sequence_with_11_12
 
 def get_state_traj(prob=0.0):
     state = State()

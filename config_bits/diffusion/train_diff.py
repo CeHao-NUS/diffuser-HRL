@@ -68,11 +68,60 @@ base = {
     
 }
 
+import os
+home_dir = os.path.expanduser("~")
+base_dir = '.d4rl/datasets/'
 
 tamp_easy = {
     'diffusion':{
         'horizon': 96,
-        'train_data_dir': "/home/crtie/.d4rl/datasets/tamp_p0.1_n10000/dataset.txt", 
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.1_n10000', 'dataset.txt')
     },
 }
 
+
+tamp_med = {
+    'diffusion':{
+        'horizon': 112,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.3_n10000', 'dataset.txt')
+    },
+}
+
+
+tamp_hard = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.5_n10000', 'dataset.txt')
+    },
+}
+
+
+tamp_super = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.5_n100000', 'dataset.txt')
+    },
+}
+
+# ================================ evaluate ========================
+tamp_easy_eval = {
+    'diffusion':{
+        'horizon': 96,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.1_n1000', 'dataset.txt')
+    },
+}
+
+tamp_med_eval = {
+    'diffusion':{
+        'horizon': 112,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.3_n1000', 'dataset.txt')
+    },
+}
+
+
+tamp_hard_eval = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.5_n1000', 'dataset.txt')
+    },
+}
