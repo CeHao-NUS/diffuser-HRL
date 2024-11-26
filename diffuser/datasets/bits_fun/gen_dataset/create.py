@@ -1,5 +1,6 @@
 import random
 import copy
+import itertools
 random.seed(None) 
 
 # 0. categories of object, poses and actions
@@ -77,6 +78,7 @@ affordances_list = [Affordances.FRIDGE_DOOR_HANDLE, Affordances.CABINET_LEFT_DOO
 
 initial_positions_list = [Positions.IN_FRIDGE, Positions.IN_FRIDGE_SHELF, Positions.ON_COUNTER_LEFT, Positions.ON_COUNTER_RIGHT, \
                           Positions.IN_DRAWER_PLACE, Positions.IN_KITCHEN_SINK, Positions.IN_CABINET_LEFT, Positions.IN_CABINET_RIGHT]
+# initial_positions_list = initial_positions_list[:len(move_objects_list)]
 
 position_2_object= {
     Positions.IN_FRIDGE: StaticObjects.FRIDGE,
@@ -128,9 +130,22 @@ class State:
         for obj in move_objects_list:
             self.state_list[obj] = None
 
-    def random_initial(self):
-        for obj in move_objects_list:
-            self.state_list[obj] = random.choice(initial_positions_list)
+    def random_initial(self, method='fix'):
+
+        if method == 'all_random':
+            for obj in move_objects_list:
+                self.state_list[obj] = random.choice(initial_positions_list)
+
+        elif method == 'permutations': 
+            random_initial_positions_list = random.sample(initial_positions_list, len(move_objects_list))
+            for obj, pos in zip(move_objects_list, random_initial_positions_list):
+                self.state_list[obj] = pos
+
+        elif method == 'fix':
+            for idx in range(len(move_objects_list)):
+                self.state_list[move_objects_list[idx]] = initial_positions_list[idx]
+    
+        a = 1
 
     def set_state(self, obj, pos):
         self.state_list[obj] = pos

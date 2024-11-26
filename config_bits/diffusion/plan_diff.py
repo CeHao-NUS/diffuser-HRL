@@ -68,6 +68,15 @@ base = {
     },
 }
 
+
+tamp_zero = {
+    'plan':{
+        'horizon': 80,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_zero.txt',
+    },
+}
+
 tamp_easy = {
     'plan':{
         'horizon': 96,
@@ -94,6 +103,16 @@ tamp_hard = {
 
 
 # ==========================================
+
+tamp_zero_eval = {
+    'plan':{
+        'horizon': 80,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_zero.txt',
+    },
+}
+
+
 tamp_easy_eval = {
     'plan':{
         'horizon': 96,
