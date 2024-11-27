@@ -130,7 +130,7 @@ class State:
         for obj in move_objects_list:
             self.state_list[obj] = None
 
-    def random_initial(self, method='fix'):
+    def random_initial(self, method='all_random'):
 
         if method == 'all_random':
             for obj in move_objects_list:

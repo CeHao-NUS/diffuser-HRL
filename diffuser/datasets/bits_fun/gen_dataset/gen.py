@@ -68,7 +68,7 @@ num_traj = int(1e3)
 
 home_dir = os.path.expanduser("~")
 base_dir = '.d4rl/datasets/'
-dataset_name = f'tamp_p{variance_prob}_n{num_traj}_fix'
+dataset_name = f'tamp_p{variance_prob}_n{num_traj}_eval'
 
 file_path = os.path.join(home_dir, base_dir, dataset_name, 'dataset.txt')
 
