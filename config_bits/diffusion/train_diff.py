@@ -38,7 +38,6 @@ base = {
         'cond_index': [0, 1, 2, 3, 4, 5, 6],
 
         'tokenizer_save_path': './custom_tokenizer',
-        'train_data_dir': '', # TODO
 
         ## serialization
         'logbase': 'logs',
@@ -167,20 +166,21 @@ tamp_hard_eval = {
 tamp_78_eval = {
     'diffusion':{
         'horizon': 80,
-        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_78_eval', 'dataset.txt'),
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_78_eval', 'dataset.txt'),
     },
 }
 
 tamp_77_eval = {
     'diffusion':{
         'horizon': 80,
-        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_77_eval', 'dataset.txt'),
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_77_eval', 'dataset.txt'),
     },
 }
 
 tamp_fix_eval = {
     'diffusion':{
         'horizon': 80,
-        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_fix_eval', 'dataset.txt'),
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_fix_eval', 'dataset.txt'),
     },
 }
+

@@ -278,5 +278,11 @@ def eval_env(dataset_text_dir='', verbose_eval=True, verbose_dynamic=False):
 
 if __name__ == "__main__":
     # pass
-    # eval_env("/home/crtie/.d4rl/datasets/tamp_p0.1_n10000/dataset.txt")
-    eval_env("/home/crtie/ch/diffuser-HRL/logs/tamp_easy/diffusion_bits/single_diffuser_H96_T64/sample-2000-1.txt")
+
+    import os
+    home_dir = os.path.expanduser("~")
+    base_dir = '.d4rl/datasets/'
+
+    eval_env(os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_fix', 'dataset.txt'))
+    # eval_env("/home/crtie/ch/diffuser-HRL/logs/tamp_easy/diffusion_bits/single_diffuser_H96_T64/sample-2000-1.txt")
+

@@ -69,3 +69,9 @@ python script_bits/train/train_diffuser.py --dataset tamp_77_eval --device "cuda
 python script_bits/train/train_diffuser.py --dataset tamp_fix_eval --device "cuda:4"
 
 # eval
+
+python script_bits/eval/plan.py --dataset tamp_78_eval --device "cuda:6"
+
+python script_bits/eval/plan.py --dataset tamp_77_eval --device "cuda:5"
+
+python script_bits/eval/plan.py --dataset tamp_fix_eval --device "cuda:4"

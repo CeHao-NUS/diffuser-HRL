@@ -25,7 +25,7 @@ dataset_config = utils.Config(
     args.loader,
     data_dir = args.train_data_dir,
     savepath=(args.savepath, 'dataset_config.pkl'),
-    set_tokenizer=True,
+    # set_tokenizer=True,
     horizon=args.horizon,
     n_bits=args.n_bits,
     n_objs = args.n_objs,
