@@ -132,6 +132,27 @@ tamp_fix = {
 }
 
 
+tamp_easy_78 = {
+    'diffusion':{
+        'horizon': 96,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.1_n10000_78', 'dataset.txt'),
+    },
+}
+
+tamp_med_78 = {
+    'diffusion':{
+        'horizon': 112,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.3_n10000_78', 'dataset.txt'),
+    },
+}
+
+tamp_hard_78 = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.5_n10000_78', 'dataset.txt'),
+    },
+}
+
 # ================================ evaluate ========================
 
 tamp_zero_eval = {
@@ -181,6 +202,28 @@ tamp_fix_eval = {
     'diffusion':{
         'horizon': 80,
         'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_fix_eval', 'dataset.txt'),
+    },
+}
+
+
+tamp_easy_78_eval = {
+    'diffusion':{
+        'horizon': 96,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_78_eval', 'dataset.txt'),
+    },
+}
+
+tamp_med_78_eval = {
+    'diffusion':{
+        'horizon': 112,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_78_eval', 'dataset.txt'),
+    },
+}
+
+tamp_hard_78_eval = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.0_n1000_78_eval', 'dataset.txt'),
     },
 }
 

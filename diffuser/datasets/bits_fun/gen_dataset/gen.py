@@ -60,7 +60,7 @@ def gen_fun2(traj):
 
 # 0.1, 0.3., 0.5
 # 1e3, 1e4
-variance_prob = 0.0
+variance_prob = 0.1
 num_traj = int(1e3)
 
 # '''
@@ -68,7 +68,7 @@ num_traj = int(1e3)
 
 home_dir = os.path.expanduser("~")
 base_dir = '.d4rl/datasets/'
-dataset_name = f'tamp_p{variance_prob}_n{num_traj}_eval'
+dataset_name = f'tamp_p{variance_prob}_n{num_traj}_78'
 
 file_path = os.path.join(home_dir, base_dir, dataset_name, 'dataset.txt')
 

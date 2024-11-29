@@ -75,3 +75,35 @@ python script_bits/eval/plan.py --dataset tamp_78_eval --device "cuda:6"
 python script_bits/eval/plan.py --dataset tamp_77_eval --device "cuda:5"
 
 python script_bits/eval/plan.py --dataset tamp_fix_eval --device "cuda:4"
+
+
+# ========================== 78 + easy med hard ==========================
+
+python script_bits/train/train_diffuser.py --dataset tamp_easy_78 --device "cuda:6"
+
+python script_bits/train/train_diffuser.py --dataset tamp_med_78 --device "cuda:5"
+
+python script_bits/train/train_diffuser.py --dataset tamp_hard_78 --device "cuda:4"
+
+python script_bits/eval/plan.py --dataset tamp_easy_78 --device "cuda:6"
+
+python script_bits/eval/plan.py --dataset tamp_med_78 --device "cuda:5"
+
+python script_bits/eval/plan.py --dataset tamp_hard_78 --device "cuda:4"
+
+
+# ----
+
+python script_bits/train/train_diffuser.py --dataset tamp_easy_78_eval 
+
+python script_bits/train/train_diffuser.py --dataset tamp_med_78_eval
+
+python script_bits/train/train_diffuser.py --dataset tamp_hard_78_eval
+
+python script_bits/eval/plan.py --dataset tamp_easy_78_eval
+
+python script_bits/eval/plan.py --dataset tamp_med_78_eval
+
+python script_bits/eval/plan.py --dataset tamp_hard_78_eval
+
+

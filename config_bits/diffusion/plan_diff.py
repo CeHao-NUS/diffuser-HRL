@@ -126,6 +126,32 @@ tamp_fix = {
     },
 }
 
+tamp_easy_78 = {
+    'plan':{
+        'horizon': 96,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_easy_78.txt',
+    },
+}
+
+tamp_med_78 = {
+    'plan':{
+        'horizon': 112,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_med_78.txt',
+    },
+}
+
+tamp_hard_78 = {
+    'plan':{
+        'horizon': 128,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_hard_78.txt',
+    },
+}
+
+
+
 # ==========================================
 
 tamp_zero_eval = {
@@ -183,5 +209,29 @@ tamp_fix_eval = {
         'horizon': 80,
         'n_diffusion_steps': 64,
         'save_path_dir': 'logs/plans/tamp_single/results_fix.txt',
+    },
+}
+
+tamp_easy_78_eval = {
+    'plan':{
+        'horizon': 96,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_easy_78.txt',
+    },
+}
+
+tamp_med_78_eval = {
+    'plan':{
+        'horizon': 112,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_med_78.txt',
+    },
+}
+
+tamp_hard_78_eval = {
+    'plan':{
+        'horizon': 128,
+        'n_diffusion_steps': 64,
+        'save_path_dir': 'logs/plans/tamp_single/results_hard_78.txt',
     },
 }
