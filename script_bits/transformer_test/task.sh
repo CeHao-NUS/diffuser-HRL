@@ -12,3 +12,5 @@ python script_bits/transformer_test/eval_more_gpu.py
 
 
 torchrun --nproc_per_node=8 script_bits/transformer_test/eval_more_gpu.py --savepath /path/to/save --train_data_dir /path/to/data
+
+accelerate launch --num_processes=8  script_bits/transformer_test/eval_more_gpu.py

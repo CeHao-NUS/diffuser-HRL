@@ -4,6 +4,7 @@ from diffuser.datasets.bits_fun.bits_utils import *
 from tqdm import tqdm
 import os
 import diffuser.utils as utils
+import torch.nn as nn
 
 # Load custom_parser from diffuser.utils
 class Parser(utils.Parser):
@@ -12,6 +13,7 @@ class Parser(utils.Parser):
 
 args = Parser().parse_args('diffusion')
 
+# Automatically get the savepath from the config file
 model_save_dir = args.savepath + "_transformer/"
 results_save_dir = args.savepath + "_transformer_results/"
 
@@ -32,8 +34,16 @@ tokenizer.padding_side = "left"
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token  # Use eos_token as pad_token
 
+# Set up multi-GPU support using DataParallel
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
+
+# Move model to device before wrapping in DataParallel
+model.to(device)  # Move the model to the correct device first
+if torch.cuda.device_count() > 1:
+    print(f"Using {torch.cuda.device_count()} GPUs!")
+    model = nn.DataParallel(model)  # This will distribute the model over available GPUs
+else:
+    model.to(device)  # Ensure model is on the correct device
 
 # Load custom_texts from dataset.txt
 custom_texts = load_custom_texts(args.train_data_dir)
@@ -41,12 +51,14 @@ custom_texts = load_custom_texts(args.train_data_dir)
 # Function to generate follow-up steps for a batch of prompts
 def generate_follow_up_steps(prompts, max_length=1000, temperature=0.05, top_p=0.95):
     model.eval()
-    
+
     # Tokenize all prompts at once with padding and attention mask
     encoding = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True)
+
+    # Ensure the tensors are moved to the correct device (cuda or cpu)
     input_ids = encoding.input_ids.to(device)
-    attention_mask = encoding.attention_mask.to(device)  # Get attention mask
-    
+    attention_mask = encoding.attention_mask.to(device)
+
     # Check if input_ids is empty
     if input_ids.numel() == 0:
         print(f"Empty input for prompts.")
@@ -54,7 +66,7 @@ def generate_follow_up_steps(prompts, max_length=1000, temperature=0.05, top_p=0
 
     try:
         # Generate follow-up steps for the entire batch
-        outputs = model.generate(
+        outputs = model.module.generate(  # Access the underlying model when using DataParallel
             input_ids,
             attention_mask=attention_mask,  # Pass the attention mask
             max_length=max_length,
@@ -79,15 +91,11 @@ def get_prompt(text, first_rows=1):
 # Ensure the result directory exists
 os.makedirs(results_save_dir, exist_ok=True)
 
-# remove files in the results_save_dir
-for file in os.listdir(results_save_dir):
-    os.remove(os.path.join(results_save_dir, file))
-
 # Main evaluation loop to process custom texts
 all_texts = ""
 
 # Prepare the batch of prompts
-batch_size = 16  # Adjust batch size based on your GPU memory
+batch_size = 256  # Adjust batch size based on your GPU memory
 prompts_batch = []
 
 # Specify the output file path
@@ -96,19 +104,20 @@ output_file = os.path.join(results_save_dir, "generated_steps.txt")
 for i, task in tqdm(enumerate(custom_texts), total=len(custom_texts)):
     prompt = get_prompt(task, first_rows=7)
     prompts_batch.append(prompt)
-    
+
     # When the batch is full or it's the last task, generate results
     if len(prompts_batch) == batch_size or i == len(custom_texts) - 1:
+        # Ensure all tensors are moved to the correct device
         generated_steps = generate_follow_up_steps(prompts_batch)
-        
+
         # Prepare the output text (joining generated steps with newline separator)
         output_text = "\n".join(generated_steps) + "\n"
-        
+
         # Append the generated steps to the same text file
         with open(output_file, "a") as f:  # Open in append mode ("a")
             f.write(output_text)
-        
+
         print(f"Generated steps for batch {i // batch_size + 1} saved to {output_file}")
-        
+
         # Clear the batch for the next iteration
         prompts_batch = []

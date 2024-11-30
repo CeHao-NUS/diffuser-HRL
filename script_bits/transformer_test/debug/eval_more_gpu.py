@@ -4,6 +4,10 @@ from diffuser.datasets.bits_fun.bits_utils import *
 from tqdm import tqdm
 import os
 import diffuser.utils as utils
+import torch.nn as nn
+
+from accelerate import Accelerator
+
 
 # Load custom_parser from diffuser.utils
 class Parser(utils.Parser):
@@ -35,6 +39,15 @@ if tokenizer.pad_token is None:
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
+if torch.cuda.device_count() > 1:
+    print(f"Using {torch.cuda.device_count()} GPUs!")
+    model = nn.DataParallel(model)  # This will distribute the model over available GPUs
+else:
+    model.to(device)  # Ensure model is on the correct device
+
+# accelerator = Accelerator()
+# model = accelerator.prepare(model)
+
 # Load custom_texts from dataset.txt
 custom_texts = load_custom_texts(args.train_data_dir)
 
@@ -54,7 +67,7 @@ def generate_follow_up_steps(prompts, max_length=1000, temperature=0.05, top_p=0
 
     try:
         # Generate follow-up steps for the entire batch
-        outputs = model.generate(
+        outputs = model.module.generate(
             input_ids,
             attention_mask=attention_mask,  # Pass the attention mask
             max_length=max_length,
@@ -79,15 +92,11 @@ def get_prompt(text, first_rows=1):
 # Ensure the result directory exists
 os.makedirs(results_save_dir, exist_ok=True)
 
-# remove files in the results_save_dir
-for file in os.listdir(results_save_dir):
-    os.remove(os.path.join(results_save_dir, file))
-
 # Main evaluation loop to process custom texts
 all_texts = ""
 
 # Prepare the batch of prompts
-batch_size = 16  # Adjust batch size based on your GPU memory
+batch_size = 128  # Adjust batch size based on your GPU memory
 prompts_batch = []
 
 # Specify the output file path
