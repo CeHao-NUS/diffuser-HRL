@@ -52,6 +52,10 @@ def parse_state_text(state_text):
 def parse_action_text(text):
     actions = []
 
+    # if len(text) is odd number, remove the last one
+    if len(text) % 2 == 1:
+        text = text[:-1]
+
     for i in range(0, len(text), 2):
         act = text[i]
         target = text[i + 1]
