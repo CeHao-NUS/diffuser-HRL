@@ -1,16 +1,38 @@
 export WANDB_API_KEY='8c2ff814e2acd0cb8e3076194610c8cc46daa3f8'
 
-python script_bits/transformer_test/train.py
 
-python script_bits/transformer_test/eval.py
+# =========== train ===========
+python script_bits/transformer_test/train.py --dataset tamp_easy_78 --device "cuda:7"
 
-python script_bits/transformer_test/eval_para.py
+python script_bits/transformer_test/train.py --dataset tamp_med_78 --device "cuda:4"
 
-
-
-python script_bits/transformer_test/eval_more_gpu.py
+python script_bits/transformer_test/train.py --dataset tamp_hard_78 --device "cuda:5"
 
 
-torchrun --nproc_per_node=8 script_bits/transformer_test/eval_more_gpu.py --savepath /path/to/save --train_data_dir /path/to/data
+# =========== eval ===========
+python script_bits/transformer_test/eval_para.py --dataset tamp_easy_78 --device "cuda:7"
 
-accelerate launch --num_processes=8  script_bits/transformer_test/eval_more_gpu.py
+python script_bits/transformer_test/eval_para.py --dataset tamp_med_78 --device "cuda:6"
+
+python script_bits/transformer_test/eval_para.py --dataset tamp_hard_78 --device "cuda:5"
+
+# ===== eval dataset =====
+# create
+
+python script_bits/transformer_test/train.py --dataset tamp_easy_78_eval --device "cuda:7"
+
+python script_bits/transformer_test/train.py --dataset tamp_med_78_eval
+
+python script_bits/transformer_test/train.py --dataset tamp_hard_78_eval
+
+# eval
+python script_bits/transformer_test/eval_para.py --dataset tamp_easy_78_eval --device "cuda:6"
+
+python script_bits/transformer_test/eval_para.py --dataset tamp_med_78_eval
+
+python script_bits/transformer_test/eval_para.py --dataset tamp_hard_78_eval
+
+# ===================== dyanmic =====================
+python script_bits/transformer_test/dynamic_eval.py --dataset tamp_easy_78
+
+python script_bits/transformer_test/dynamic_eval.py --dataset tamp_easy_78_eval

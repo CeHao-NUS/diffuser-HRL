@@ -15,10 +15,10 @@ class Parser(utils.Parser):
 
 args = Parser().parse_args('diffusion')
 
-log_save_dir = args.savepath + "_transformer/"
+model_save_dir = args.savepath + "_transformer/"
 
-# timestamp = datetime.now().strftime('%m-%d-%H-%M')
-# log_save_dir = args.savepath + timestamp
+timestamp = datetime.now().strftime('%m-%d-%H-%M')
+log_save_dir = args.savepath + timestamp
 
 # Step 1: Define function to load custom texts from dataset.txt
 custom_texts = load_custom_texts(args.train_data_dir)
@@ -43,7 +43,7 @@ train_dataset = dataset.train_test_split(test_size=0.05)["train"]
 eval_dataset = dataset.train_test_split(test_size=0.05)["test"]
 
 # Step 5: Calculate save_steps based on the number of epochs and dataset size
-num_epochs = 100
+num_epochs = 1000
 batch_size = 32
 num_training_steps = (len(train_dataset) // batch_size) * num_epochs
 # save_every_n_epochs = 10
@@ -52,7 +52,7 @@ save_steps = 100
 
 # Step 6: Set up training arguments, including logging strategy and evaluation strategy
 training_args = TrainingArguments(
-    output_dir=log_save_dir,  # Output directory
+    output_dir=model_save_dir,  # Output directory
     overwrite_output_dir=True,
     num_train_epochs=num_epochs,
     per_device_train_batch_size=batch_size,

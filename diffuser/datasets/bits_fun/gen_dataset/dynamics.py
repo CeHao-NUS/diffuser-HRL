@@ -204,13 +204,18 @@ class Dynamic:
 
 
 def check_generated_actions(task, verbose=False):
-    state_dim = 7
-    state_text = task[:state_dim * 2]
-    action_text = task[state_dim * 2:]
 
-    # ============ 1. parse state and actions
-    state = parse_state_text(state_text)
-    action = parse_action_text(action_text)
+    try:
+        state_dim = 7
+        state_text = task[:state_dim * 2]
+        action_text = task[state_dim * 2:]
+
+        # ============ 1. parse state and actions
+        state = parse_state_text(state_text)
+        action = parse_action_text(action_text)
+    except:
+        print('Error: Failed to parse state and actions')
+        return 0, {i: -1 for i in range(1, 11)}
 
 
     # ============ 2. create dynamics
@@ -258,6 +263,7 @@ def eval_env(dataset_text_dir='', verbose_eval=True, verbose_dynamic=False):
     frequency = Counter(all_length)
 
     if verbose_eval:
+        print('Total tasks: ', len(state_traj))
         print('Frequency: ', frequency)
         print('Average: ', sum(all_length) / len(all_length))
     

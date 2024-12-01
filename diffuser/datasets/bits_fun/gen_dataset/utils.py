@@ -43,7 +43,9 @@ def convert_state_trajectory(text_data, no_first_line=True):
 
             step_no_index = step
             # seperate by whitespace 
-            simplified_state = [item.split()[-1] for item in step_no_index.split(' ')]
+            # simplified_state = [item.split()[-1] for item in step_no_index.split(' ')]
+
+            simplified_state = [item for item in step_no_index.split(' ')]
             task_dict[task].append(simplified_state)
 
     return task_dict

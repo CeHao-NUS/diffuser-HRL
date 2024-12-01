@@ -32,7 +32,8 @@ tokenizer.padding_side = "left"
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token  # Use eos_token as pad_token
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = args.device
 model.to(device)
 
 # Load custom_texts from dataset.txt
