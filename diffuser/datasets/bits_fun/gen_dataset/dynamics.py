@@ -80,7 +80,7 @@ class Dynamic:
         self.in_dual_hand = ''
         self.traj = []
         # key from 1 to 10, value is -1
-        self.stage_action_num = {i: -1 for i in range(1, 11)}
+        self.stage_action_num = {i: 150 for i in range(1, 11)}
 
     def forward(self):
         self.traj.append({'s': self.state, 'a': []})
