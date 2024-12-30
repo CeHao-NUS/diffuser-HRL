@@ -157,16 +157,16 @@ if __name__ == '__main__':
     env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1', 'maze2d-testbig-v0']
     env = env_list[2]
 
-    # subfolder = 'couple/plan_diff_HLGap_LLvar/H512_T32_L17_condFalse_mH16'
+    subfolder = 'couple/plan_diff_HLGap/H448_T32_L15_condTrue_mH16'
     # subfolder = 'single_var1_H512_T256_d0.99_b1_condFalse'
 
-    subfolder = 'couple/HLGap_LLvarh_H512_T32_L17_condTrue_mH16'
+    # subfolder = 'couple/HLGap_LLvarh_H512_T32_L17_condTrue_mH16'
 
     photo_name = 'whole.png'
     # photo_name = 'LL.png'
 
-    file_suffix = "("
-    # file_suffix = 'eval_'
+    # file_suffix = "("
+    file_suffix = 'eval_'
 
     plot_diffusion(subfolder, env, file_suffix=file_suffix, photo_name=photo_name)
 
