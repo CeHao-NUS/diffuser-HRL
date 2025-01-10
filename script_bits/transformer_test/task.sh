@@ -77,3 +77,12 @@ python script_bits/transformer_test/eval_para.py --dataset fix8_tamp_easy_78_eva
 python script_bits/transformer_test/eval_para.py --dataset fix8_tamp_med_78_eval
 
 python script_bits/transformer_test/eval_para.py --dataset fix8_tamp_hard_78_eval --device "cuda:4"
+
+# ===================== dyanmic =====================
+
+python script_bits/transformer_test/dynamic_eval.py --dataset fix8_tamp_easy_78_eval
+
+python script_bits/transformer_test/dynamic_eval.py --dataset fix8_tamp_med_78_eval
+
+python script_bits/transformer_test/dynamic_eval.py --dataset fix8_tamp_hard_78_eval
+
