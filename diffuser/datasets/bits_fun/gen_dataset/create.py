@@ -446,13 +446,14 @@ task_mapping = {
 
 from diffuser.datasets.bits_fun.gen_dataset.task_seq import generate_sequence_with_11_12
 
-def get_state_traj(prob=0.0):
+def get_state_traj(prob=0.0, fixed_eight=False):
     state = State()
     state.random_initial()
     traj = [{'s': state, 'a': []}]
 
-
-    task_sequence = generate_sequence_with_11_12(prob=prob)
+    if fixed_eight:
+        print("using fixed eight position")
+    task_sequence = generate_sequence_with_11_12(prob=prob, fixed_eight=fixed_eight)
 
     for idx in task_sequence:
         state, actions = task_mapping[idx](state)

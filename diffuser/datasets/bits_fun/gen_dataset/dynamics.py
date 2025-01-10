@@ -265,7 +265,7 @@ def eval_env(dataset_text_dir='', verbose_eval=True, verbose_dynamic=False):
     if verbose_eval:
         print('Total tasks: ', len(state_traj))
         print('Frequency: ', frequency)
-        print('Average: ', sum(all_length) / len(all_length))
+        print('Average: ', np.mean(all_length), 'Std: ', np.std(all_length))
     
 
     # stage_action_num is a list of dict, convert it to dict of lists
@@ -293,6 +293,11 @@ if __name__ == "__main__":
     home_dir = os.path.expanduser("~")
     base_dir = '.d4rl/datasets/'
 
-    eval_env(os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_fix', 'dataset.txt'))
+    # eval_env(os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_fix', 'dataset.txt'))
     # eval_env("/home/crtie/ch/diffuser-HRL/logs/tamp_easy/diffusion_bits/single_diffuser_H96_T64/sample-2000-1.txt")
+
+
+    # eval_env("/home/users/cehao/github_space/diffuser-HRL/logs/vlms/vlm_single_easy.txt")
+
+    # eval_env("/home/users/cehao/github_space/diffuser-HRL/logs/vlms/vlm_multi_easy.txt")
 

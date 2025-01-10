@@ -1,6 +1,6 @@
 import random
 
-def generate_sequence_with_11_12(prob=0.3):
+def generate_sequence_with_11_12(prob=0.3, fixed_eight=False):
     """
     Generate a random sequence based on the rules, with numbers 11 and 12 added randomly.
     
@@ -32,7 +32,11 @@ def generate_sequence_with_11_12(prob=0.3):
             flattened_sequence.append(item)
     
     # Insert 8 into a random position before 9
-    eight_position = random.randint(0, len(flattened_sequence) - 2)  # -2 to ensure 8 is before 9 and 10
+
+    if not fixed_eight:
+        eight_position = random.randint(0, len(flattened_sequence) - 2)  # -2 to ensure 8 is before 9 and 10
+    else:
+        eight_position = 7  # Fixed position
     flattened_sequence.insert(eight_position, 8)
 
     # Add 11 and 12 randomly at the beginning and end based on the probability

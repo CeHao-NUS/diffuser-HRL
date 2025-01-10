@@ -60,32 +60,40 @@ def gen_fun2(traj):
 
 # 0.1, 0.3., 0.5
 # 1e3, 1e4
-variance_prob = 0.1
-num_traj = int(1e3)
+# variance_prob = 0.1
+# num_traj = int(1e3)
 
-# '''
-# save text as txt
+fixed_eight = True
 
-home_dir = os.path.expanduser("~")
-base_dir = '.d4rl/datasets/'
-dataset_name = f'tamp_p{variance_prob}_n{num_traj}_78'
+for variance_prob in [0.1, 0.3, 0.5]:
+    for num_traj in [int(1e3), int(1e4)]:
 
-file_path = os.path.join(home_dir, base_dir, dataset_name, 'dataset.txt')
+        # '''
+        # save text as txt
 
-if not os.path.exists(os.path.dirname(file_path)):
-    os.makedirs(os.path.dirname(file_path))
+        home_dir = os.path.expanduser("~")
+        base_dir = '.d4rl/datasets/'
+        dataset_name = f'tamp_p{variance_prob}_n{num_traj}_78'
 
-with open(file_path, 'w') as f:
+        if fixed_eight:
+            dataset_name = 'fix8_' + dataset_name
 
-    for idx in tqdm(range(num_traj)):
-        traj = get_state_traj(prob = variance_prob)
-        text, length_action = gen_fun2(traj)
+        file_path = os.path.join(home_dir, base_dir, dataset_name, 'dataset.txt')
 
-        f.write(text + "\n\n")
+        if not os.path.exists(os.path.dirname(file_path)):
+            os.makedirs(os.path.dirname(file_path))
 
-print('save to', file_path)
+        with open(file_path, 'w') as f:
 
-# '''
+            for idx in tqdm(range(num_traj)):
+                traj = get_state_traj(prob = variance_prob, fixed_eight=fixed_eight)
+                text, length_action = gen_fun2(traj)
+
+                f.write(text + "\n\n")
+
+        print('save to', file_path)
+
+        # '''
 
 # ================================ generate dataset ========================
 '''

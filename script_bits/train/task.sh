@@ -107,3 +107,32 @@ python script_bits/eval/plan.py --dataset tamp_med_78_eval
 python script_bits/eval/plan.py --dataset tamp_hard_78_eval
 
 
+# ==================== for fix 8 ====================
+
+python script_bits/train/train_diffuser.py --dataset fix8_tamp_easy_78 --device "cuda:6"
+
+python script_bits/train/train_diffuser.py --dataset fix8_tamp_med_78 --device "cuda:5"
+
+python script_bits/train/train_diffuser.py --dataset fix8_tamp_hard_78 --device "cuda:4"
+
+python script_bits/eval/plan.py --dataset fix8_tamp_easy_78 
+
+python script_bits/eval/plan.py --dataset fix8_tamp_med_78 
+
+python script_bits/eval/plan.py --dataset fix8_tamp_hard_78 
+
+# ----
+
+python script_bits/train/train_diffuser.py --dataset fix8_tamp_easy_78_eval
+
+python script_bits/train/train_diffuser.py --dataset fix8_tamp_med_78_eval
+
+python script_bits/train/train_diffuser.py --dataset fix8_tamp_hard_78_eval
+
+python script_bits/eval/plan.py --dataset fix8_tamp_easy_78_eval --device "cuda:0"
+
+python script_bits/eval/plan.py --dataset fix8_tamp_med_78_eval --device "cuda:1"
+
+python script_bits/eval/plan.py --dataset fix8_tamp_hard_78_eval --device "cuda:2"
+
+

@@ -16,6 +16,7 @@ class Parser(utils.Parser):
 args = Parser().parse_args('diffusion')
 
 model_save_dir = args.savepath + "_transformer/"
+print(f"Model save directory: {model_save_dir}")
 
 timestamp = datetime.now().strftime('%m-%d-%H-%M')
 log_save_dir = args.savepath + timestamp

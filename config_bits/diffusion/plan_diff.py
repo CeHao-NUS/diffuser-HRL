@@ -69,62 +69,62 @@ base = {
 }
 
 
-tamp_zero = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_zero.txt',
-    },
-}
+# tamp_zero = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_zero.txt',
+#     },
+# }
 
-tamp_easy = {
-    'plan':{
-        'horizon': 96,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_easy.txt',
-    },
-}
+# tamp_easy = {
+#     'plan':{
+#         'horizon': 96,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_easy.txt',
+#     },
+# }
 
-tamp_med = {
-    'plan':{
-        'horizon': 112,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_med.txt',
-    },
-}
+# tamp_med = {
+#     'plan':{
+#         'horizon': 112,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_med.txt',
+#     },
+# }
 
-tamp_hard = {
-    'plan':{
-        'horizon': 128,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_hard.txt',
-    },
-}
+# tamp_hard = {
+#     'plan':{
+#         'horizon': 128,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_hard.txt',
+#     },
+# }
 
 
-tamp_78 = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_78.txt',
-    },
-}
+# tamp_78 = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_78.txt',
+#     },
+# }
 
-tamp_77 = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_77.txt',
-    },
-}
+# tamp_77 = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_77.txt',
+#     },
+# }
 
-tamp_fix = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_fix.txt',
-    },
-}
+# tamp_fix = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_fix.txt',
+#     },
+# }
 
 tamp_easy_78 = {
     'plan':{
@@ -150,67 +150,77 @@ tamp_hard_78 = {
     },
 }
 
+import copy
+fix8_tamp_easy_78 = copy.deepcopy(tamp_easy_78)
+fix8_tamp_easy_78['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_easy_78.txt'
+
+fix8_tamp_med_78 = copy.deepcopy(tamp_med_78)
+fix8_tamp_med_78['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_med_78.txt'
+
+fix8_tamp_hard_78 = copy.deepcopy(tamp_hard_78)
+fix8_tamp_hard_78['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_hard_78.txt'
+
 
 
 # ==========================================
 
-tamp_zero_eval = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_zero.txt',
-    },
-}
+# tamp_zero_eval = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_zero.txt',
+#     },
+# }
 
 
-tamp_easy_eval = {
-    'plan':{
-        'horizon': 96,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_easy.txt',
-    },
-}
+# tamp_easy_eval = {
+#     'plan':{
+#         'horizon': 96,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_easy.txt',
+#     },
+# }
 
-tamp_med_eval = {
-    'plan':{
-        'horizon': 112,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_med.txt',
-    },
-}
+# tamp_med_eval = {
+#     'plan':{
+#         'horizon': 112,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_med.txt',
+#     },
+# }
 
-tamp_hard_eval = {
-    'plan':{
-        'horizon': 128,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_hard.txt',
-    },
-}
+# tamp_hard_eval = {
+#     'plan':{
+#         'horizon': 128,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_hard.txt',
+#     },
+# }
 
 
-tamp_78_eval = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_78.txt',
-    },
-}
+# tamp_78_eval = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_78.txt',
+#     },
+# }
 
-tamp_77_eval = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_77.txt',
-    },
-}
+# tamp_77_eval = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_77.txt',
+#     },
+# }
 
-tamp_fix_eval = {
-    'plan':{
-        'horizon': 80,
-        'n_diffusion_steps': 64,
-        'save_path_dir': 'logs/plans/tamp_single/results_fix.txt',
-    },
-}
+# tamp_fix_eval = {
+#     'plan':{
+#         'horizon': 80,
+#         'n_diffusion_steps': 64,
+#         'save_path_dir': 'logs/plans/tamp_single/results_fix.txt',
+#     },
+# }
 
 tamp_easy_78_eval = {
     'plan':{
@@ -235,3 +245,14 @@ tamp_hard_78_eval = {
         'save_path_dir': 'logs/plans/tamp_single/results_hard_78.txt',
     },
 }
+
+import copy
+fix8_tamp_easy_78_eval = copy.deepcopy(tamp_easy_78_eval)
+fix8_tamp_easy_78_eval['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_easy_78.txt'
+
+fix8_tamp_med_78_eval = copy.deepcopy(tamp_med_78_eval)
+fix8_tamp_med_78_eval['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_med_78.txt'
+
+fix8_tamp_hard_78_eval = copy.deepcopy(tamp_hard_78_eval)
+fix8_tamp_hard_78_eval['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_hard_78.txt'
+
