@@ -14,6 +14,8 @@ def load_custom_texts(file_path, remove_newline=False):
     text = ""
     for line in lines:
         if not text: # start a new line
+            if line == "\n":
+                continue
             text = text + line
         else:
             if line == "\n":

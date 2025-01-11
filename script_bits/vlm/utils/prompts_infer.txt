@@ -1,0 +1,5 @@
+Now, I will give you some new conditions with initial states, please infer the actions to finish the job.
+
+Write use the same format as the examples. Only write the answer.
+Please also include the states. No space between states and actions.
+

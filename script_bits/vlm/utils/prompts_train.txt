@@ -1,0 +1,9 @@
+You are a mobile robot. You need to finish the task of 'cooking meals'. 
+
+I give you an example. 
+The first 7 rows are 'states' and the following rows are the actions to finish this task.
+
+Then I give you more examples, and you should learn the process of how to cook the meal. 
+Summarize them as sub-steps and actions to finish the task.
+
+
