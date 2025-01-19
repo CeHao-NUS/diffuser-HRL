@@ -1,3 +1,4 @@
+export WANDB_API_KEY='8c2ff814e2acd0cb8e3076194610c8cc46daa3f8'
 
 python scripts/train/train_diffuser.py --config 'config.couple.train_diff_HL_fixgap' --dataset maze2d-umaze-v1 --device "cuda:7"
 python scripts/train/train_diffuser.py --config 'config.couple.train_diff_HL_fixgap' --dataset maze2d-medium-v1 --device "cuda:7"

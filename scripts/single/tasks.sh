@@ -1,5 +1,5 @@
 # env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1']
-
+export WANDB_API_KEY='8c2ff814e2acd0cb8e3076194610c8cc46daa3f8'
 
 # train diffusion =========================================================================
 python scripts/train/train_diffuser.py --config 'config.single.train_diff'  --dataset maze2d-umaze-v1 --device "cuda:7"

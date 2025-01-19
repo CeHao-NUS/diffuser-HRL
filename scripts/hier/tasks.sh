@@ -1,8 +1,8 @@
 # env_list = ['maze2d-umaze-v1', 'maze2d-medium-v1', 'maze2d-large-v1']
-
+export WANDB_API_KEY='8c2ff814e2acd0cb8e3076194610c8cc46daa3f8'
 
 # train LL diff
-python scripts/train/train_diffuser.py --config 'config.hier.train_diff_LL' --dataset maze2d-umaze-v1 --device "cuda:5"
+python scripts/train/train_diffuser.py --config 'config.hier.train_diff_LL' --dataset maze2d-umaze-v1 --device "cuda:6"
 
 # train HL_diff
 python scripts/train/train_diffuser.py --config 'config.hier.train_diff_HL' --dataset maze2d-umaze-v1 --device "cuda:5"
