@@ -63,10 +63,12 @@ def gen_fun2(traj):
 # variance_prob = 0.1
 # num_traj = int(1e3)
 
-fixed_eight = True
+# fixed_eight = True
+fixed_eight = False
 
 for variance_prob in [0.1, 0.3, 0.5]:
-    for num_traj in [int(1e3), int(1e4)]:
+    # for num_traj in [int(1e3), int(1e4)]:
+    for num_traj in [int(2e4), int(5e4), int(1e5)]:
 
         # '''
         # save text as txt

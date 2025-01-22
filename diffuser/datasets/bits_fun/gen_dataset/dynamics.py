@@ -268,13 +268,13 @@ def eval_env(dataset_text_dir='', verbose_eval=True, verbose_dynamic=False):
         print('Average: ', np.mean(all_length), 'Std: ', np.std(all_length))
     
 
+    
     # stage_action_num is a list of dict, convert it to dict of lists
     converted_stage_action_num = {key: [item[key] for item in all_stage_action_num] for key in all_stage_action_num[0].keys()}
 
-    # use 150 - every number in the list
-    max_value = 150
+    '''
     for key in converted_stage_action_num.keys():
-        converted_stage_action_num[key] = [max_value - item for item in converted_stage_action_num[key]]
+        converted_stage_action_num[key] = [item for item in converted_stage_action_num[key]]
 
     # calculate the mean and std of each key
     for key in converted_stage_action_num.keys():
@@ -283,6 +283,24 @@ def eval_env(dataset_text_dir='', verbose_eval=True, verbose_dynamic=False):
 
         if verbose_eval:
             print(f'{key}: mean {np.round(mean,1)}, std {np.round(std, 2)}')
+    '''
+
+    # another metric:
+    finish_task_step = {'1': [], '2': [], '3': [], '4': [], '5': [], '6': [], '7': [], '8': [], '9': [], '10': []}
+    for stage_action_num in all_stage_action_num:
+        # sort the list of values in stage_action_num
+        values = list(stage_action_num.values())
+        values = sorted(values)
+        for i in range(1, 11):
+            finish_task_step[str(i)].append(values[i-1])
+
+    for key in finish_task_step.keys():
+        mean = np.mean(finish_task_step[key])
+        std = np.std(finish_task_step[key])
+
+        if verbose_eval:
+            print(f'{key}: mean {np.round(mean,1)}, std {np.round(std, 2)}')
+
 
     return all_length, converted_stage_action_num
 
@@ -293,11 +311,13 @@ if __name__ == "__main__":
     home_dir = os.path.expanduser("~")
     base_dir = '.d4rl/datasets/'
 
-    # eval_env(os.path.join(home_dir, base_dir, 'tamp_p0.0_n10000_fix', 'dataset.txt'))
+    single_easy = "fix8_tamp_p0.1_n10000_78"
+    single_med = "fix8_tamp_p0.3_n10000_78"
+    single_hard = "fix8_tamp_p0.5_n10000_78"
+
+    multi_easy = "tamp_p0.1_n10000_eval"
+    multi_med = "tamp_p0.3_n10000_78"
+    multi_hard = "tamp_p0.5_n10000_78"
+
+    eval_env(os.path.join(home_dir, base_dir, multi_hard, 'dataset.txt'))
     # eval_env("/home/crtie/ch/diffuser-HRL/logs/tamp_easy/diffusion_bits/single_diffuser_H96_T64/sample-2000-1.txt")
-
-
-    # eval_env("/home/users/cehao/github_space/diffuser-HRL/logs/vlms/vlm_single_easy.txt")
-
-    # eval_env("/home/users/cehao/github_space/diffuser-HRL/logs/vlms/vlm_multi_easy.txt")
-

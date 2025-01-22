@@ -153,6 +153,48 @@ tamp_hard_78 = {
     },
 }
 
+tamp_easy_2e4 = {
+    'diffusion':{
+        'horizon': 96,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.1_n20000_78', 'dataset.txt'),
+    },
+}
+
+tamp_med_2e4 = {
+    'diffusion':{
+        'horizon': 112,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.3_n20000_78', 'dataset.txt'),
+    },
+}
+
+tamp_hard_2e4 = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.5_n20000_78', 'dataset.txt'),
+    },
+}
+
+tamp_easy_5e4 = {
+    'diffusion':{
+        'horizon': 96,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.1_n50000_78', 'dataset.txt'),
+    },
+}
+
+tamp_med_5e4 = {
+    'diffusion':{
+        'horizon': 112,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.3_n50000_78', 'dataset.txt'),
+    },
+}
+
+tamp_hard_5e4 = {
+    'diffusion':{
+        'horizon': 128,
+        'train_data_dir': os.path.join(home_dir, base_dir, 'tamp_p0.5_n50000_78', 'dataset.txt'),
+    },
+}
+
 import copy
 fix8_tamp_easy_78 = copy.deepcopy(tamp_easy_78)
 fix8_tamp_easy_78['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.1_n10000_78', 'dataset.txt')
@@ -162,6 +204,25 @@ fix8_tamp_med_78['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp
 
 fix8_tamp_hard_78 = copy.deepcopy(tamp_hard_78)
 fix8_tamp_hard_78['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.5_n10000_78', 'dataset.txt')   
+
+fix8_tamp_easy_2e4 = copy.deepcopy(tamp_easy_2e4)
+fix8_tamp_easy_2e4['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.1_n20000_78', 'dataset.txt')
+
+fix8_tamp_med_2e4 = copy.deepcopy(tamp_med_2e4)
+fix8_tamp_med_2e4['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.3_n20000_78', 'dataset.txt')
+
+fix8_tamp_hard_2e4 = copy.deepcopy(tamp_hard_2e4)
+fix8_tamp_hard_2e4['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.5_n20000_78', 'dataset.txt')
+
+fix8_tamp_easy_5e4 = copy.deepcopy(tamp_easy_5e4)
+fix8_tamp_easy_5e4['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.1_n50000_78', 'dataset.txt')
+
+fix8_tamp_med_5e4 = copy.deepcopy(tamp_med_5e4)
+fix8_tamp_med_5e4['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.3_n50000_78', 'dataset.txt')
+
+fix8_tamp_hard_5e4 = copy.deepcopy(tamp_hard_5e4)
+fix8_tamp_hard_5e4['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.5_n50000_78', 'dataset.txt')
+
 
 # ================================ evaluate ========================
 
@@ -237,6 +298,7 @@ tamp_hard_78_eval = {
     },
 }
 
+
 fix8_tamp_easy_78_eval = copy.deepcopy(tamp_easy_78_eval)
 fix8_tamp_easy_78_eval['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.0_n1000_78_eval', 'dataset.txt')
 
@@ -245,4 +307,22 @@ fix8_tamp_med_78_eval['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8
 
 fix8_tamp_hard_78_eval = copy.deepcopy(tamp_hard_78_eval)
 fix8_tamp_hard_78_eval['train_data_dir'] = os.path.join(home_dir, base_dir, 'fix8_tamp_p0.0_n1000_78_eval', 'dataset.txt')
+
+##
+tamp_easy_2e4_eval = tamp_easy_78_eval
+tamp_med_2e4_eval = tamp_med_78_eval
+tamp_hard_2e4_eval = tamp_hard_78_eval
+
+fix8_tamp_easy_2e4_eval = fix8_tamp_easy_78_eval
+fix8_tamp_med_2e4_eval = fix8_tamp_med_78_eval
+fix8_tamp_hard_2e4_eval = fix8_tamp_hard_78_eval
+
+##
+tamp_easy_5e4_eval = tamp_easy_78_eval
+tamp_med_5e4_eval = tamp_med_78_eval
+tamp_hard_5e4_eval = tamp_hard_78_eval
+
+fix8_tamp_easy_5e4_eval = fix8_tamp_easy_78_eval
+fix8_tamp_med_5e4_eval = fix8_tamp_med_78_eval
+fix8_tamp_hard_5e4_eval = fix8_tamp_hard_78_eval
 

@@ -7,6 +7,6 @@ class Parser(utils.Parser):
 
 args = Parser().parse_args('diffusion')
 
-results_save_dir = args.savepath + "_vlm_results/generated_steps.txt"
+results_save_dir = args.savepath + "_vlm_results_4o/generated_steps.txt"
 
 all_length, converted_stage_action_num = eval_env(results_save_dir)

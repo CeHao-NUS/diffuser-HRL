@@ -161,6 +161,8 @@ fix8_tamp_hard_78 = copy.deepcopy(tamp_hard_78)
 fix8_tamp_hard_78['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_hard_78.txt'
 
 
+tamp_easy_2e4 = copy.deepcopy(tamp_easy_78)
+tamp_easy_2e4['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_easy_2e4.txt'
 
 # ==========================================
 
@@ -256,3 +258,18 @@ fix8_tamp_med_78_eval['plan']['save_path_dir'] = 'logs/plans/tamp_single/results
 fix8_tamp_hard_78_eval = copy.deepcopy(tamp_hard_78_eval)
 fix8_tamp_hard_78_eval['plan']['save_path_dir'] = 'logs/plans/tamp_single/results_fix8_hard_78.txt'
 
+## 
+tamp_easy_2e4_eval = copy.deepcopy(tamp_easy_78_eval)
+tamp_med_2e4_eval = copy.deepcopy(tamp_med_78_eval)
+tamp_hard_2e4_eval = copy.deepcopy(tamp_hard_78_eval)
+fix8_tamp_easy_2e4_eval = copy.deepcopy(fix8_tamp_easy_78_eval)
+fix8_tamp_med_2e4_eval = copy.deepcopy(fix8_tamp_med_78_eval)
+fix8_tamp_hard_2e4_eval = copy.deepcopy(fix8_tamp_hard_78_eval)
+
+## 
+tamp_easy_5e4_eval = copy.deepcopy(tamp_easy_78_eval)
+tamp_med_5e4_eval = copy.deepcopy(tamp_med_78_eval)
+tamp_hard_5e4_eval = copy.deepcopy(tamp_hard_78_eval)
+fix8_tamp_easy_5e4_eval = copy.deepcopy(fix8_tamp_easy_78_eval)
+fix8_tamp_med_5e4_eval = copy.deepcopy(fix8_tamp_med_78_eval)
+fix8_tamp_hard_5e4_eval = copy.deepcopy(fix8_tamp_hard_78_eval)
