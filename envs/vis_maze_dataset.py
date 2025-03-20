@@ -31,6 +31,7 @@ env = gym.make('maze2d-medium-v1')
 dataset = env.get_dataset()
 observations = dataset['observations']
 
+
 # Parameters for segmenting and plotting
 n = 2000
 segments = np.array_split(observations, n)  # Split into 200 segments

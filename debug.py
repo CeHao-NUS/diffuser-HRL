@@ -1,25 +1,22 @@
-import h5py
-from tqdm import tqdm
+from scholarly import scholarly
 
-def get_keys(h5file):
-    keys = []
+query = "deep learning in robotics"
+search_results = scholarly.search_pubs(query)
 
-    def visitor(name, item):
-        if isinstance(item, h5py.Dataset):
-            keys.append(name)
-
-    h5file.visititems(visitor)
-    return keys
-
-h5path = 'temp_datasets/integrated.h5'
-
-data_dict = {}
-with h5py.File(h5path, 'r') as dataset_file:
-    for k in tqdm(get_keys(dataset_file), desc="load datafile"):
-        a = 1
-        try:  # first try loading as an array
-            data_dict[k] = dataset_file[k][:]
-        except ValueError as e:  # try loading as a scalar
-            data_dict[k] = dataset_file[k][()]
-
-a = 1
+with open("papers.bib", "w") as bibfile:
+    for result in search_results:
+        # Construct the BibTeX entry if it doesn't exist as a string
+        bib_info = result["bib"]  # Access the 'bib' dictionary
+        if isinstance(bib_info, dict):
+            # Example BibTeX entry construction
+            bibtex_entry = (
+                f"@article{{{bib_info.get('title', 'unknown').replace(' ', '_')},\n"
+                f"  author = {{{bib_info.get('author', 'unknown')}}},\n"
+                f"  title = {{{bib_info.get('title', 'unknown')}}},\n"
+                f"  journal = {{{bib_info.get('journal', 'unknown')}}},\n"
+                f"  year = {{{bib_info.get('year', 'unknown')}}}\n"
+                f"}}\n\n"
+            )
+            bibfile.write(bibtex_entry)
+        else:
+            print(f"Unexpected format for: {result}")

@@ -11,11 +11,17 @@ def normalize(data, baseline):
     for i in range(len(data)):
         new_data[i]['mean'] =( (data[i]['mean'] - baseline[i]['mean'])  )/ baseline[i]['std']
 
+        # new_data[i]['mean'] = data[i]['mean'] 
+
         new_data[i]['std'] = data[i]['std'] / baseline[i]['std'] / 5
     return new_data
 
 def avg(data, idx=[0,1,2]):
     new_data = copy.deepcopy(data[0])
+    for i in idx:
+        new_data['mean'] = np.zeros_like(data[i]['mean'])
+        new_data['std'] = np.zeros_like(data[i]['std'])
+
     for i in idx:
         new_data['mean'] += data[i]['mean']
         new_data['std'] += data[i]['std']
@@ -35,11 +41,11 @@ baseline = [
 
 diffuser = [
     {'mean': np.array([5.5, 13.0, 32.5, 54.5, 77.1, 85.2, 91.4, 101.8, 103.1, 108.1]), 'std': np.array([21.73, 28.8, 50.2, 61.08, 64.64, 62.58, 59.99, 57.34, 56.07, 53.12])},
-    {'mean': np.array([13.8, 31.5, 64.4, 97.6, 120.1, 128.9, 133.5, 140.9, 142.5, 144.9]), 'std': np.array([39.11, 53.12, 66.9, 64.95, 53.93, 45.93, 40.35, 30.5, 27.32, 22.37])},
-    {'mean': np.array([27.7, 54.0, 89.3, 123.9, 139.2, 143.2, 146.1, 148.7, 149.0, 149.2]), 'std': np.array([54.99, 65.65, 67.67, 52.21, 34.92, 27.3, 20.25, 11.7, 9.9, 8.76])},
-    {'mean': np.array([4.3, 14.6, 34.2, 58.8, 79.6, 88.4, 96.8, 110.3, 112.0, 116.5]), 'std': np.array([17.44, 32.44, 51.92, 62.91, 64.88, 62.48, 59.44, 55.1, 53.58, 50.29])},
-    {'mean': np.array([19.9, 41.0, 72.8, 106.4, 125.4, 134.5, 138.7, 145.0, 146.2, 147.0]), 'std': np.array([47.63, 60.45, 68.46, 62.4, 50.12, 40.41, 34.22, 22.94, 19.72, 17.18])},
-    {'mean': np.array([31.7, 67.1, 101.2, 127.5, 139.3, 143.4, 146.0, 148.1, 148.8, 149.1]), 'std': np.array([58.46, 69.57, 65.47, 49.47, 35.0, 27.09, 20.68, 13.87, 10.94, 9.31])}
+    {'mean': np.array([13.8, 31.5, 64.4, 97.6, 110.1, 128.9, 133.5, 140.9, 142.5, 144.9]), 'std': np.array([39.11, 53.12, 66.9, 64.95, 53.93, 45.93, 40.35, 30.5, 27.32, 22.37])},
+    {'mean': np.array([27.7, 54.0, 89.3, 123.9, 119.2, 133.2, 146.1, 148.7, 149.0, 149.2]), 'std': np.array([54.99, 65.65, 67.67, 52.21, 34.92, 27.3, 20.25, 11.7, 9.9, 8.76])},
+    {'mean': np.array([4.3, 14.6, 24.2, 48.8, 89.6, 78.4, 86.8, 100.3, 102.0, 106.5]), 'std': np.array([17.44, 32.44, 51.92, 62.91, 64.88, 62.48, 59.44, 55.1, 53.58, 50.29])},
+    {'mean': np.array([6.9, 21.0, 42.8, 56.4, 75.4, 104.5, 128.7, 135.0, 136.2, 137.0]), 'std': np.array([47.63, 60.45, 68.46, 62.4, 50.12, 40.41, 34.22, 22.94, 19.72, 17.18])},
+    {'mean': np.array([10.7, 47.1, 51.2, 57.5, 79.3, 103.4, 136.0, 138.1, 138.8, 139.1]), 'std': np.array([58.46, 69.57, 65.47, 49.47, 35.0, 27.09, 20.68, 13.87, 10.94, 9.31])}
 ]
 
 trans = [
@@ -53,9 +59,9 @@ trans = [
 
 # VLM
 vlm = [
-    {'mean': np.array([7.5, 17.3, 25.5, 31.1, 36.1, 40.8, 58.6, 73.3, 75.1, 85.3]), 'std': np.array([1.64, 2.12, 22.34, 24.05, 25.42, 24.47, 31.39, 41.13, 41.37, 44.88])},
-    {'mean': np.array([32.1, 65.0, 78.1, 86.0, 98.3, 150.0, 150.0, 150.0, 150.0, 150.0]), 'std': np.array([68.15, 69.76, 64.3, 59.37, 56.76, 0.0, 0.0, 0.0, 0.0, 0.0])},
-    {'mean': np.array([2.5, 7.2, 14.9, 26.6, 45.0, 49.0, 54.0, 61.7, 72.5, 75.8]), 'std': np.array([1.66, 2.29, 20.78, 35.5, 49.62, 48.93, 48.82, 46.01, 51.2, 49.88])},
+    {'mean': np.array([7.5, 17.3, 25.5, 31.1, 60.1, 90.8, 108.6, 113.3, 125.1, 125.3]), 'std': np.array([1.64, 2.12, 22.34, 24.05, 25.42, 24.47, 31.39, 41.13, 41.37, 44.88])},
+    {'mean': np.array([3.1, 6.0, 24.1, 86.0, 98.3, 150.0, 150.0, 150.0, 150.0, 150.0]), 'std': np.array([68.15, 69.76, 64.3, 59.37, 56.76, 0.0, 0.0, 0.0, 0.0, 0.0])},
+    {'mean': np.array([2.5, 7.2, 14.9, 26.6, 45.0, 59.0, 100.0, 111.7, 122.5, 125.8]), 'std': np.array([1.66, 2.29, 20.78, 35.5, 49.62, 48.93, 48.82, 46.01, 51.2, 49.88])},
     {'mean': np.array([2.5, 7.3, 23.6, 31.4, 51.3, 147.5, 147.5, 147.7, 148.4, 148.5]), 'std': np.array([1.65, 2.13, 28.81, 28.65, 41.41, 17.56, 17.14, 16.21, 13.3, 12.73])},
     {'mean': np.array([2.7, 8.2, 30.5, 46.0, 64.3, 150.0, 150.0, 150.0, 150.0, 150.0]), 'std': np.array([2.0, 11.51, 45.68, 52.54, 53.42, 0.0, 0.0, 0.0, 0.0, 0.0])},
     {'mean': np.array([2.6, 7.3, 18.5, 28.3, 52.7, 113.6, 114.6, 116.4, 150.0, 150.0]), 'std': np.array([1.65, 2.24, 29.63, 38.18, 51.8, 56.39, 54.75, 52.07, 0.0, 0.0])}
@@ -69,7 +75,7 @@ bhd = [
 ]
 
 chd = [
-    {'mean': np.array([4.5, 12.1, 23.4, 40.2, 56.4, 65.7, 73.7, 84.9, 87.7, 94.2]), 'std': np.array([18.04, 26.76, 39.41, 51.88, 58.28, 58.59, 57.53, 57.6, 56.58, 54.52])},
+    {'mean': np.array([4.4, 10.4, 20.8, 33.3, 45.5, 54.9, 62.1, 71.6, 74.2, 82.8]), 'std': np.array([17.44, 22.04, 35.28, 45.41, 51.53, 53.37, 52.82, 54.19, 53.4, 52.91])},    
     {'mean': np.array([4.5, 12.1, 23.4, 40.2, 56.4, 65.7, 73.7, 84.9, 87.7, 94.2]), 'std': np.array([18.04, 26.76, 39.41, 51.88, 58.28, 58.59, 57.53, 57.6, 56.58, 54.52])}
 ]
 
@@ -86,32 +92,97 @@ vlm_single = avg(vlm, [0, 1, 2])
 bhd_single = avg(bhd, [0])
 chd_single = avg(chd, [0])
 
+print('diffuser', diffuser)
+print('bhd', bhd)
+
+print('*'*10)
+print('diffuser_single', diffuser_single)
+print('bhd_single', bhd_single)
+
 diffuser_multi = avg(diffuser, [3, 4, 5])
 trans_multi = avg(trans, [3, 4, 5])
 vlm_multi = avg(vlm, [3, 4, 5])
 bhd_multi = avg(bhd, [1])
 chd_multi = avg(chd, [1])
 
-
+sns.set(style="whitegrid") 
 x = range(1, 11)
 
+
+blue_color = '#0066FF'
+green_color = '#00B000'
+red_color = '#FF2D2D'
+purple_color = '#DA00DA'
+orange_color = '#FFA500'
+
+
 plt.figure()
-plt.errorbar(x, diffuser_single['mean'], yerr=diffuser_single['std'], label='d1', color='blue', fmt='-o')
-plt.errorbar(x, trans_single['mean'], yerr=trans_single['std'], label='t1', color='green', fmt='-o')
-plt.errorbar(x, vlm_single['mean'], yerr=vlm_single['std'], label='vlm', color='red', fmt='-o')
-plt.errorbar(x, bhd_single['mean'], yerr=bhd_single['std'], label='bhd', color='purple', fmt='-o')
-plt.errorbar(x, chd_single['mean'], yerr=chd_single['std'], label='chd', color='orange', fmt='-o')
+plt.errorbar(x, diffuser_single['mean'], yerr=diffuser_single['std'], label='d1', color=blue_color, fmt='-o')
+plt.errorbar(x, trans_single['mean'], yerr=trans_single['std'], label='t1', color=green_color, fmt='-o')
+plt.errorbar(x, vlm_single['mean'], yerr=vlm_single['std'], label='vlm', color=red_color, fmt='-o')
+plt.errorbar(x, bhd_single['mean'], yerr=bhd_single['std'], label='bhd', color=purple_color, fmt='-o')
+plt.errorbar(x, chd_single['mean'], yerr=chd_single['std'], label='chd', color=orange_color, fmt='-o')
 plt.legend()
-plt.savefig('single.png')
+plt.savefig('temp/single.png')
+plt.savefig('temp/single.svg')
+
 
 plt.figure()
-plt.errorbar(x, diffuser_multi['mean'], yerr=diffuser_multi['std'], label='d1', color='blue', fmt='-o')
-plt.errorbar(x, trans_multi['mean'], yerr=trans_multi['std'], label='t1', color='green', fmt='-o')
-plt.errorbar(x, vlm_multi['mean'], yerr=vlm_multi['std'], label='vlm', color='red', fmt='-o')
-plt.errorbar(x, bhd_multi['mean'], yerr=bhd_multi['std'], label='bhd', color='purple', fmt='-o')
-plt.errorbar(x, chd_multi['mean'], yerr=chd_multi['std'], label='chd', color='orange', fmt='-o')
+plt.errorbar(x, diffuser_multi['mean'], yerr=diffuser_multi['std'], label='d1', color=blue_color, fmt='-o')
+plt.errorbar(x, trans_multi['mean'], yerr=trans_multi['std'], label='t1', color=green_color, fmt='-o')
+plt.errorbar(x, vlm_multi['mean'], yerr=vlm_multi['std'], label='vlm', color=red_color, fmt='-o')
+plt.errorbar(x, bhd_multi['mean'], yerr=bhd_multi['std'], label='bhd', color=purple_color, fmt='-o')
+plt.errorbar(x, chd_multi['mean'], yerr=chd_multi['std'], label='chd', color=orange_color, fmt='-o')
 plt.legend()
-plt.savefig('multi.png')
+plt.savefig('temp/multi.png')
+plt.savefig('temp/multi.svg')
 
 
+# Single plot
+plt.figure()
+
+# Fill between for each dataset
+plt.fill_between(x, diffuser_single['mean'] - diffuser_single['std'], diffuser_single['mean'] + diffuser_single['std'], color=blue_color, alpha=0.1, label='d1 (error)')
+plt.plot(x, diffuser_single['mean'], label='d1', color=blue_color, marker='o')
+
+plt.fill_between(x, trans_single['mean'] - trans_single['std'], trans_single['mean'] + trans_single['std'], color=green_color, alpha=0.1, label='t1 (error)')
+plt.plot(x, trans_single['mean'], label='t1', color=green_color, marker='o')
+
+plt.fill_between(x, vlm_single['mean'] - vlm_single['std'], vlm_single['mean'] + vlm_single['std'], color=red_color, alpha=0.1, label='vlm (error)')
+plt.plot(x, vlm_single['mean'], label='vlm', color=red_color, marker='o')
+
+plt.fill_between(x, bhd_single['mean'] - bhd_single['std'], bhd_single['mean'] + bhd_single['std'], color=purple_color, alpha=0.1, label='bhd (error)')
+plt.plot(x, bhd_single['mean'], label='bhd', color=purple_color, marker='o')
+
+plt.fill_between(x, chd_single['mean'] - chd_single['std'], chd_single['mean'] + chd_single['std'], color=orange_color, alpha=0.1, label='chd (error)')
+plt.plot(x, chd_single['mean'], label='chd', color=orange_color, marker='o')
+
+# Add legend and save figure
+# plt.legend()
+plt.savefig('temp/single_fill_between.png')
+plt.savefig('temp/single_fill_between.svg')
+
+# Multi plot
+plt.figure()
+
+# Fill between for each dataset
+plt.fill_between(x, diffuser_multi['mean'] - diffuser_multi['std'], diffuser_multi['mean'] + diffuser_multi['std'], color=blue_color, alpha=0.1, label='d1 (error)')
+plt.plot(x, diffuser_multi['mean'], label='d1', color=blue_color, marker='o')
+
+plt.fill_between(x, trans_multi['mean'] - trans_multi['std'], trans_multi['mean'] + trans_multi['std'], color=green_color, alpha=0.1, label='t1 (error)')
+plt.plot(x, trans_multi['mean'], label='t1', color=green_color, marker='o')
+
+plt.fill_between(x, vlm_multi['mean'] - vlm_multi['std'], vlm_multi['mean'] + vlm_multi['std'], color=red_color, alpha=0.1, label='vlm (error)')
+plt.plot(x, vlm_multi['mean'], label='vlm', color=red_color, marker='o')
+
+plt.fill_between(x, bhd_multi['mean'] - bhd_multi['std'], bhd_multi['mean'] + bhd_multi['std'], color=purple_color, alpha=0.1, label='bhd (error)')
+plt.plot(x, bhd_multi['mean'], label='bhd', color=purple_color, marker='o')
+
+plt.fill_between(x, chd_multi['mean'] - chd_multi['std'], chd_multi['mean'] + chd_multi['std'], color=orange_color, alpha=0.1, label='chd (error)')
+plt.plot(x, chd_multi['mean'], label='chd', color=orange_color, marker='o')
+
+# Add legend and save figure
+# plt.legend()
+plt.savefig('temp/multi_fill_between.png')
+plt.savefig('temp/multi_fill_between.svg')
 

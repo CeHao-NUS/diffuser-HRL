@@ -6,6 +6,7 @@ bin/
 logs/
 wandb/
 temp_datasets/
+temp/
 
 *.sif
 
